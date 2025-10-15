@@ -1,6 +1,6 @@
 <x-app-layout>
     @section('title')
-        {{config('app.name')}} edit student student
+        {{config('app.name')}} edit student
     @endsection
     
     @section('breadcrumb')

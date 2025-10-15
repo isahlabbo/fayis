@@ -1,6 +1,6 @@
 <?php
 
-Route::middleware(['auth','verified'])->prefix('/finance')->namespace('Finance')->name('finance.')->group(function () {
+Route::middleware(['auth','verified','finance'])->prefix('/finance')->namespace('Finance')->name('finance.')->group(function () {
     
     Route::name('fees.')
     ->prefix('/fee')

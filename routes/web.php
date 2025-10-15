@@ -50,9 +50,13 @@ Route::prefix('payment')->name('payment.')
 
 
 Route::get('/', function () {
-
     return view('welcome');
 });
+
+Route::get('/access/restricted', function () {
+    return view('access.restrict');
+})->name('access.restricted');
+
 
 Route::get('/sms', function () {
      $response = Admin::find(1)->notify(new SchoolFeesPaymentCollectedSMS(Invoice::find(1)));
