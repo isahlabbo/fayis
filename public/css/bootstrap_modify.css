@@ -1,0 +1,473 @@
+/*
+  Custom Bootstrap Theme - Green & Orange
+  Primary: #008000 (Green)
+  Secondary: #ff6600 (Orange)
+  Author: Malam Yahaya Digital Technology Center
+*/
+
+:root {
+  --bs-primary: #008000;
+  --bs-primary-rgb: 0, 128, 0;
+
+  --bs-secondary: #ff6600;
+  --bs-secondary-rgb: 255, 102, 0;
+
+  --bs-success: #00a651;
+  --bs-danger: #dc3545;
+  --bs-warning: #ff6600;
+  --bs-info: #008000;
+
+  --bs-body-bg: #ffffff;
+  --bs-body-color: #212529;
+
+  --theme-on-primary: #ffffff;
+  --theme-on-secondary: #ffffff;
+}
+
+/*==============================
+  BUTTONS
+==============================*/
+.btn-primary {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  color: var(--theme-on-primary);
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #006600;
+  border-color: #006600;
+}
+
+.btn-secondary {
+  background-color: var(--bs-secondary);
+  border-color: var(--bs-secondary);
+  color: var(--theme-on-secondary);
+}
+.btn-secondary:hover,
+.btn-secondary:focus {
+  background-color: #cc5200;
+  border-color: #cc5200;
+}
+
+.btn-outline-primary {
+  color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+.btn-outline-primary:hover {
+  background-color: var(--bs-primary);
+  color: #fff;
+}
+
+.btn-outline-secondary {
+  color: var(--bs-secondary);
+  border-color: var(--bs-secondary);
+}
+.btn-outline-secondary:hover {
+  background-color: var(--bs-secondary);
+  color: #fff;
+}
+
+/*==============================
+  FORMS
+==============================*/
+.form-control:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 .2rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+.form-check-input:checked {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+
+.form-range::-webkit-slider-thumb {
+  background-color: var(--bs-primary);
+}
+
+.input-group-text {
+  background-color: var(--bs-primary);
+  color: #fff;
+  border: 1px solid var(--bs-primary);
+}
+
+/*==============================
+  CARDS & WIDGETS
+==============================*/
+.card {
+  border-radius: .75rem;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.card-header {
+  background: linear-gradient(90deg, var(--bs-primary), var(--bs-secondary));
+  color: #fff;
+  font-weight: 600;
+}
+
+.card-footer {
+  background-color: rgba(0, 128, 0, 0.05);
+}
+
+/* Widget style */
+.widget {
+  background: #fff;
+  border-left: 4px solid var(--bs-primary);
+  border-radius: .5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  padding: 1rem;
+}
+.widget:hover {
+  border-left-color: var(--bs-secondary);
+}
+
+/*==============================
+  NAVBAR
+==============================*/
+.navbar {
+  background: #fff !important;
+  color: #008000;
+}
+.navbar .nav-link,
+.navbar-brand {
+  color: #fff !important;
+}
+.navbar .nav-link:hover {
+  color: #ffffcc !important;
+}
+
+/*==============================
+  TABLES
+==============================*/
+.table-primary {
+  background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+.table-secondary {
+  background-color: rgba(var(--bs-secondary-rgb), 0.1);
+}
+.table-hover tbody tr:hover {
+  background-color: rgba(var(--bs-secondary-rgb), 0.05);
+}
+
+/*==============================
+  ALERTS
+==============================*/
+.alert-primary {
+  background-color: rgba(var(--bs-primary-rgb), 0.1);
+  border-color: rgba(var(--bs-primary-rgb), 0.25);
+  color: var(--bs-primary);
+}
+.alert-secondary {
+  background-color: rgba(var(--bs-secondary-rgb), 0.1);
+  border-color: rgba(var(--bs-secondary-rgb), 0.25);
+  color: var(--bs-secondary);
+}
+
+/*==============================
+  PAGINATION
+==============================*/
+.page-item.active .page-link {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  color: #fff;
+}
+.page-link:hover {
+  color: var(--bs-secondary);
+}
+
+/*==============================
+  BADGES
+==============================*/
+.badge-primary {
+  background-color: var(--bs-primary);
+}
+.badge-secondary {
+  background-color: var(--bs-secondary);
+}
+
+/*==============================
+  PROGRESS BAR
+==============================*/
+.progress-bar {
+  background-color: var(--bs-primary);
+}
+
+/*==============================
+  MODALS
+==============================*/
+.modal-header {
+  background: linear-gradient(90deg, var(--bs-primary), var(--bs-secondary));
+  color: #fff;
+}
+.modal-footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/*==============================
+  ACCORDION
+==============================*/
+.accordion-button:not(.collapsed) {
+  color: #fff;
+  background-color: var(--bs-primary);
+  box-shadow: none;
+}
+.accordion-button:focus {
+  box-shadow: 0 0 0 .2rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+/*==============================
+  TOOLTIP
+==============================*/
+.tooltip-inner {
+  background-color: var(--bs-secondary);
+  color: #fff;
+}
+.bs-tooltip-auto[data-popper-placement^="top"] .tooltip-arrow::before {
+  border-top-color: var(--bs-secondary);
+}
+
+/*==============================
+  FOOTER / MISC
+==============================*/
+footer {
+  background-color: #008000;
+  color: #fff;
+  padding: 1rem;
+  text-align: center;
+}
+
+footer a {
+  color: #ff6600;
+  text-decoration: none;
+}
+footer a:hover {
+  text-decoration: underline;
+}
+
+/*==============================
+  GENERAL LINK COLORS
+==============================*/
+a {
+  color: var(--bs-primary);
+  text-decoration: none;
+}
+a:hover {
+  color: var(--bs-secondary);
+  text-decoration: underline;
+}
+
+/*==============================
+  CUSTOM UTILITY CLASSES
+==============================*/
+.bg-green { background-color: var(--bs-primary) !important; color: #fff !important; }
+.bg-orange { background-color: var(--bs-secondary) !important; color: #fff !important; }
+.text-green { color: var(--bs-primary) !important; }
+.text-orange { color: var(--bs-secondary) !important; }
+.border-green { border-color: var(--bs-primary) !important; }
+.border-orange { border-color: var(--bs-secondary) !important; }
+
+/* bootstrap-theme-overrides.css
+   Usage: <link rel="stylesheet" href="bootstrap.min.css">
+          <link rel="stylesheet" href="bootstrap-theme-overrides.css">
+   Author: generated for you
+*/
+
+/* --------- Color variables --------- */
+:root{
+  --bs-primary: #008000;   /* green */
+  --bs-secondary: #ff6600; /* orange */
+  --bs-body-bg: #ffffff;
+  --bs-body-color: #212529;
+  --bs-white: #ffffff;
+  --bs-black: #000000;
+
+  /* derived contrast colors */
+  --theme-on-primary: #ffffff;
+  --theme-on-secondary: #ffffff;
+}
+
+/* Utility: fallback support for older browsers */
+.bg-primary { background-color: var(--bs-primary) !important; color: var(--theme-on-primary) !important; }
+.text-primary { color: var(--bs-primary) !important; }
+.bg-secondary { background-color: var(--bs-secondary) !important; color: var(--theme-on-secondary) !important; }
+.text-secondary { color: var(--bs-secondary) !important; }
+
+/* --------- Buttons --------- */
+.btn-primary {
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-border-color: var(--bs-primary);
+  color: var(--theme-on-primary);
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  box-shadow: none;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+  background-color: color-mix(in srgb, var(--bs-primary) 85%, black 15%); /* subtle darken */
+  border-color: color-mix(in srgb, var(--bs-primary) 85%, black 15%);
+  color: var(--theme-on-primary);
+  text-decoration: none;
+  box-shadow: 0 0 0 .15rem rgba(0,128,0,0.25);
+}
+.btn-secondary {
+  color: var(--theme-on-secondary);
+  background-color: var(--bs-secondary);
+  border-color: var(--bs-secondary);
+}
+.btn-outline-primary {
+  color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+.btn-outline-primary:hover {
+  color: var(--theme-on-primary);
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+
+/* --------- Navbar --------- */
+.navbar, .navbar-light, .navbar-dark {
+  background-image: linear-gradient(90deg, rgba(0,128,0,0.95), rgba(255,102,0,0.95));
+  background-color: var(--bs-primary);
+  color: var(--bs-white);
+  border: 0;
+}
+.navbar .nav-link {
+  color: rgba(255,255,255,0.9);
+}
+.navbar .nav-link:hover, .navbar .nav-link:focus {
+  color: var(--bs-white);
+  opacity: 1;
+}
+
+/* Inverse/brand */
+.navbar-brand, .navbar .navbar-brand {
+  color: var(--bs-white);
+  font-weight: 600;
+}
+
+/* --------- Links & hover --------- */
+a {
+  color: var(--bs-primary);
+}
+a:hover, a:focus {
+  color: var(--bs-secondary);
+  text-decoration: underline;
+}
+
+/* --------- Badges, alerts, and badges --------- */
+.badge-primary { background-color: var(--bs-primary); color: var(--theme-on-primary); }
+.badge-secondary { background-color: var(--bs-secondary); color: var(--theme-on-secondary); }
+
+.alert-primary {
+  background-color: color-mix(in srgb, var(--bs-primary) 10%, var(--bs-white) 90%);
+  border-color: color-mix(in srgb, var(--bs-primary) 20%, var(--bs-white) 80%);
+  color: var(--bs-primary);
+}
+.alert-secondary {
+  background-color: color-mix(in srgb, var(--bs-secondary) 10%, var(--bs-white) 90%);
+  border-color: color-mix(in srgb, var(--bs-secondary) 20%, var(--bs-white) 80%);
+  color: var(--bs-secondary);
+}
+
+/* --------- Forms and inputs --------- */
+.form-control:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 .15rem rgba(0,128,0,0.15);
+}
+.form-check-input:checked {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+.form-range::-webkit-slider-thumb {
+  background-color: var(--bs-primary);
+  border: 1px solid rgba(0,0,0,0.15);
+}
+
+/* --------- Table --------- */
+.table-primary, .table .table-primary {
+  background-color: color-mix(in srgb, var(--bs-primary) 10%, var(--bs-white) 90%);
+}
+.table-secondary, .table .table-secondary {
+  background-color: color-mix(in srgb, var(--bs-secondary) 10%, var(--bs-white) 90%);
+}
+
+/* --------- Cards --------- */
+.card {
+  border-radius: .5rem;
+  border-color: rgba(0,0,0,0.05);
+}
+.card-header {
+  background-image: linear-gradient(90deg, var(--bs-primary), var(--bs-secondary));
+  color: var(--bs-white);
+  font-weight: 600;
+}
+
+/* --------- Pagination --------- */
+.page-link {
+  color: var(--bs-primary);
+}
+.page-item.active .page-link {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  color: var(--theme-on-primary);
+}
+
+/* --------- Progress bars --------- */
+.progress-bar {
+  background-color: var(--bs-primary);
+}
+
+/* --------- Dropdowns & menu items --------- */
+.dropdown-menu {
+  border-radius: .4rem;
+  border: 1px solid rgba(0,0,0,0.06);
+}
+.dropdown-item:active, .dropdown-item:hover {
+  background-color: color-mix(in srgb, var(--bs-primary) 12%, var(--bs-white) 88%);
+}
+
+/* --------- Modals (header/footer accents) --------- */
+.modal-header {
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  background-image: linear-gradient(90deg, var(--bs-primary), transparent);
+  color: var(--bs-white);
+}
+.modal-footer {
+  border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+/* --------- Utility helpers to swap primary/secondary usage cleanly --------- */
+.text-on-primary { color: var(--theme-on-primary) !important; }
+.text-on-secondary { color: var(--theme-on-secondary) !important; }
+
+/* --------- Accessibility: focus outlines & contrasts --------- */
+:focus {
+  outline: 0;
+  box-shadow: 0 0 0 .15rem rgba(0,128,0,0.25);
+}
+
+/* Ensure form validation states use theme colors */
+.is-invalid:focus, .was-validated .form-control:invalid:focus {
+  box-shadow: 0 0 0 .15rem rgba(255,102,0,0.15);
+  border-color: var(--bs-secondary);
+}
+
+/* Utility shadow using both colors (subtle) */
+.theme-shadow {
+  box-shadow: 0 6px 18px -6px rgba(0,128,0,0.12), 0 8px 24px -12px rgba(255,102,0,0.06);
+}
+
+/* --------- Print: keep things legible --------- */
+@media print {
+  .navbar, .btn { display: none !important; }
+  body { color: #000; background: #fff; }
+}
+
+/* --------- Fallback for browsers that don't support color-mix() ---------
+   If color-mix() is not supported, the properties using it will fallback to the
+   original color or the browser default. If you need wide support, replace the
+   color-mix() with explicit color hex values calculated in advance (e.g., a
+   slightly darker green: #006600). */
+

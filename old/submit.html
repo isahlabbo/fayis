@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Card Details</title>
+  <link rel="stylesheet" href="card.css">
+</head>
+<body>
+  <h2>Submit Staff Card Details</h2>
+  <form id="submitForm">
+    <input type="text" id="name" name="name" placeholder="Full Name" required>
+    <input type="text" id="idno" name="idno" placeholder="Staff ID Number" required>
+    <input type="text" id="dept" name="dept" placeholder="Department" required>
+    <input type="text" id="role" name="role" placeholder="Role/Position" required>
+    <input type="text" id="validity" name="validity" placeholder="Valid Until (e.g. Dec 2025)" required>
+    <input type="file" id="photo" name="photo" accept="image/*" required>
+    <input type="file" id="qr" name="qr" accept="image/*" required>
+    <button type="submit">Submit Details</button>
+  </form>
+  <div id="submit-message" style="display:none; margin-top:20px; text-align:center; color:green; font-weight:bold;">Details submitted successfully!</div>
+  <script src="submit.js"></script>
+</body>
+</html>

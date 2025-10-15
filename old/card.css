@@ -1,0 +1,103 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #eee;
+  padding: 20px;
+}
+h2 { text-align: center; color: #008000; }
+form {
+  max-width: 400px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+form input {
+  width: 100%; padding: 10px; margin: 10px 0;
+  border: 1px solid #ccc; border-radius: 6px;
+}
+form button {
+  width: 100%; padding: 12px;
+  background: #ff6600; color: #fff;
+  border: none; border-radius: 6px;
+  font-size: 16px; cursor: pointer;
+}
+form button:hover { background: #cc5200; }
+.id-container {
+  display: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+.id-card {
+  width: 320px;
+  height: 500px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+}
+
+.watermark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 220px;
+  height: 220px;
+  opacity: 0.08;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+.header {
+  background: linear-gradient(45deg, #ff6600, #008000);
+  color: #fff;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+
+.front .header {
+  /* restored to default, no wavy border */
+}
+
+.front .footer {
+  /* restored to default, no wavy border */
+}
+
+.header img { width: 35px; height: 35px; }
+.front .photo { margin: 20px 0; text-align: center; }
+.front .photo img {
+  width: 120px; height: 120px;
+  border-radius: 50%; border: 3px solid #ff6600; object-fit: cover;
+}
+.front, .back {
+  width: 320px;
+  height: 500px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.front .details { text-align: left; padding: 0 20px; font-size: 15px; line-height: 1.8; }
+.front .details strong { display: inline-block; width: 95px; color: #008000; }
+.footer { position: absolute; bottom: 0; width: 100%; background: #008000; color: #fff; padding: 8px; font-size: 13px; text-align: center; }
+.back { padding: 20px; font-size: 14px; line-height: 1.6; text-align: justify; }
+.back .qr { text-align: center; margin-top: 20px; }
+.back .qr img { width: 120px; height: 120px; }
+.back .signature { margin-top: 40px; text-align: right; font-style: italic; color: #333; }
+#download-btn {
+  display: none;
+  margin: 20px auto;
+  padding: 12px 20px;
+  background: #008000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+}
+#download-btn:hover { background: #006400; }

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ID Card Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="stylesheet" href="card.css">
+</head>
+<body>
+
+  <h2>Staff ID Card Generator</h2>
+
+  <!-- Staff Data Form -->
+  <form id="staffForm">
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="text" id="idno" placeholder="Staff ID Number" required>
+    <input type="text" id="dept" placeholder="Department" required>
+    <input type="text" id="role" placeholder="Role/Position" required>
+    <input type="text" id="validity" placeholder="Valid Until (e.g. Dec 2025)" required>
+    <input type="file" id="photo" accept="image/*" required>
+    <input type="file" id="qr" accept="image/*" required>
+    <button type="submit">Generate ID Card</button>
+  </form>
+
+  <!-- ID Card Display -->
+  <div class="id-container" id="id-card">
+    <!-- FRONT -->
+    <div class="id-card front">
+      <div class="header">
+        Fatima Yahaya International School
+      </div>
+      <img src="logo.jpg" alt="Watermark" class="watermark">
+      <div class="photo">
+        <img id="staff-photo" src="" alt="Staff Photo">
+      </div>
+      <div class="details">
+        <p><strong>Name:</strong> <span id="out-name"></span></p>
+        <p><strong>ID No:</strong> <span id="out-id"></span></p>
+        <p><strong>Phone:</strong> <span id="out-dept"></span></p>
+        <p><strong>Role:</strong> <span id="out-role"></span></p>
+      </div>
+      <div class="footer">Valid Until: <span id="out-validity"></span></div>
+    </div>
+
+    <!-- BACK -->
+    <div class="id-card back">
+      <div class="header">
+        Staff Identity Card
+      </div>
+      <img src="logo.jpg" alt="Watermark" class="watermark">
+      <p>
+        This card certifies that the person whose details appear on the front is a staff 
+        of Malam Yahaya Digital Tech Center. If found, please return to the school’s 
+        administrative office.
+      </p>
+      <div class="qr">
+        <img id="staff-qr" src="" alt="QR Code">
+        <p>Scan for Verification</p>
+      </div>
+      <div class="signature">
+        ___________________<br>
+        Authorized Signature
+      </div>
+    </div>
+  </div>
+
+  <!-- Download Button -->
+  <button id="download-btn" onclick="downloadCard()">Download ID Card</button>
+
+  <script src="card.js"></script>
+
+</body>
+</html>
