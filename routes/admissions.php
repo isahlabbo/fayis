@@ -1,7 +1,7 @@
 <?php
 use App\Http\Controllers\Section\StudentController;
 
-Route::middleware(['auth','verified'])->name('admission.')->prefix('admission/')->group(function () {
+Route::middleware(['auth','verified', 'admission'])->name('admission.')->prefix('admission/')->group(function () {
     Route::name('student.')
     ->prefix('/student')
     ->namespace('Section')

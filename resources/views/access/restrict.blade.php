@@ -4,15 +4,14 @@
     @endsection
     @section('content')
     <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
         <div class="card-body shadow">
         
         
     <x-jet-authentication-card>
         <x-slot name="logo">
         <div class="text text-center"> <img src="{{asset('images/logo.jpg')}}" alt="" width="100" height="100"></div>
-        <h3 class="text-primary" style="text-align: center;">Login</h3>
         </x-slot>
 
         <x-jet-validation-errors class="mb-4" />
@@ -23,7 +22,7 @@
             </div>
         @endif
 
-        <h1 class="text text-danger">Sorry {{Auth::user()->name ?? 'Guest'}}, You dont have access to this resources on this platform</h1>
+        <h4 class="text text-danger">Sorry {{Auth::user()->name ?? 'Guest'}}, You dont have access to this resources on this platform</h4>
     </x-jet-authentication-card>
     </div>
     </div>

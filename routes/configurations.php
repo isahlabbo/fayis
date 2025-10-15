@@ -1,6 +1,6 @@
 <?php
 
-Route::middleware(['auth','verified'])->name('configuration.')->group(function () {
+Route::middleware(['auth','verified','head'])->name('configuration.')->group(function () {
     Route::name('reportcard.')
     ->prefix('/report-card')
     ->group(function (){
