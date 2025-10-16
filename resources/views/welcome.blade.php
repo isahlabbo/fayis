@@ -21,7 +21,7 @@
   <div class="page-watermark"></div>
   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom" style="background-color: white !important;">
     <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="{{route('dashboard')}}">
+      <a class="navbar-brand d-flex align-items-center" href="#home">
         <img src="{{ asset('images/welcome-logo.png') }}" alt="School Logo" height="85" width="300" class="mr-2 rounded">
       </a>
 
@@ -32,11 +32,11 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item ml-3"><a class="dropbt" href="{{route('login')}}"><i class="fas fa-clipboard-check"></i> Result</a></li>
-          <li class="nav-item ml-3"><a class="dropbt" href="{{route('login')}}"><i class="fas fa-calendar"></i> Calendar</a></li>
-          <li class="nav-item ml-3"><a class="dropbt" href="{{route('login')}}"><i class="fas fa-file-signature"></i> Application</a></li>
-          <li class="nav-item ml-3"><a class="dropbt" href="{{route('login')}}"><i class="fas fa-user-graduate"></i> Admission</a></li>
-          <li class="nav-item ml-3"><a class="dropbt" href="{{route('login')}}"><i class="fas fa-file-alt"></i> Academics</a></li>
+          <li class="nav-item ml-3"><a class="dropbt" href="#result"><i class="fas fa-poll-h"></i> Result</a></li>
+          <li class="nav-item ml-3"><a class="dropbt" href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
+          <li class="nav-item ml-3"><a class="dropbt" href="#mission-vision"><i class="fas fa-lightbulb"></i> Mission and Vision</a></li>
+          <li class="nav-item ml-3"><a class="dropbt" href="#admission"><i class="fas fa-user-plus"></i> Admission</a></li>
+          <li class="nav-item ml-3"><a class="dropbt" href="#academics"><i class="fas fa-book-open"></i> Academics</a></li>
           <li class="nav-item ml-3"><a class="dropbt" href="{{route('login')}}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
         </ul>
       </div>
@@ -109,6 +109,29 @@
     <h2>Admission</h2>
     <p>Join our vibrant learning community! Admission is open for the new academic year. Click below to start your application process.</p>
     <a href="#" class="admission-btn">Start Application</a>
+  </section>
+
+  <!-- section where parent can search the wards performance using unique code -->
+  <section class="result" id="result">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+          <div class="card shadow-sm mb-4">
+            <div class="card-body">
+              <h3 class="card-title text-center text-primary">Check Your Child's Result</h3>
+              <p class="text-center">Enter your child's result reference code here to view their academic performance.</p>
+              <form class="result-form">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Enter Reference Code" required>
+                </div>
+                <button class="btn btn-sm btn-outline-primary" type="submit">Check Result</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Contact Section -->
