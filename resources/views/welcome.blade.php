@@ -22,9 +22,7 @@
   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom" style="background-color: white !important;">
     <div class="container">
       <a class="navbar-brand d-flex align-items-center" href="{{route('dashboard')}}">
-        <img src="{{ asset('images/logo.jpg') }}" alt="School Logo" width="70" class="mr-2 rounded">
-        <span class="fw-bold text-success">Fatima Yahaya International School<br>
-        <small style="color: #ff6600;"><i>No 2. Birnin Kebbi Road, Sifawa, Bodinga LG, Sokoto</i></small></span>
+        <img src="{{ asset('images/welcome-logo.png') }}" alt="School Logo" height="85" width="300" class="mr-2 rounded">
       </a>
 
       <!-- Navbar Toggle Button -->
@@ -99,11 +97,10 @@
     <h2>Academics</h2>
     <p>We offer a broad curriculum designed to meet the needs of all students, with a focus on science, technology, arts, and humanities.</p>
     <ul class="academics-list">
-      <li>Islamiyya</li>
       <li>Nursery</li>
       <li>Lower Basic</li>
+      <li>Middle Basic</li>
       <li>Upper Basic</li>
-      <li>Junior Secondary</li>
     </ul>
   </section>
 
