@@ -78,15 +78,45 @@
   </section>
 
   <!-- About Section -->
-  <section class="about" id="about">
-    <h2>About Us</h2>
-    <p>Fatima Yahaya International School is dedicated to nurturing young minds and fostering academic excellence. Our mission is to provide a safe, inclusive, and stimulating environment where every student can thrive.</p>
-    <div class="about-features">
-      <div class="feature"><i class="fa fa-graduation-cap"></i> Qualified Teachers</div>
-      <div class="feature"><i class="fa fa-globe"></i> Modern Facilities</div>
-      <div class="feature"><i class="fa fa-users"></i> Community Engagement</div>
+<section class="about" id="about">
+  <h2>About Us</h2>
+  <p>Fatima Yahaya International School is dedicated to nurturing young minds and fostering academic excellence. Our mission is to provide a safe, inclusive, and stimulating environment where every student can thrive.</p>
+  <div class="about-features">
+    <div class="feature"><i class="fa fa-graduation-cap"></i> Qualified Teachers</div>
+    <div class="feature"><i class="fa fa-globe"></i> Modern Facilities</div>
+    <div class="feature"><i class="fa fa-users"></i> Community Engagement</div>
+  </div>
+</section>
+
+<!-- Mission & Vision Section -->
+<section class="mission-vision py-5 bg-light" id="mission-vision">
+  <div class="container">
+    <h2 class="text-center mb-4">Our Vision & Mission</h2>
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100 border-0">
+          <div class="card-body">
+            <h4 class="card-title text-success"><i class="fa fa-eye"></i> Vision</h4>
+            <p class="card-text mt-3">
+              To produce visionary citizens equipped with academic excellence, strong values, ethics, and social responsibility, who will move the country toward a better future.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100 border-0">
+          <div class="card-body">
+            <h4 class="card-title text-success"><i class="fa fa-bullseye"></i> Mission</h4>
+            <p class="card-text mt-3">
+              To provide a nurturing and inclusive educational environment, where all learners are inspired to achieve academic excellence, and to exhibit the attitude of responsible and committed members of the community.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- Academics Section -->
   <section class="academics" id="academics">

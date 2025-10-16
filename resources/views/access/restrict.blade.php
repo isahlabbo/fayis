@@ -1,6 +1,6 @@
 <x-guest-layout>
     @section('title')
-        login
+        access restricted
     @endsection
     @section('content')
     <div class="row">
