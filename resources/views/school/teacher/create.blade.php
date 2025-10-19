@@ -3,7 +3,7 @@
         {{config('app.name')}} register new teacher
     @endsection
     @section('breadcrumb')
-       {{Breadcrumbs::render('dashboard.teacher.create')}}
+
     @endsection
     @section('content')
     <div class="row">
@@ -12,7 +12,7 @@
             <div class="card shadow">
                 <div class="card-body">
                     <div class="card-header text text-bold"><b>Register New Teacher</b></div><br>
-                    <form action="{{route('dashboard.teacher.register')}}" method="post">
+                    <form action="{{route('administration.teacher.register')}}" method="post">
                         @csrf
                         <div class="form-group row">
                             <div class="col-md-3"><label for="">Name</label></div>

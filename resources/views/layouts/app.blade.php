@@ -58,7 +58,15 @@
           @else
               @include('menu.teacher')
           @endif
-
+          <li class="dropdown ml-3">
+              <a href="#academics" class="dropbtn fw-bold">
+                  <i class="fas fa-cog"></i> Settings <i class="fa fa-caret-down"></i>
+              </a>    
+              <div class="dropdown-content" >
+                  <a  href=""><i class="fas fa-user-cog"></i> Profile</a>
+                  <a  href="#"><i class="fas fa-key"></i> Change Password</a> 
+              </div>  
+          </li>
           <li class="nav-item ml-3">
             <a class="dropbt" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
               <i class="fas fa-sign-out-alt"></i> Logout

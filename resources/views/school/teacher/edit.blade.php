@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-      <form action="{{route('dashboard.teacher.update',[$teacher->id])}}" method="post">
+      <form action="{{route('administration.teacher.update',[$teacher->id])}}" method="post">
       @csrf
       <div class="form-group row">
           <div class="col-md-3"><label for="">Name</label></div>

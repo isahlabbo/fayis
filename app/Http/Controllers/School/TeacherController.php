@@ -47,7 +47,7 @@ class TeacherController extends Controller
             'date_of_birth'=>$request->date_of_birth,
         ]);
 
-        return redirect()->route('dashboard.teacher.index')->withSuccess('Teacher Registered Successfully');
+        return redirect()->route('administration.teacher.index')->withSuccess('Teacher Registered Successfully');
     }
 
     public function update(Request $request, $teacherId)
