@@ -1,6 +1,6 @@
 <?php
 Route::middleware(['auth','verified','head'])
-->namespace('examination')
+->namespace('Examination')
 ->name('exam.')->prefix('exam/')->group(function () {
 
 });

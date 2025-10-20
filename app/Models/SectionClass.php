@@ -56,6 +56,25 @@ class SectionClass extends BaseModel
         return $this->hasMany(SectionClassReservedAdmissionNo::class);
     }
 
+    public function updateAndGetAllActiveStudentResultForThisTerms($uploadId = null) {
+        // enusure all active sectionClassStudents has 3 sectionClassStudentTerms and eachsectionClassStudentTerm has studentResults
+
+        $results = $this->ensureStudentHasAllTerms($uploadId);
+        
+        return $results;
+    }
+
+    function ensureStudentHasAllTerms($uploadId = null) {
+        $results = [];
+       
+        foreach($this->sectionClassStudents->where('status','Active') as $sectionClassStudent){
+            $results[] = $sectionClassStudent->ensureHasAllAcademicSessionTerm( $uploadId);
+        }
+
+        return $results;
+    }
+
+
     public function schoolFees($termId, $genderId) {
         $fees = 0;
         foreach($this->sectionClassFees->where('fee_id', 1) as $sectionClassFee){

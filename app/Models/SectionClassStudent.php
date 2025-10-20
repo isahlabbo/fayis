@@ -38,6 +38,33 @@ class SectionClassStudent extends BaseModel
         return $this->belongsTo(Student::class);
     }
 
+    public function ensureHasAllAcademicSessionTerm($uploadId) {
+        $studentCurrentTermResults = [];
+        
+        $academicSessionTerms = $this->currentSession()->academicSessionTerms;
+        
+        foreach($academicSessionTerms as $academicSessionTerm){
+            $existingStudentTerm = $this->sectionClassStudentTerms
+            ->where('academic_session_term_id',$academicSessionTerm->id)
+            ->first();
+            if(!$existingStudentTerm){
+                $existingStudentTerm = $this->sectionClassStudentTerms()->create([
+                    'academic_session_term_id'=>$academicSessionTerm->id,
+                    'subject_teacher_termly_upload_id'=>$uploadId,
+                ]);
+            }
+            $studentCurrentTermResult = $existingStudentTerm->studentResults()->firstOrCreate([
+                'subject_teacher_termly_upload_id'=>$uploadId,
+            ]);
+            if($this->currentSessionTerm()->id == $academicSessionTerm->id){
+                $studentCurrentTermResults[] = $studentCurrentTermResult;
+            }
+            
+            
+        }
+        return $studentCurrentTermResults;
+    }
+
     public function currentStudentTerm()
     {
         

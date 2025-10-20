@@ -289,3 +289,4 @@ require __DIR__.'/sections.php';
 require __DIR__.'/administrations.php';
 require __DIR__.'/admissions.php';
 require __DIR__.'/finances.php';
+require __DIR__.'/teachers.php';
