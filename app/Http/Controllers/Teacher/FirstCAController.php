@@ -18,6 +18,10 @@ class FirstCAController extends Controller
         foreach($request->scores as $studentResultId => $firstCAScore){
             $result = StudentResult::find($studentResultId);
             $result->update(['first_ca'=>$firstCAScore]);
+            $result->first_ca = $firstCAScore;
+            $result->save();
+
+            $result->updateTotalAndComputeGrade();
         }
 
 

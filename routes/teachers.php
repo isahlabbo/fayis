@@ -15,5 +15,21 @@ Route::middleware(['auth','verified','teacher'])
             Route::post('/store', 'FirstCAController@store')->name('store');
             
         });
+        // routes first ca 
+        Route::name('secondca.')
+        ->prefix('/second-ca')
+        ->group(function (){
+            Route::get('/{subjectTeacherId}', 'SecondCAController@index')->name('index');
+            Route::post('/store', 'SecondCAController@store')->name('store');
+            
+        });
+        // routes first ca 
+        Route::name('exam.')
+        ->prefix('/exam')
+        ->group(function (){
+            Route::get('/{subjectTeacherId}', 'ExamController@index')->name('index');
+            Route::post('/store', 'ExamController@store')->name('store');
+            
+        });
     });
 });

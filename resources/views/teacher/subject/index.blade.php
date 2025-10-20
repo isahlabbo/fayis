@@ -29,7 +29,7 @@
         </div>
 
         <div class="col-md-4 mb-4">
-            <a href="" class="text-decoration-none">
+            <a href="{{route('teacher.subject.secondca.index',[$upload->id])}}" class="text-decoration-none">
                 <div class="card-body shadow text-center rounded-3">
                     <h5 class="text-primary">
                         <i class="fas fa-pen"></i> Second CA
@@ -41,7 +41,7 @@
             </a>
         </div>
         <div class="col-md-4 mb-4">
-            <a href="" class="text-decoration-none">
+            <a href="{{route('teacher.subject.exam.index',[$upload->id])}}" class="text-decoration-none">
                 <div class="card-body shadow text-center rounded-3">
                     <h5 class="text-primary">
                         <i class="fas fa-pen"></i> Exam

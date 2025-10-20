@@ -43,6 +43,7 @@ class StudentResult extends BaseModel
         }    
         $this->update(['grade'=>$grade]);
     }
+    
     public function effort()
     {
         
