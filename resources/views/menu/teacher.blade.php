@@ -25,7 +25,7 @@
         <i class="fas fa-chalkboard"></i> My Classes <i class="fa fa-caret-down"></i>
     </a>
     <div class="dropdown-content">
-        @foreach(App\Models\SectionClassTeacher::where('teacher_id',Auth::user()->teacher->id)->get() as $class)
-        <a class="fw-bold" href="">{{$class->sectionClass->name}}</a>
+        @foreach(App\Models\SectionClassTeacher::where('teacher_id',Auth::user()->teacher->id)->get() as $classTeacher)
+        <a class="fw-bold" href="{{route('teacher.class.index', [$classTeacher->id])}}">{{$classTeacher->sectionClass->name}}</a>
         @endforeach
     </div>

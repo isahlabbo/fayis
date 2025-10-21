@@ -3,6 +3,21 @@
 Route::middleware(['auth','verified','teacher'])
 ->namespace('Teacher')
 ->name('teacher.')->prefix('teacher/')->group(function () {
+    
+    Route::name('class.')
+    ->prefix('/class')
+    ->group(function (){
+        Route::get('{classId}/', 'ClassController@index')->name('index');
+    //    assessment routes
+        Route::name('assessment.')
+        ->prefix('/assessment')
+        ->group(function (){
+            Route::get('{classTeacherId}/', 'AssessmentController@index')->name('index');
+            Route::get('{studenTermId}/edit', 'AssessmentController@edit')->name('edit');
+            Route::post('{studentClassId}', 'AssessmentController@update')->name('update');
+        });
+    });
+
     Route::name('subject.')
     ->prefix('/subject')
     ->group(function (){
