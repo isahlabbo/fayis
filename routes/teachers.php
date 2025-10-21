@@ -16,6 +16,13 @@ Route::middleware(['auth','verified','teacher'])
             Route::get('{studenTermId}/edit', 'AssessmentController@edit')->name('edit');
             Route::post('{studentClassId}', 'AssessmentController@update')->name('update');
         });
+        Route::name('attendance.')
+        ->prefix('/attendance')
+        ->group(function (){
+            Route::get('{classTeacherId}/', 'AttendanceController@index')->name('index');
+            Route::get('{studenTermId}/edit', 'AttendanceController@edit')->name('edit');
+            Route::post('{studentClassId}', 'AttendanceController@update')->name('update');
+        });
     });
 
     Route::name('subject.')
