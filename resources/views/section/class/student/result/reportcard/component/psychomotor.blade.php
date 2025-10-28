@@ -11,12 +11,12 @@
             @if($sectionClassStudentTerm->sectionClassStudentTermAccessment)
             
                 @foreach($sectionClassStudentTerm->sectionClassStudentTermAccessment->sectionClassStudentTermAccessmentPsychomotors as $accessmentPsychomotor)    
-               @if($accessmentPsychomotor->psychomotor)
-                <tr>
-                    <td>{{$accessmentPsychomotor->psychomotor->name}}</td>
-                    <td>{{$accessmentPsychomotor->value ?? 0}}</td>
-                </tr>
-                @endif
+                    @if($accessmentPsychomotor->psychomotor)
+                    <tr>
+                        <td>{{$accessmentPsychomotor->psychomotor->name}}</td>
+                        <td>{{$accessmentPsychomotor->value ?? 0}}</td>
+                    </tr>
+                    @endif
                 @endforeach
             @endif
             </tbody>

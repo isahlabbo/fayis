@@ -19,10 +19,9 @@ class ExamController extends Controller
             $result = StudentResult::find($studentResultId);
             $result->exam = $examScore;
             $result->save();
-
             $result->updateTotalAndComputeGrade();
         }
 
-        return redirect()->route('teacher.subject.exam.index',[$result->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->id])->withSuccess('Exam Score Uploaded');
+        return redirect()->route('teacher.subject.exam.index',[$result->subjectTeacherTermlyUpload->id])->withSuccess('Exam Score Uploaded');
     }
 }

@@ -1,6 +1,6 @@
 <div class="col-md-1"></div>
 <div class="col-md-2">
-    <img src="{{asset(config('app.logo'))}}">
+    <img src="{{asset(config('app.logo'))}}" width="120">
 </div>
 
 <div class="col-md-9 text text-center">

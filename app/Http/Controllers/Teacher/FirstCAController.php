@@ -25,6 +25,6 @@ class FirstCAController extends Controller
         }
 
 
-        return redirect()->route('teacher.subject.firstca.index',[$result->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->id])->withSuccess('First CA Score Uploaded');
+        return redirect()->route('teacher.subject.firstca.index',[$result->subjectTeacherTermlyUpload->id])->withSuccess('First CA Score Uploaded');
     }
 }

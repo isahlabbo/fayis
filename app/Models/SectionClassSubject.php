@@ -63,13 +63,14 @@ class SectionClassSubject extends BaseModel
         if(!$sessionId){
             $sessionId = $session->currentSession()->id;
         }
+
         if(!$termId){
             $termId = $session->currentSessionTerm()->term->id;
         }
         $uploads = [];
         foreach ($this->sectionClassSubjectTeachers as $classTeacher) {
             foreach($classTeacher->subjectTeacherTermlyUploads->where('term_id',$termId) as $upload){
-                if($upload->academicSessionTerm->academicSession->id == $sessionId){
+                if($upload->academic_session_id == $sessionId){
                     $uploads[] = $upload;
                 }
             }
@@ -80,7 +81,7 @@ class SectionClassSubject extends BaseModel
     public function hasCurrentTermUpload()
     {
         $flag = false;
-        foreach($this->activeSectionClassSubjectTeacher()->subjectTeacherTermlyUploads->where('academic_session_term_id',$this->currentSessionTerm()->id) as $upload){
+        foreach($this->activeSectionClassSubjectTeacher()->subjectTeacherTermlyUploads->where('term_id',$this->currentSessionTerm()->term->id) as $upload){
            return $upload;
         }
         return $flag;

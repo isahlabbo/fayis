@@ -2,11 +2,11 @@
 @foreach(App\Models\Section::all() as $section)
 <li class="dropdown ml-3">
     <a href="#academics" class="dropbtn fw-bold">
-        <i class="fas fa-graduation-cap"></i> {{$section->name}} Results 
+        <i class="fas fa-graduation-cap"></i> {{$section->name}} 
         <i class="fa fa-caret-down"></i>
     </a>
     <div class="dropdown-content">
-        <a href="">
+        <a href="{{route('exam.upload.index',[$section->id])}}">
             <i class="fas fa-upload"></i> Uploaded
         </a>
         <a href="">

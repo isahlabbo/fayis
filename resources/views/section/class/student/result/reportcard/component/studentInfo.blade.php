@@ -29,18 +29,18 @@
         <td class="mb-0">
         {{$sectionClassStudent->sectionClass->resultType->name}}:
         </td>
-        <td class="mb-0 text-right"><b>{{$sectionClassStudentTerm->sectionClassStudentTermResultPublish->position}}</b></td>
+        <td class="mb-0 text-right"><b>{{$sectionClassStudentTerm->sectionClassStudentTermResultPublish->position?? ''}}</b></td>
     </tr>
     
     <tr style="color: black;">
         <td class="mb-0">Class Average:</td>
-        <td class="mb-0 text-right"><b>{{$sectionClassStudentTerm->sectionClassStudentTermResultPublish->class_average}}</b></td>
+        <td class="mb-0 text-right"><b>{{$sectionClassStudentTerm->sectionClassStudentTermResultPublish->class_average ?? ''}}</b></td>
     </tr>
     
     <tr style="color: black;">
         
         <td class="mb-0">Pupils Average:</td>
-        <td class="mb-0 text-right"><b>{{$sectionClassStudentTerm->sectionClassStudentTermResultPublish->student_average}}</b></td>
+        <td class="mb-0 text-right"><b>{{$sectionClassStudentTerm->sectionClassStudentTermResultPublish->student_average ?? ''}}</b></td>
     </tr>
 
     <tr style="color: black;">
@@ -58,7 +58,7 @@
     @if(config('app.fee'))
     <tr style="color: black;">
         <td><p class="mb-0">Next Term Fee:</p></td>
-        <td><p class="mb-0 text-right"><b>#15,000.00</b></p></td>
+        <td><p class="mb-0 text-right"><b>{{$sectionClassStudentTerm->sectionClassStudent->sectionClass->schoolFees($sectionClassStudentTerm->term_id+1, $student->gender->id)}}</b></p></td>
     </tr>
     @endif        
     </table>

@@ -9,7 +9,7 @@
 <div class="row mt-4">
     <!-- Students -->
     <div class="col-md-3 mb-4">
-        <a href="" class="text-decoration-none">
+        <a href="{{route('teacher.class.students',[$classTeacher->sectionClass->id])}}" class="text-decoration-none">
             <div class="card-body shadow text-center rounded-3">
                 <h5 class="text-primary">
                     <i class="fas fa-user-graduate"></i> Students
@@ -21,7 +21,7 @@
 
     <!-- Report Card -->
     <div class="col-md-3 mb-4">
-        <a href="" class="text-decoration-none">
+        <a href="{{route('teacher.class.reportCards',[$classTeacher->sectionClass->id])}}" class="text-decoration-none">
             <div class="card-body shadow text-center rounded-3">
                 <h5 class="text-primary">
                     <i class="fas fa-clipboard-check"></i> Report Card
