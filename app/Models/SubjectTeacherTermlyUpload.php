@@ -27,6 +27,27 @@ class SubjectTeacherTermlyUpload extends BaseModel
         return $this->hasMany(StudentResult::class);
     }
 
+    public function getLevel() {
+        $level = 0;
+        foreach($this->studentResults as $result){
+            if($result->first_ca !== null && $result->first_ca > 0){
+                $level++;
+            }
+            if($result->second_ca !== null && $result->second_ca > 0){
+                $level++;
+            }
+            if($result->exam !== null && $result->exam > 0){
+                $level++;
+            }
+            if($level > 1){
+                $this->level = $level;
+                $this->save();
+                break;
+            }
+        }
+        return $this->level;
+    }
+
     public function gradePercentage($grade)
     {
         $count = count($this->studentResults);

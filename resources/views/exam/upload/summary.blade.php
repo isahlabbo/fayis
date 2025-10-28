@@ -10,11 +10,31 @@
     <div class="card shadow">
         <div class="card-body">
             <div class="card-header shadow h4 mb-4">
-            <b>{{$sectionClass->name}} of {{$sectionClass->currentSession()->name}} Academic Session  Result Summary</b> 
+            <b>{{$sectionClass->name}} of {{$sectionClass->currentSession()->name}} Academic Session  Result Summary</b>
+           @php
+            $totalSubjects = count($sectionClass->sectionClassSubjects);
+            $uploaded = count($sectionClass->subjectResultUploads()['uploaded']);
+            $remaining = $totalSubjects - $uploaded;
+           @endphp
+            @if($remaining < 1)
+            <a href="{{route('exam.upload.result.publish',[$sectionClass->id])}}" onclick="confirm('Are you sure you want to publish this result? Please note that publishing indicates you have reviewed and verified the result and consider it accurate and ready to be viewed by the public, including parents and guardians.')" class="btn btn-primary">Publish Result</a>
+            @endif    
+        </div>
+            <!-- display progress bar showing the upload in % -->
+             <div class="progress" style="height: 40px; font-size:20px;">
+                @php
+                $percentage = ($uploaded / $totalSubjects) * 100;
+                @endphp
+                <div class="progress-bar" role="progressbar" style="width: {{$percentage}}%;" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
             </div>
+            <p class="mt-2">Uploaded: {{$uploaded}} / {{$totalSubjects}}
+            </p>
+
+            
             <div class="row">
             
             @foreach($sectionClass->subjectResultUploads()['uploaded'] as $result)
+            
                 <div class="col-md-3"><br>
                         <div class="card shadow">
                             <div class="card-body">
@@ -59,8 +79,7 @@
                                     <td>{{$result->gradePercentage('Absent')}}%</td>
                                     </tr>
                                 </table>
-                                <a href="#"><button class="btn btn-primary">View Detail</button></a>
-                                <a href="#"><button class="btn btn-danger" onclick="return confirm('Are you sure you want ot delete this result entirely')">Delete</button></a>
+                                <a href="{{route('exam.upload.details',[$result->id])}}"><button class="btn btn-primary">View Detail</button></a>
                             </div>
                         </div>
                 </div><br>

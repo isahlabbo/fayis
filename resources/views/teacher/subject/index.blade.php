@@ -11,8 +11,15 @@
     <div class="row">
         @foreach($sectionClassSubjectTeacher->getThisSessionUploads() as $upload)
         @if($upload->term_id == $upload->currentSessionTerm()->term_id)
-        <div class="col-md-12">
-            <div class="alert alert-success">{{$sectionClassSubjectTeacher->sectionClassSubject->sectionClass->name}}-{{$sectionClassSubjectTeacher->sectionClassSubject->subject->name}} for {{$upload->term->name}}</div>
+       <div class="col-md-12">
+        <div class="progress" style="height: 35px; font-size:20px;">
+            @php
+            $level = $upload->getLevel();
+            $percentage = ($level / 3) * 100;
+            @endphp
+            <div class="progress-bar" role="progressbar" style="width: {{$percentage}}%;" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
+        </div>
+        <div class="alert alert-success">{{$sectionClassSubjectTeacher->sectionClassSubject->sectionClass->name}}-{{$sectionClassSubjectTeacher->sectionClassSubject->subject->name}} for {{$upload->term->name}} Uploaded: {{$level}} / 3</div>
         </div>
 
         <div class="col-md-4 mb-4">

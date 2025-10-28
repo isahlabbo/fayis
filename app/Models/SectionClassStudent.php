@@ -47,19 +47,21 @@ class SectionClassStudent extends BaseModel
             $existingStudentTerm = $this->sectionClassStudentTerms
             ->where('academic_session_term_id',$academicSessionTerm->id)
             ->first();
+            
             if(!$existingStudentTerm){
-                $existingStudentTerm = $this->sectionClassStudentTerms()->create([
+                $existingStudentTerm = $this->sectionClassStudentTerms()->firstOrCreate([
                     'academic_session_term_id'=>$academicSessionTerm->id,
                     'subject_teacher_termly_upload_id'=>$uploadId,
                 ]);
             }
+
             $studentCurrentTermResult = $existingStudentTerm->studentResults()->firstOrCreate([
                 'subject_teacher_termly_upload_id'=>$uploadId,
             ]);
+
             if($this->currentSessionTerm()->id == $academicSessionTerm->id){
                 $studentCurrentTermResults[] = $studentCurrentTermResult;
             }
-            
             
         }
         return $studentCurrentTermResults;

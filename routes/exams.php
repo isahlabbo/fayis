@@ -8,5 +8,13 @@ Route::middleware(['auth','verified','exam'])
     ->group(function (){
         Route::get('/{sectionId}', 'UploadController@index')->name('index');
         Route::get('/{sectionId}/summary', 'UploadController@summary')->name('summary');
+        Route::get('/{uploadId}/details', 'UploadController@details')->name('details');
+        
+        Route::name('result.')
+        ->prefix('/result')
+        ->group(function (){
+            Route::put('/{studentResultId}/update', 'ResultController@update')->name('update');
+            Route::get('/{sectionClassId}/publish', 'ResultController@publish')->name('publish');
+        });
     });
 });

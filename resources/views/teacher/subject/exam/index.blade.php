@@ -52,7 +52,7 @@
                     </tbody>
                 </table>
                 <div class="form-group">
-                    <button class="btn btn-outline-primary">Save Exam Scores</button>
+                    <a class="btn btn-outline-warning" href="{{route('teacher.subject.firstca.index',[$upload->id])}}">Goto First CA Scores</a> <a class="btn btn-outline-danger" href="{{route('teacher.subject.secondca.index',[$upload->id])}}"> Goto Second CA Score</a> <button class="btn btn-primary">Save Exam Scores</button>
                 </div>
             </form>
         </div>

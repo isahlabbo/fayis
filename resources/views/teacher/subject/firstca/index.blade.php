@@ -9,6 +9,17 @@
 @endsection
 
 @section('content')
+<!-- display the progress bar of the upload using level 0-3 where 1 is first_ca 2 second ca and 3 is exam update-->
+
+<div class="progress" style="height: 40px; font-size:20px;">
+    @php
+    $level = $upload->level;
+    $percentage = ($level / 3) * 100;
+    @endphp
+    <div class="progress-bar" role="progressbar" style="width: {{$percentage}}%;" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
+</div>
+<p class="mt-2">Uploaded: {{$level}} / 3</p> 
+
 <!-- display form use table to restructure its content of name and input  to insert the firts ca of the student of each student available in the class -->
 <div class="row">
     <div class="col-md-2"></div>
@@ -42,7 +53,7 @@
                     </tbody>
                 </table>
                 <div class="form-group">
-                    <button class="btn btn-primary">Submit First CA Scores</button>
+                    <button class="btn btn-primary">Submit First CA Scores</button> <a class="btn btn-outline-warning" href="{{route('teacher.subject.firstca.index',[$upload->id])}}">Goto Second CA</a> <a class="btn btn-outline-danger" href="{{route('teacher.subject.exam.index',[$upload->id])}}">Goto Exam Score</a> 
                 </div>
             </form>
         </div>

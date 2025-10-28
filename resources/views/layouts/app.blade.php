@@ -60,18 +60,18 @@
           @endif
           <li class="dropdown ml-3">
               <a href="#academics" class="dropbtn fw-bold">
-                  <i class="fas fa-cog"></i> Settings <i class="fa fa-caret-down"></i>
+                  <img src="{{asset('images/user.jpg')}}" width="50" height="50" alt="" style="border-radius: 50%;">
               </a>    
               <div class="dropdown-content" >
                   <a  href=""><i class="fas fa-user-cog"></i> Profile</a>
                   <a  href="#"><i class="fas fa-key"></i> Change Password</a> 
+                  <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                      <i class="fas fa-sign-out-alt"></i> Logout
+                  </a>
+
               </div>  
           </li>
-          <li class="nav-item ml-3">
-            <a class="dropbt" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-              <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-          </li>
+          
           <form id="logout-form" action="{{route('logout')}}" method="POST">@csrf</form>
         </ul>
       </div>
