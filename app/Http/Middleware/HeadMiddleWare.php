@@ -17,12 +17,13 @@ class HeadMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        $user = Auth::user();
+       $user = Auth::user();
 
         if($user->role == 'head'){
             return $next($request);
         }
 
         return redirect()->route('access.restricted');
+
     }
 }
