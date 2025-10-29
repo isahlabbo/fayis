@@ -13,8 +13,8 @@ class ClassController extends Controller
         return view('teacher.class.index',['classTeacher'=>SectionClassTeacher::find($classTeacherId)]);
     }
 
-    public function students($classTeacherId){
-        return view('teacher.class.students',['classTeacher'=>SectionClassTeacher::find($classTeacherId)]);
+    public function students($sectionClassId){
+        return view('teacher.class.students',['sectionClass'=>SectionClass::find($sectionClassId)]);
     }
 
     public function reportCards($sectionClassId){
