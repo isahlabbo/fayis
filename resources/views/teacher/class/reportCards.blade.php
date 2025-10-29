@@ -1,4 +1,4 @@
-@extends('Layouts.app')
+@extends('layouts.app')
 
 @section('title')
     {{$sectionClass->name}} Report Cards    
@@ -17,7 +17,7 @@
                 @php
                     $student = $sectionClassStudent->student;
                 @endphp 
-                   
+
                 @if(!$sectionClassStudentTerm->sectionClassStudentTermResultPublish) 
                     <div class="alert alert-warning">The  <b><em>{{$sectionClassStudentTerm->AcademicSessionTerm->term->name}} </b></em> result of  <b><em>{{$student->name}} </b></em> in <b><em>{{$sectionClassStudent->sectionClass->name}} </b></em> is not available for view, please check back next time</div>
                 @else

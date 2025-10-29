@@ -22,14 +22,25 @@
     </thead>
     <tbody>
         @foreach($sectionClass->sectionClassStudents->where('status', 'Active') as $sectionClassStudent)
+        @php 
+            $attendance = $sectionClassStudent->currentStudentTerm()->sectionClassStudentTermAccessment;
+            if(!$attendance){
+                $attendance = $sectionClassStudent->currentStudentTerm()->sectionClassStudentTermAccessment::create([
+                    'days_school_open' => 0,
+                    'days_present' => 0,
+                    'days_absent' => 0,
+                    'status' => 'Active'
+                ]);
+            }
+        @endphp
         <tr>
             <td>{{$loop->iteration}}</td>
             <td>{{$sectionClassStudent->student->name}}</td>
             <td>{{$sectionClassStudent->student->admission_no}}</td>
-            <td>{{$sectionClassStudent->currentStudentTerm()->sectionClassStudentTermAccessment->days_school_open ?? '0'}}</td>
-            <td>{{$sectionClassStudent->currentStudentTerm()->sectionClassStudentTermAccessment->days_present ?? '0'}}</td>
-            <td>{{$sectionClassStudent->currentStudentTerm()->sectionClassStudentTermAccessment->days_absent ?? '0'}}</td>
-            <td><a href="#" data-toggle="modal" data-target="#edit_{{$sectionClassStudent->currentStudentTerm()->sectionClassStudentTermAccessment->id}}" class="btn btn-sm btn-outline-warning"><i class="fas fa-pen"></i></button></td>
+            <td>{{$attendance->days_school_open ?? '0'}}</td>
+            <td>{{$attendance->days_present ?? '0'}}</td>
+            <td>{{$attendance->days_absent ?? '0'}}</td>
+            <td><a href="#" data-toggle="modal" data-target="#edit_{{$attendance->id}}" class="btn btn-sm btn-outline-warning"><i class="fas fa-pen"></i></button></td>
         </tr>
         @include('teacher.class.attendance.edit')
         @endforeach
