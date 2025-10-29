@@ -2,7 +2,7 @@
 use App\Http\Controllers\School\StudentController;
 
 Route::middleware(['auth','verified','head'])
-->namespace('section')
+->namespace('Section')
 ->name('section.')->prefix('section/')->group(function () {
     // section
     Route::get('/{sectionId}', 'SectionController@index')->name('index');
