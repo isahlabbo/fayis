@@ -13,6 +13,13 @@ class ExamController extends Controller
         return view('teacher.subject.exam.index',['upload'=>SubjectTeacherTermlyUpload::find($uploadId)]);
     }
 
+    public function submit($uploadId) {
+        $upload = SubjectTeacherTermlyUpload::find($uploadId);
+        $upload->update(['status'=>1]);
+        return redirect()->route('teacher.subject.exam.index',[$upload->id])->withSuccess('Result Submitted to Exam Office');
+    }
+
+
     public function store(Request $request) {
 
         foreach($request->scores as $studentResultId => $examScore){

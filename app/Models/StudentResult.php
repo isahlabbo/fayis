@@ -24,7 +24,8 @@ class StudentResult extends BaseModel
     
     public function updateTotalAndComputeGrade()
     {
-        $this->update(['total'=>$this->first_ca+ $this->second_ca+$this->exam]);
+        $this->update(['total'=>$this->first_ca + $this->second_ca + $this->assignment + $this->exam]);
+
         $this->reComputeGrade();
     }
     public function reComputeGrade()

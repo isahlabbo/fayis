@@ -47,13 +47,22 @@ Route::middleware(['auth','verified','teacher'])
             Route::post('/store', 'SecondCAController@store')->name('store');
             
         });
+
+        // routes assignmant
+        Route::name('assignment.')
+        ->prefix('/assignment')
+        ->group(function (){
+            Route::get('/{subjectTeacherId}', 'AssignmentController@index')->name('index');
+            Route::post('/store', 'AssignmentController@store')->name('store');
+            
+        });
         // routes first ca 
         Route::name('exam.')
         ->prefix('/exam')
         ->group(function (){
             Route::get('/{subjectTeacherId}', 'ExamController@index')->name('index');
             Route::post('/store', 'ExamController@store')->name('store');
-            
+            Route::get('/{uploadId}/submit', 'ExamController@submit')->name('submit');
         });
     });
 });

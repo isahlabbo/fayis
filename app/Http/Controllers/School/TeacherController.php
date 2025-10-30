@@ -39,6 +39,7 @@ class TeacherController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role'=>'teacher'
         ]);
 
         $user->teacher()->create([
@@ -90,7 +91,7 @@ class TeacherController extends Controller
             'date_of_birth'=>$request->date_of_birth,
         ]);
 
-        return redirect()->route('dashboard.teacher.index')->withSuccess('Teacher Updated Successfully');
+        return redirect()->route('administration.teacher.index')->withSuccess('Teacher Updated Successfully');
     }
 
     public function delete($teacherId)
@@ -98,6 +99,6 @@ class TeacherController extends Controller
         $teacher = Teacher::find($teacherId);
         $teacher->user->delete();
         $teacher->delete();
-        return redirect()->route('dashboard.teacher.index')->withSuccess('Teacher Deleted Successfully');
+        return redirect()->route('administration.teacher.index')->withSuccess('Teacher Deleted Successfully');
     }
 }

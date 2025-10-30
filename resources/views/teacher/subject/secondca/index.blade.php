@@ -11,8 +11,8 @@
 @section('content')
 <!-- display form use table to restructure its content of name and input  to insert the firts ca of the student of each student available in the class -->
 <div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
+    <div class="col-md-1"></div>
+    <div class="col-md-10">
         <div class="alert alert-info text-center">Enter Second CA Scores for {{$upload->sectionClassSubjectTeacher->sectionClassSubject->sectionClass->name}} - {{$upload->sectionClassSubjectTeacher->sectionClassSubject->subject->name}} for {{$upload->term->name}}</div>
             <form action="{{route('teacher.subject.secondca.store',[$upload->id])}}" method="post">
                 @csrf
@@ -37,14 +37,16 @@
                             <td>{{$sectionClassStudent->student->admission_no}}</td>
                             <td>{{$studentResult[0]->first_ca}}</td>
                             <td>
-                                <input type="number" name="scores[{{$studentResult[0]->id}}]" class="form-control" max="20" value="{{$studentResult[0]->second_ca}}">
+                                <input type="number" name="scores[{{$studentResult[0]->id}}]" class="form-control" max="15" value="{{$studentResult[0]->second_ca}}">
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
                 <div class="form-group">
+                    @if($upload->status == 0)
                     <a class="btn btn-outline-warning" href="{{route('teacher.subject.firstca.index',[$upload->id])}}">Goto First CA Score</a> <a class="btn btn-outline-danger" href="{{route('teacher.subject.exam.index',[$upload->id])}}">Goto Exam Score</a> <button class="btn btn-primary">Save Second CA Scores</button>
+                    @endif
                 </div>
             </form>
         </div>

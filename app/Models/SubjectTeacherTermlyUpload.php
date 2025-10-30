@@ -39,6 +39,9 @@ class SubjectTeacherTermlyUpload extends BaseModel
             if($result->exam !== null && $result->exam > 0){
                 $level++;
             }
+            if($result->assignment !== null && $result->assignment > 0){
+                $level++;
+            }
             if($level > 1){
                 $this->level = $level;
                 $this->save();
