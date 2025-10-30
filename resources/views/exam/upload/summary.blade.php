@@ -13,7 +13,12 @@
             <b>{{$sectionClass->name}} of {{$sectionClass->currentSession()->name}} Academic Session  Result Summary</b>
            @php
             $totalSubjects = count($sectionClass->sectionClassSubjects);
-            $uploaded = count($sectionClass->subjectResultUploads()['uploaded']);
+            $uploaded = 0;
+            foreach($sectionClass->subjectResultUploads()['uploaded'] as $result){
+                if($result->status == 1){
+                    $uploaded = $uploaded + 1;
+                }
+            }
             $remaining = $totalSubjects - $uploaded;
            @endphp
             @if($remaining < 1)
@@ -34,8 +39,8 @@
             <div class="row">
             
             @foreach($sectionClass->subjectResultUploads()['uploaded'] as $result)
-            
-                <div class="col-md-3"><br>
+            @if($result->status == 1)
+                <div class="col-md-4"><br>
                         <div class="card shadow">
                             <div class="card-body">
                             <p><b>Session :</b>{{$result->currentSession()->name}}</p>
@@ -80,9 +85,12 @@
                                     </tr>
                                 </table>
                                 <a href="{{route('exam.upload.details',[$result->id])}}"><button class="btn btn-primary">View Detail</button></a>
+                                <a href="{{route('exam.upload.edit',[$result->id])}}"><button class="btn btn-outline-danger">Return for Correction</button></a>
+
                             </div>
                         </div>
                 </div><br>
+                @endif
             @endforeach
             </div>
         </div>

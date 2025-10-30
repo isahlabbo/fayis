@@ -53,7 +53,7 @@ class SubjectTeacherTermlyUpload extends BaseModel
 
     public function gradePercentage($grade)
     {
-        $count = count($this->studentResults);
+        $count = $this->gradeCount($grade);
         if($count == 0){
             $count =1;
         }
@@ -94,7 +94,13 @@ class SubjectTeacherTermlyUpload extends BaseModel
 
     public function gradeCount($grade)
     {
-        return count($this->studentResults->where('grade',$grade));
+        $count = 0;
+        foreach($this->studentResults->where('grade',$grade) as $studentResult){
+            if($studentResult->sectionClassStudentTerm->academicSessionTerm->id == $this->currentSessionTerm()->id){
+                $count++;
+            }
+        }
+        return $count;
     }
 
     public function position($total)

@@ -21,4 +21,10 @@ class UploadController extends Controller
     public function details($uploadId) {
         return view('exam.upload.details',['subjectTeacherTermlyUpload'=>SubjectTeacherTermlyUpload::find($uploadId)]);
     }
+
+    public function returnForCorrection($uploadId) {
+        $upload = SubjectTeacherTermlyUpload::find($uploadId);
+        $upload->update(['status'=>0]);
+        return redirect()->route('exam.upload.summary',[$upload->sectionClassSubjectTeacher->sectionClassSubject->sectionClass->id])->withSuccess('Upload Returned for Correction');
+    }
 }

@@ -81,7 +81,7 @@ class SectionClassSubject extends BaseModel
     public function hasCurrentTermUpload()
     {
         $flag = false;
-        foreach($this->activeSectionClassSubjectTeacher()->subjectTeacherTermlyUploads->where('term_id',$this->currentSessionTerm()->term->id) as $upload){
+        foreach($this->activeSectionClassSubjectTeacher()->subjectTeacherTermlyUploads->where('academic_session_id', $this->currentSession()->id)->where('term_id',$this->currentSessionTerm()->term->id) as $upload){
            return $upload;
         }
         return $flag;

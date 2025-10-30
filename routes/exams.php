@@ -9,6 +9,7 @@ Route::middleware(['auth','verified','exam'])
         Route::get('/{sectionId}', 'UploadController@index')->name('index');
         Route::get('/{sectionId}/summary', 'UploadController@summary')->name('summary');
         Route::get('/{uploadId}/details', 'UploadController@details')->name('details');
+        Route::get('/{uploadId}/return-for-correction', 'UploadController@ReturnForCorrection')->name('edit');
         
         Route::name('result.')
         ->prefix('/result')

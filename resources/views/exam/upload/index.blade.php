@@ -10,6 +10,12 @@
     @php
     $totalSubjects = count($sectionClass->sectionClassSubjects);
     $uploaded = count($sectionClass->subjectResultUploads()['uploaded']);
+    $submitted = 0;
+    foreach($sectionClass->subjectResultUploads()['uploaded'] as $result){
+        if($result->status == 1){
+            $submitted = $submitted + 1;
+        }
+    }
     $remaining = $totalSubjects - $uploaded;
     @endphp
     <div class="col-md-3 mb-4">
@@ -20,7 +26,8 @@
                 <a href="" class="text-decoration-none"> <p class="">Subjects: {{count($sectionClass->sectionClassSubjects)}}</p></a>
                 <p class="">Uploaded: {{$uploaded}}</p>
                 <p class="">Remaining: {{$remaining}}</p>
-                @if($uploaded > 0)
+                <p class="">Submitted: {{$submitted}}</p>
+                @if($submitted > 0)
                 <a href="{{route('exam.upload.summary',[$sectionClass->id])}}"class="btn btn-sm btn-info">View Result</a>
                 @endif
             </div>
