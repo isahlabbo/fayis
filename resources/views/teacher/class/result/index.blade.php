@@ -3,43 +3,46 @@
         {{$sectionClass->name}} of {{$sectionClass->currentSession()->name}} Academic Session Result Summary
     @endsection
     @section('breadcrumb')
-       {{Breadcrumbs::render('dashboard')}}
+
     @endsection
+
     @section('content')
    
     <div class="card shadow">
         <div class="card-body">
             <div class="card-header shadow h4 mb-4">
-            <b>{{$sectionClass->name}} of {{$sectionClass->currentSession()->name}} Academic Session  Result Summary</b>
+            {{$sectionClass->name}} of {{$sectionClass->currentSession()->name}} Academic Session  Result Submition
            @php
             $totalSubjects = count($sectionClass->sectionClassSubjects);
-            $uploaded = 0;
+            
+            $submitted = 0;
             foreach($sectionClass->subjectResultUploads()['uploaded'] as $result){
                 if($result->status == 1){
-                    $uploaded = $uploaded + 1;
+                    $submitted = $submitted + 1;
                 }
             }
-            $remaining = $totalSubjects - $uploaded;
+            $remaining = $totalSubjects - $submitted;
            @endphp
             @if($remaining < 1)
             <a href="{{route('exam.upload.result.publish',[$sectionClass->id])}}" onclick="confirm('Are you sure you want to publish this result? Please note that publishing indicates you have reviewed and verified the result and consider it accurate and ready to be viewed by the public, including parents and guardians.')" class="btn btn-primary">Publish Result</a>
             @endif    
         </div>
             <!-- display progress bar showing the upload in % -->
+             
              <div class="progress" style="height: 40px; font-size:20px;">
                 @php
-                $percentage = ($uploaded / $totalSubjects) * 100;
+                $percentage = ($submitted / $totalSubjects) * 100;
                 @endphp
                 <div class="progress-bar" role="progressbar" style="width: {{$percentage}}%;" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
             </div>
-            <p class="mt-2">Uploaded: {{$uploaded}} / {{$totalSubjects}}
+            <p class="mt-2">Submitted: {{$submitted}} / {{$totalSubjects}}
             </p>
 
             
             <div class="row">
             
             @foreach($sectionClass->subjectResultUploads()['uploaded'] as $result)
-            @if($result->status == 2)
+            @if($result->status == 1)
                 <div class="col-md-4"><br>
                         <div class="card shadow">
                             <div class="card-body">
@@ -84,9 +87,8 @@
                                     <td>{{$result->gradePercentage('Absent')}}%</td>
                                     </tr>
                                 </table>
-                                <a href="{{route('exam.upload.details',[$result->id])}}"><button class="btn btn-primary">View Detail</button></a>
-                                <a href="{{route('exam.upload.edit',[$result->id])}}"><button class="btn btn-outline-danger">Return for Correction</button></a>
-
+                                <a href="{{route('teacher.class.result.details',[$result->id])}}"><button class="btn btn-primary">View Detail</button></a>
+                                <a href="{{route('teacher.class.result.return',[$result->id])}}" class="btn btn-outline-danger">Return for Correction</a>
                             </div>
                         </div>
                 </div><br>

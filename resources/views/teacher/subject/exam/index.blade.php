@@ -44,7 +44,11 @@
                             <td>{{$studentResult[0]->second_ca}}</td>
                             <td>{{$studentResult[0]->assignment}}</td>
                             <td>
+                                @if($upload->status == 0)
                                 <input type="number" name="scores[{{$studentResult[0]->id}}]" class="form-control" max="60" value="{{$studentResult[0]->exam}}">
+                                @else
+                                {{$studentResult[0]->exam}}
+                                @endif
                             </td>
                             <td>{{$studentResult[0]->total}}</td>
                             <td>{{$studentResult[0]->grade}}</td>
@@ -54,12 +58,13 @@
                     </tbody>
                 </table>
                 <div class="form-group">
-                    @if($upload->status == 0)
+                    
                     <a class="mb-4 btn btn-outline-warning" href="{{route('teacher.subject.firstca.index',[$upload->id])}}">Goto First CA</a> 
                     <a class="mb-4 btn btn-outline-danger" href="{{route('teacher.subject.secondca.index',[$upload->id])}}"> Goto Second CA</a> 
                     <a class="mb-4 btn btn-outline-info" href="{{route('teacher.subject.assignment.index',[$upload->id])}}"> Goto Assignment</a> 
+                    @if($upload->status == 0)
                     <button class="mb-4 btn btn-primary">Save Exam</button>
-                    <a href="{{route('teacher.subject.exam.submit',[$upload->id])}}" class="mb-4 btn btn-danger" onclick="return confirm('Are you sure you want to submit this result to Exam Office? Note that if you click OK you will no have access to this result again')">Submit to Exam Office</a>
+                    <a href="{{route('teacher.subject.exam.submit',[$upload->id])}}" class="mb-4 btn btn-danger" onclick="return confirm('Are you sure you want to submit this result to Exam Office? Note that if you click OK you will no have access to this result again')">Submit to Class Master</a>
                     @endif
                 </div>
             </form>

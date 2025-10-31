@@ -50,7 +50,11 @@
                             <td>{{$studentResult[0]->first_ca}}</td>
                             <td>{{$studentResult[0]->second_ca}}</td>
                             <td>
+                                @if($upload->status == 0)
                                 <input type="number" name="scores[{{$studentResult[0]->id}}]" class="form-control" max="10" value="{{$studentResult[0]->assignment}}">
+                                @else
+                                {{$studentResult[0]->assignment}}
+                                @endif
                             </td>
                         </tr>
                         @endforeach
@@ -58,8 +62,12 @@
                 </table>
                 <div class="form-group">
                      @if($upload->status == 0)
-                    <button class="btn btn-primary">Submit Assignment Scores</button> <a class="btn btn-outline-info" href="{{route('teacher.subject.firstca.index',[$upload->id])}}">Goto First CA</a> <a class="btn btn-outline-warning" href="{{route('teacher.subject.secondca.index',[$upload->id])}}">Goto Second CA</a> <a class="btn btn-outline-danger" href="{{route('teacher.subject.exam.index',[$upload->id])}}">Goto Exam Score</a> 
+                    <button class="btn btn-primary">Submit Assignment Scores</button> 
+                    
                     @endif
+                    <a class="btn btn-outline-info" href="{{route('teacher.subject.firstca.index',[$upload->id])}}">Goto First CA</a> 
+                    <a class="btn btn-outline-warning" href="{{route('teacher.subject.secondca.index',[$upload->id])}}">Goto Second CA</a> 
+                    <a class="btn btn-outline-danger" href="{{route('teacher.subject.exam.index',[$upload->id])}}">Goto Exam</a> 
                 </div>
             </form>
         </div>

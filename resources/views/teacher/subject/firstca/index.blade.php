@@ -46,19 +46,24 @@
                             <td>{{$sectionClassStudent->student->name}}</td>
                             <td>{{$sectionClassStudent->student->admission_no}}</td>
                             <td>
+                                @if($upload->status == 0)
                                 <input type="number" name="scores[{{$studentResult[0]->id}}]" class="form-control" max="15" value="{{$studentResult[0]->first_ca}}">
+                                @else
+                                {{$studentResult[0]->first_ca}}
+                                @endif
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
                 <div class="form-group">
-                     @if($upload->status == 0)
-                    <button class="btn btn-primary">Submit First CA Scores</button> 
+                    @if($upload->status == 0)
+                    <button class="btn btn-primary">Submit First CA</button> 
+                    @endif
                     <a class="btn btn-outline-warning" href="{{route('teacher.subject.secondca.index',[$upload->id])}}">Goto Second CA</a> 
                     <a class="btn btn-outline-info" href="{{route('teacher.subject.assignment.index',[$upload->id])}}">Goto Assignment CA</a> 
-                    <a class="btn btn-outline-danger" href="{{route('teacher.subject.exam.index',[$upload->id])}}">Goto Exam Score</a> 
-                @endif
+                    <a class="btn btn-outline-danger" href="{{route('teacher.subject.exam.index',[$upload->id])}}">Goto Exam</a> 
+                
                 </div>
             </form>
         </div>

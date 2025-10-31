@@ -9,8 +9,17 @@ Route::middleware(['auth','verified','teacher'])
     ->group(function (){
         Route::get('{classId}/', 'ClassController@index')->name('index');
         Route::get('{classId}/students', 'ClassController@students')->name('students');
-        Route::get('{classId}/report-cards', 'ClassController@reportCards')->name('reportCards');
-    //    assessment routes
+        //    results routes
+        Route::name('result.')
+        ->prefix('/result')
+        ->group(function (){
+            Route::get('{classId}/', 'ResultController@index')->name('index');
+            Route::get('{resultId}/return', 'ResultController@returnForCorrection')->name('return');
+            Route::get('{resultId}/details', 'ResultController@details')->name('details');
+            Route::put('{resultId}/update', 'ResultController@update')->name('update');
+            
+        });
+        //    assessment routes
         Route::name('assessment.')
         ->prefix('/assessment')
         ->group(function (){

@@ -8,9 +8,9 @@
         </button>
       </div>
       <div class="modal-body">
-      <form action="{{route('exam.upload.result.update',[$studentResult->id])}}" method="post">
+      <form action="{{route('teacher.class.result.update',[$studentResult->id])}}" method="post">
       @csrf
-      @method('PUT')-
+      @method('PUT')
         <div class="form-group row">
             <div class="col-md-3"><label for="">First CA</label></div>
             <div class="col-md-9">
@@ -21,6 +21,12 @@
             <div class="col-md-3"><label for="">Second CA</label></div>
             <div class="col-md-9">
                 <input type="text" class="form-control" name="second_ca" value="{{$studentResult->second_ca}}" placeholder="Enter Teacher's Name">
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-3"><label for="">Assignment</label></div>
+            <div class="col-md-9">
+                <input type="text" class="form-control" name="assignment" value="{{$studentResult->assignment}}" placeholder="Enter Teacher's Name">
             </div>
         </div>
         <div class="form-group row">

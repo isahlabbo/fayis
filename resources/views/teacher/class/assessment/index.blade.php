@@ -16,6 +16,9 @@
             <th>ADMISSION NO</th>
             <th>TEACHERS COMMENT</th>
             <th>HEAD OF SCHOOL COMMENT</th>
+            <th>TOTAL MARKS</th>
+            <th>MARKS OBTAIN</th>
+            <th>POSITION</th>
             <th></th>
         </tr>
     </thead>
@@ -27,6 +30,9 @@
             <td>{{$sectionClassStudent->student->admission_no}}</td>
             <td>{{$sectionClassStudent->currentStudentTerm()->sectionClassStudentTermAccessment->teacherComment->name ?? ''}}</td>
             <td>{{$sectionClassStudent->currentStudentTerm()->sectionClassStudentTermAccessment->headTeacherComment->name ?? ''}}</td>
+            <td>{{count($sectionClassStudent->sectionClass->sectionClassSubjects)*100}}</td>
+            <td>{{$sectionClassStudent->currentStudentTerm()->studentTermTotalScore() ?? ''}}</td>
+            <td>{{$sectionClassStudent->currentStudentTerm()->position() ?? ''}}</td>
             <td><a href="{{route('teacher.class.assessment.edit',$sectionClassStudent->currentStudentTerm()->id)}}" class="btn btn-sm btn-outline-warning"><i class="fas fa-pen"></i></button></td>
         </tr>
         @endforeach

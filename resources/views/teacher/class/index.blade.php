@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('title')
-    Classes
+    {{$classTeacher->sectionClass->name}} - Class Dashboard
 @endsection
 
 @section('breadcrumb')
@@ -21,12 +21,12 @@
 
     <!-- Report Card -->
     <div class="col-md-3 mb-4">
-        <a href="{{route('teacher.class.reportCards',[$classTeacher->sectionClass->id])}}" class="text-decoration-none">
+        <a href="{{route('teacher.class.result.index',[$classTeacher->sectionClass->id])}}" class="text-decoration-none">
             <div class="card-body shadow text-center rounded-3">
                 <h5 class="text-primary">
-                    <i class="fas fa-clipboard-check"></i> Report Card
+                    <i class="fas fa-clipboard-check"></i> Submitted Results
                 </h5>
-                <h6 class="text-muted">View and print student report cards</h6>
+                <h6 class="text-muted">View and verify submitted results</h6>
             </div>
         </a>
     </div>
