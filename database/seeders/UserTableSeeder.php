@@ -47,6 +47,18 @@ class UserTableSeeder extends Seeder
                 'password'=>Hash::make('exam'),
                 'role'=>'exam_officer',
             ],
+            [
+                'name'=>'Academic Officer',
+                'email'=>'academic@fayis.ng',
+                'password'=>Hash::make('academic'),
+                'role'=>'academic_officer',
+            ],
+            [
+                'name'=>'Patron',
+                'email'=>'patron@fayis.ng',
+                'password'=>Hash::make('patron'),
+                'role'=>'patron',
+            ],
         ];
         
         foreach($users as $user){

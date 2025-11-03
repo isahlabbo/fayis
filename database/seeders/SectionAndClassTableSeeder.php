@@ -17,27 +17,24 @@ class SectionAndClassTableSeeder extends Seeder
     public function run()
     {
         $subjects =[
-            "Islamic Religious Studies",
-            "Mathematics",
-            "English Studies",
-            "Nursery Science",
-            "Writing",
-            "Al-Quar'an",
-            "Al-Adhkaar",
-            "Al-Arabiyyah",
-            "Al-Huruuf",
-            "Al-Kitabah",
-            "Basic Science And Technology",
-            "Religion and National Value",
-            "Hausa",
-            "Business Studies",
-            "Pre-vocational Studies",
+            "Arabic", 
+            "Basic technology",
+            "Basic science", 
+            "Business studies",
+            "CCA",
+            "Civic Education",
             "Computer",
-            "At-tahdheeb",
-            "Al-Qiraah",
-            "An-Nahw",
-            "Al-Tajweed",
-            "Al-khatt"
+            "English",
+            "Hausa", 
+            "Hausa Mukaranta",
+            "Home Economics",
+            "IRK",
+            "Jolly phonics", 
+            "Let's read",
+            "Mathematics", 
+            "PHE",
+            "Social studies"         
+            
         ];
         
         foreach($subjects as $subject){
@@ -77,7 +74,7 @@ class SectionAndClassTableSeeder extends Seeder
             $newSection = Section::create($section);
           
             for($arm = 1; $arm<=$section['duration']; $arm++){
-                foreach(['A','B','C'] as $class){
+                foreach(['A','B'] as $class){
                     $className = $section['class_tag'].' '.$arm.$class;
                     SectionClass::create([
                         'section_id'=>$newSection->id,

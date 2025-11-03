@@ -13,19 +13,19 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'School Name'),
+    'name' => env('APP_NAME', 'Fatima Yahaya International School'),
 
-    'title' => env('APP_TITLE', 'School Title'),
+    'title' => env('APP_TITLE', 'FAYIS'),
 
-    'motto' => env('APP_MOTTO', 'School Motto'),
+    'motto' => env('APP_MOTTO', 'Knowledge is Light'),
 
-    'address' => env('APP_ADDRESS', 'School Adress'),
+    'address' => env('APP_ADDRESS', 'No 2, off Birnin Kebbi Buypass Roard, Sifawa, Bodinga L.G.A, Sokoto State.'),
 
-    'email' => env('APP_EMAIL', 'School Adress'),
+    'email' => env('APP_EMAIL', 'fayisonline@gmail.com'),
 
-    'code' => env('APP_CODE', 'School Code'),
+    'code' => env('APP_CODE', 'FAYIS'),
 
-    'logo' => env('APP_LOGO', 'School Logo'),
+    'logo' => env('APP_LOGO', '/images/logo.jpg'),
 
     'contact' => env('APP_CONTACT', false),
     
