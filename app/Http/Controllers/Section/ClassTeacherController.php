@@ -17,7 +17,7 @@ class ClassTeacherController extends Controller
 
     public function register(Request $request, $sectionClassId)
     {
-
+      
         $request->validate([
             'teacher' => 'required'
         ]);
@@ -26,9 +26,9 @@ class ClassTeacherController extends Controller
 
         $sectionClass = SectionClass::find($request->sectionClassId);
 
-        if(isset($request->change)){
-            foreach($sesctionClass->sectionClassTeachers->where('status','Active') as $sectionClassTeacher){
-                $sectionClassTeacher->update(['status','Not Active']);
+        if(count($sectionClass->sectionClassTeachers->where('status','Active')) > 0){
+            foreach($sectionClass->sectionClassTeachers->where('status','Active') as $sectionClassTeacher){
+                $sectionClassTeacher->update(['status'=>'Not Active']);
             }
             $message = 'Class Teacher changed successfully';
         }else{
@@ -41,8 +41,4 @@ class ClassTeacherController extends Controller
     }
 
 
-    public function reCreate($sectionClassTeacherId)
-    {
-        return view('section.class.classTeacher.reCreate',['teachers'=>Teacher::all(),'sectionClassTeacher'=>SectionClassTeacher::find($sectionClassTeacherId)]);
-    }
 }

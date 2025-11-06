@@ -48,9 +48,9 @@ Route::middleware(['auth','verified'])
         });
         // section/class/subjects
         Route::name('subject.')
-        ->prefix('/{classId}/subject')
+        ->prefix('/subject')
         ->group(function (){
-            Route::get('/', 'SubjectController@index')->name('index');
+            Route::get('/{classId}', 'SubjectController@index')->name('index');
             Route::get('/{subjectId}/term/{termId}', 'SubjectController@termResult')->name('termResult');
             Route::post('/{subjectId}/term/{termId}/upload/{uploadId}/save', 'SubjectController@updateUpload')->name('update.upload');
             Route::get('/{subjectId}/term/{termId}/upload/{uploadId}/result', 'SubjectController@updateResult')->name('upload.result');
@@ -60,11 +60,10 @@ Route::middleware(['auth','verified'])
             Route::get('/result', 'SubjectController@result')->name('result');
 
             Route::name('allocation.')
-                ->prefix('/subject/{sectionClassSubjectId}/allocation')
+                ->prefix('/subject')
                 ->group(function (){
-                    Route::get('/create', 'SubjectTeacherAllocationController@create')->name('create');
-                    Route::get('/re-create', 'SubjectTeacherAllocationController@reCreate')->name('reCreate');
-                    Route::post('/regidter', 'SubjectTeacherAllocationController@register')->name('register');
+                    Route::get('/{sectionClassSubjectId}/edit', 'SubjectTeacherAllocationController@edit')->name('edit');
+                    Route::put('/{sectionClassSubjectId}/update', 'SubjectTeacherAllocationController@update')->name('update');
             });
         });
         // section/class/fees

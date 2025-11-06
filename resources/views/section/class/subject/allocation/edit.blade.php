@@ -2,18 +2,17 @@
     @section('title')
         {{$sectionClassSubject->subject->name}} subject teacher allocation
     @endsection
-    @section('breadcrumb')
-       {{Breadcrumbs::render('dashboard.section.class.subject.allocation.create',$sectionClassSubject)}}
-    @endsection
+    
     @section('content')
     <div class="row">
     <div class="col-md-2"></div>
     <div class="col-md-8">
     <div class="card shadow">
         <div class="card-body">
-        <div class="card-header text text-bold"><b>Assign Techer To {{$sectionClassSubject->subject->name}} of {{$sectionClassSubject->sectionClass->name}}</b></div><br>
-        <form action="{{route('dashboard.section.class.subject.allocation.register',[$sectionClassSubject->id])}}" method="post">
+        <div class="card-header text text-bold"><b>Edit {{$sectionClassSubject->subject->name}} Subjcet Teacher of {{$sectionClassSubject->sectionClass->name}}</b></div><br>
+        <form action="{{route('section.class.subject.allocation.update',[$sectionClassSubject->id])}}" method="post">
                 @csrf
+                @method('PUT')
                 <div class="form-group row">
                     <div class="col-md-4"><label for="">Teacher</label></div>
                        <input type="hidden" value="{{$sectionClassSubject->id}}" name="sectionClassSubjectId">

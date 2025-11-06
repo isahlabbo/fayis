@@ -15,16 +15,13 @@ class SubjectTeacherAllocationController extends Controller
         return view('section.class.subject.allocation.index',['teacher'=>Teacher::find($teacherId)]);
     }
 
-    public function create($sectionClassSubjectId)
+    public function edit($sectionClassSubjectId)
     {
-        return view('section.class.subject.allocation.create',['teachers'=>Teacher::all(), 'sectionClassSubject'=>SectionClassSubject::find($sectionClassSubjectId)]);
+        return view('section.class.subject.allocation.edit',['teachers'=>Teacher::all(), 'sectionClassSubject'=>SectionClassSubject::find($sectionClassSubjectId)]);
     }
-    public function reCreate($sectionClassSubjectId)
-    {
-        return view('section.class.subject.allocation.reCreate',['teachers'=>Teacher::all(), 'sectionClassSubjectTeacher'=>SectionClassSubjectTeacher::find($sectionClassSubjectId)]);
-    }
+    
 
-    public function register(Request $request, $sectionClassSubjectId)
+    public function update(Request $request, $sectionClassSubjectId)
     {
         $request->validate(['teacher'=>'required']);
 
@@ -32,7 +29,7 @@ class SubjectTeacherAllocationController extends Controller
 
         $sectionClassSubject = SectionClassSubject::find($sectionClassSubjectId);
 
-        if(isset($request->change)){
+        if(count($sectionClassSubject->sectionClassSubjectTeachers) > 0){
             foreach($sectionClassSubject->sectionClassSubjectTeachers as $sectionClassSubjectTeacher){
                 $sectionClassSubjectTeacher->update(['status'=>'Not Active']);
             }

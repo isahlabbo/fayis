@@ -30,9 +30,6 @@ class SubjectController extends Controller
             $subject = Subject::find($subjectId);
             if($subject){
                 $subjectClass = $sectionClass->sectionClassSubjects()->firstOrCreate(['name'=>strtoupper($subject->name),'subject_id'=>$subject->id]);
-                $subjectClass->sectionClassSubjectTeachers()->create([
-                    'teacher_id'=>rand(1,count(Teacher::all()))
-                ]);
             }
         }
 
@@ -56,7 +53,7 @@ class SubjectController extends Controller
         }
     }
 
-    public function delete($sectionClassId, $sectionClassSubjectId)
+    public function delete($sectionClassSubjectId)
     {
         $sectionClassSubject = SectionClassSubject::find($sectionClassSubjectId);
         if(count($sectionClassSubject->availableResultUploads())>0){
@@ -64,7 +61,7 @@ class SubjectController extends Controller
             ->withwarning('Sorry we cant delete this subject there are result uploade on it');
         }else{
             $sectionClassSubject->delete();
-            return redirect()->route('section.class.subject.index',[$sectionClassId])
+            return redirect()->route('section.class.subject.index',[$sectionClassSubject->sectionClass->id])
             ->withSuccess('Class Subject Deleted');
         }
     }

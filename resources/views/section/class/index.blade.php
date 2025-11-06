@@ -15,10 +15,10 @@
                     <h6 class="text text-primary"><i class="fas fa-user-tie"></i>
 
                     @if($allocation = $sectionClass->activeClassTeacher())
-                    {{$allocation->teacher->user->name}}
-                    @else
-                    <a href="{{route('section.class.teacher.create',[$sectionClass->id])}}" class="btn btn-sm btn-outline-warning">Assign Teacher</a>
+                    {{$allocation->teacher->user->name ?? 'Not Available'}}
                     @endif
+                    <a href="{{route('section.class.teacher.create',[$sectionClass->id])}}" class="btn btn-sm btn-outline-warning"><i class="fas fa-pen"></i> Edit Class Teacher</a>
+                    
                 </h6>
                 </div>
             </a>

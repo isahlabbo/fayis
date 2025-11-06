@@ -20,6 +20,7 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('css/bootstrap_modify.css') }}">
+  @yield('styles')
 <style>
   
 </style>
@@ -63,7 +64,7 @@
                   <img src="{{asset('images/user.jpg')}}" width="50" height="50" alt="" style="border-radius: 50%;">
               </a>    
               <div class="dropdown-content" >
-                  <a  href=""><i class="fas fa-user-cog"></i> Profile</a>
+                  <a  href="{{route('profile.show')}}"><i class="fas fa-user-cog"></i> Profile</a>
                   <a  href="#"><i class="fas fa-key"></i> Change Password</a> 
                   <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                       <i class="fas fa-sign-out-alt"></i> Logout

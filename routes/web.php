@@ -72,6 +72,15 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 Route::middleware(['auth:sanctum', 'verified'])
 ->group(function (){
     // configuration
+    Route::name('profile.')
+    ->prefix('/profile')
+    ->group(function (){
+        Route::get('/', 'ProfileController@show')->name('show');
+        Route::get('/{userId}/card', 'ProfileController@card')->name('card');
+        Route::put('/{userId}/update', 'ProfileController@update')->name('update');
+        Route::post('/{userId}/card-request', 'ProfileController@cardRequest')->name('cardRequest');
+    });
+
     Route::name('configuration.')
     ->prefix('/configuration')
     ->group(function (){

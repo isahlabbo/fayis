@@ -25,14 +25,11 @@
                     <td>{{$sectionClassSubject->subject->name}}</td>
                     <td>{{$sectionClassSubject->activeSectionClassSubjectTeacher()->teacher->user->name ?? 'Not Available'}}</td>
                     <td>
-                    @if(count($sectionClassSubject->sectionClassSubjectTeachers) > 0)
-                        <a href="{{route('section.class.subject.allocation.reCreate',[$sectionClass->id, $sectionClassSubject->activeSectionClassSubjectTeacher()->id])}}"><button class="btn btn-outline-primary">change the teacher</button></a>
-                    @else
-                        <a href="{{route('section.class.subject.allocation.create',[$sectionClass->id, $sectionClassSubject->id])}}"><button class="btn btn-outline-secondary">Add Teacher</button></a>
-                    @endif
+                    
+                    <a href="{{route('section.class.subject.allocation.edit',[$sectionClassSubject->id])}}"><button class="btn btn-outline-secondary">Edit Teacher Allocation</button></a>
+                    
                     </td>
                     <td>
-                    <button data-toggle="modal" data-target="#subject_{{$sectionClassSubject->id}}" class="btn btn-outline-secondary">Edit</button>
                     <a href="{{route('section.class.subject.delete',[$sectionClass->id,$sectionClassSubject->id])}}" onclick="return confirm('are sure, you want to delete this subject')"><button  class="btn btn-outline-danger">Delete</button></a></td>
                 </tr>
                 @include('section.class.subject.edit')

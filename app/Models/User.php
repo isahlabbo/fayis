@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -70,7 +71,19 @@ class User extends Authenticatable
         return $this->hasMany(UserInvoice::class);
     }
 
-    
+    public function profileImage()
+    {
+        return Storage::url($this->profile_photo_path);
+    }
+
+    public function cardRequests()
+    {
+        return $this->hasMany(CardRequest::class);
+    }   
+
+    public function pendingCardRequest() {
+        return $this->cardRequests->where('status','Pending')->first();
+    }
 
     public function app()
     {
