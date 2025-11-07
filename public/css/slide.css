@@ -1,0 +1,95 @@
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: 90vh;
+  overflow: hidden;
+}
+
+.slider .slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out, transform 2s ease-in-out;
+  transform: scale(1.1);
+}
+
+.slider .slide.active {
+  opacity: 1;
+  transform: scale(1);
+  z-index: 1;
+}
+
+.slider .overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(110, 239, 148, 0.5);
+  top: 0;
+  left: 0;
+}
+
+.slide-content {
+  position: absolute;
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+  color: #fff;
+  max-width: 600px;
+  z-index: 2;
+}
+
+.slide-content h1,
+.slide-content p {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.slide-title {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  border-right: 2px solid #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.slide-desc {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  border-right: 2px solid #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 0;
+}
+
+.hero-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 25px;
+  transition: background 0.3s ease;
+}
+
+.hero-btn:hover {
+  background-color: #218838;
+}
+
+@media (max-width: 768px) {
+  .slide-content {
+    left: 5%;
+    max-width: 90%;
+  }
+
+  .slide-title {
+    font-size: 1.8rem;
+  }
+
+  .slide-desc {
+    font-size: 1rem;
+  }
+}
