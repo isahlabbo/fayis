@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function() {
   const slides = document.querySelectorAll(".slide");
   let current = 0;
@@ -6,9 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
   function typeText(element, text, speed = 50) {
     element.textContent = "";
     let i = 0;
-    element.style.width = "0";
     const interval = setInterval(() => {
-      element.style.width = i + "ch";
       element.textContent += text.charAt(i);
       i++;
       if (i >= text.length) clearInterval(interval);
@@ -16,10 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function showSlide(index) {
-    slides.forEach((slide, i) => {
-      slide.classList.remove("active");
-      if (i === index) slide.classList.add("active");
-    });
+    slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
 
     const titleEl = slides[index].querySelector(".slide-title");
     const descEl = slides[index].querySelector(".slide-desc");
@@ -27,19 +21,17 @@ document.addEventListener("DOMContentLoaded", function() {
     const titleText = titleEl.getAttribute("data-text");
     const descText = descEl.getAttribute("data-text");
 
-    // Clear texts before typing
+    // Reset text before typing
     titleEl.textContent = "";
     descEl.textContent = "";
     titleEl.style.width = "0";
     descEl.style.width = "0";
 
-    // Start typing animation
+    // Animate typing
     setTimeout(() => {
       typeText(titleEl, titleText, 60);
-      setTimeout(() => {
-        typeText(descEl, descText, 40);
-      }, titleText.length * 60 + 500);
-    }, 800);
+      setTimeout(() => typeText(descEl, descText, 40), titleText.length * 60 + 400);
+    }, 700);
   }
 
   function nextSlide() {
@@ -49,6 +41,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Initialize
   showSlide(current);
-  setInterval(nextSlide, 9000); // 9 seconds per slide
+  setInterval(nextSlide, 9000); // every 9 seconds
 });
-

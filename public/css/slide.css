@@ -1,18 +1,19 @@
 .hero-slider {
   position: relative;
   width: 100%;
-  height: 90vh;
+  height: 100vh;
+  min-height: 450px;
   overflow: hidden;
 }
 
 .slider .slide {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   opacity: 0;
-  transition: opacity 1s ease-in-out, transform 2s ease-in-out;
+  transition: opacity 1.5s ease-in-out, transform 3s ease-in-out;
   transform: scale(1.1);
 }
 
@@ -24,54 +25,56 @@
 
 .slider .overlay {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(110, 239, 148, 0.5);
-  top: 0;
-  left: 0;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.55);
+  backdrop-filter: brightness(0.8);
 }
 
 .slide-content {
   position: absolute;
   top: 50%;
-  left: 10%;
-  transform: translateY(-50%);
+  left: 50%;
+  width: 90%;
+  max-width: 800px;
+  transform: translate(-50%, -50%);
   color: #fff;
-  max-width: 600px;
+  text-align: center;
   z-index: 2;
-}
-
-.slide-content h1,
-.slide-content p {
-  font-weight: bold;
-  letter-spacing: 1px;
+  padding: 0 15px;
 }
 
 .slide-title {
-  font-size: 2.5rem;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 700;
+  letter-spacing: 1px;
   margin-bottom: 1rem;
-  border-right: 2px solid #fff;
+  border-right: 3px solid #fff;
   white-space: nowrap;
   overflow: hidden;
   width: 0;
+  margin-inline: auto;
 }
 
 .slide-desc {
-  font-size: 1.2rem;
+  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-weight: 400;
   margin-bottom: 1.5rem;
+  color: #f0f0f0;
   border-right: 2px solid #fff;
   white-space: nowrap;
   overflow: hidden;
   width: 0;
+  margin-inline: auto;
 }
 
 .hero-btn {
   display: inline-block;
-  padding: 10px 20px;
+  padding: 10px 25px;
   background-color: #28a745;
   color: white;
   text-decoration: none;
   border-radius: 25px;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   transition: background 0.3s ease;
 }
 
@@ -79,17 +82,31 @@
   background-color: #218838;
 }
 
+/* ============ RESPONSIVE ADJUSTMENTS ============ */
 @media (max-width: 768px) {
-  .slide-content {
-    left: 5%;
-    max-width: 90%;
+  .hero-slider {
+    height: 80vh;
   }
-
   .slide-title {
-    font-size: 1.8rem;
+    border-right: 2px solid #fff;
   }
+  .slide-content {
+    padding: 0 20px;
+  }
+}
 
+@media (max-width: 576px) {
+  .hero-slider {
+    height: 70vh;
+  }
+  .slide-title {
+    font-size: 1.5rem;
+  }
   .slide-desc {
-    font-size: 1rem;
+    font-size: 0.95rem;
+  }
+  .hero-btn {
+    padding: 8px 18px;
+    font-size: 0.9rem;
   }
 }
