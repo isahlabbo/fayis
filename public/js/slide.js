@@ -1,37 +1,46 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", () => {
   const slides = document.querySelectorAll(".slide");
   let current = 0;
+  let typingInterval;
 
-  function typeText(element, text, speed = 50) {
+  function typeText(element, text, speed = 60, callback) {
+    clearInterval(typingInterval);
     element.textContent = "";
     let i = 0;
-    const interval = setInterval(() => {
-      element.textContent += text.charAt(i);
-      i++;
-      if (i >= text.length) clearInterval(interval);
+
+    typingInterval = setInterval(() => {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        i++;
+      } else {
+        clearInterval(typingInterval);
+        if (callback) callback();
+      }
     }, speed);
   }
 
   function showSlide(index) {
     slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
 
-    const titleEl = slides[index].querySelector(".slide-title");
-    const descEl = slides[index].querySelector(".slide-desc");
+    const slide = slides[index];
+    const title = slide.querySelector(".slide-title");
+    const desc = slide.querySelector(".slide-desc");
 
-    const titleText = titleEl.getAttribute("data-text");
-    const descText = descEl.getAttribute("data-text");
+    const titleText = title.dataset.text || "";
+    const descText = desc.dataset.text || "";
 
-    // Reset text before typing
-    titleEl.textContent = "";
-    descEl.textContent = "";
-    titleEl.style.width = "0";
-    descEl.style.width = "0";
+    // Reset before typing
+    title.textContent = "";
+    desc.textContent = "";
 
-    // Animate typing
+    // Add small delay for fade transition
     setTimeout(() => {
-      typeText(titleEl, titleText, 60);
-      setTimeout(() => typeText(descEl, descText, 40), titleText.length * 60 + 400);
-    }, 700);
+      typeText(title, titleText, 50, () => {
+        setTimeout(() => {
+          typeText(desc, descText, 40);
+        }, 500);
+      });
+    }, 1000); // waits for the image transition
   }
 
   function nextSlide() {
@@ -41,5 +50,5 @@ document.addEventListener("DOMContentLoaded", function() {
 
   // Initialize
   showSlide(current);
-  setInterval(nextSlide, 9000); // every 9 seconds
+  setInterval(nextSlide, 9000);
 });

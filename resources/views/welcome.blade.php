@@ -46,13 +46,13 @@
 
   <!-- Hero Section -->
   <section class="hero-slider" id="home">
-  <div class="slider">
+  <div class="slider text text-center">
     <!-- Slide 1 -->
     <div class="slide active" style="background-image: url('{{ asset('images/slide/5.jpeg') }}');">
       <div class="overlay"></div>
       <div class="slide-content">
-        <h1 class="slide-title" data-text="Welcome to Fatima Yahaya International School, Sifawa"></h1>
-        <p class="slide-desc" data-text="Empowering Children for a brighter future through quality education and innovation."></p>
+        <h1 class="slide-title  text text-center" data-text="Welcome to Fatima Yahaya International School, Sifawa"></h1>
+        <p class="slide-desc text text-center" data-text="Empowering Children for a brighter future through quality education and innovation."></p>
       </div>
     </div>
 
@@ -60,8 +60,8 @@
     <div class="slide" style="background-image: url('{{ asset('images/slide/4.jpeg') }}');">
       <div class="overlay"></div>
       <div class="slide-content">
-        <h1 class="slide-title" data-text="Building Tomorrow’s Leaders Today"></h1>
-        <p class="slide-desc" data-text="Our curriculum inspires creativity, innovation, and academic excellence."></p>
+        <h1 class="slide-title text text-center" data-text="Building Tomorrow’s Leaders Today"></h1>
+        <p class="slide-desc text text-center" data-text="Our curriculum inspires creativity, innovation, and academic excellence."></p>
       </div>
     </div>
 
@@ -69,8 +69,8 @@
       <div class="slide" style="background-image: url('{{ asset('images/slide/2.jpeg') }}');">
         <div class="overlay"></div>
         <div class="slide-content">
-          <h1 class="slide-title" data-text="Where Knowledge Meets Character"></h1>
-          <p class="slide-desc" data-text="We nurture values, confidence, and skills for lifelong success."></p>
+          <h1 class="slide-title text text-center" data-text="Where Knowledge Meets Character"></h1>
+          <p class="slide-desc text text-center" data-text="We nurture values, confidence, and skills for lifelong success."></p>
         </div>
       </div>
     
@@ -78,24 +78,24 @@
     <div class="slide" style="background-image: url('{{ asset('images/slide/1.jpeg') }}');">
       <div class="overlay"></div>
       <div class="slide-content">
-        <h1 class="slide-title" data-text="Inspiring Excellence, Shaping Futures"></h1>
-        <p class="slide-desc" data-text="Join a community committed to academic success and personal growth."></p>
+        <h1 class="slide-title text text-center" data-text="Inspiring Excellence, Shaping Futures"></h1>
+        <p class="slide-desc text text-center" data-text="Join a community committed to academic success and personal growth."></p>
       </div>
     </div>
     <!-- slide 5 -->
     <div class="slide" style="background-image: url('{{ asset('images/slide/3.jpeg') }}');">
       <div class="overlay"></div>
       <div class="slide-content">
-        <h1 class="slide-title" data-text="Discover, Learn, and Grow with Us"></h1>
-        <p class="slide-desc" data-text="A vibrant learning environment fostering curiosity and innovation."></p>
+        <h1 class="slide-title text text-center" data-text="Discover, Learn, and Grow with Us"></h1>
+        <p class="slide-desc text text-center" data-text="A vibrant learning environment fostering curiosity and innovation."></p>
       </div>
     </div>
     <!-- slide 6 -->
     <div class="slide" style="background-image: url('{{ asset('images/slide/6.jpeg') }}');">
       <div class="overlay"></div>
       <div class="slide-content">
-        <h1 class="slide-title" data-text="Empowering Young Minds for a Brighter Tomorrow"></h1>
-        <p class="slide-desc" data-text="Join us in shaping the future through quality education and innovation."></p>
+        <h1 class="slide-title text text-center" data-text="Empowering Young Minds for a Brighter Tomorrow"></h1>
+        <p class="slide-desc text text-center" data-text="Join us in shaping the future through quality education and innovation."></p>
       </div>
     </div>
   </div>
