@@ -49,5 +49,12 @@ Route::middleware(['auth','verified'])->name('administration.')->group(function 
         Route::post('/register', 'UserController@register')->name('register');
         Route::post('/{userId}/update', 'UserController@update')->name('update');
     });
-    
+     Route::name('staff.')
+    ->prefix('/staff')
+    ->group(function (){
+        Route::get('/', 'StaffController@index')->name('index');
+        Route::post('/register', 'StaffController@register')->name('register');
+        Route::post('/{staffId}/update', 'StaffController@update')->name('update');
+        Route::get('/{staffId}/delete', 'StaffController@delete')->name('delete');
+    });
 });

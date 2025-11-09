@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use App\Services\Upload\FileUpload;
 
 class ProfileController extends Controller
 {
+    use FileUpload;
+
     public function show(){
         return view('profile.show');
     }
@@ -25,22 +28,23 @@ class ProfileController extends Controller
             'picture'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         $user = User::findOrFail($userId);
-        $user->name = $request->name;
-        $user->email = $request->email;
-
-        if($request->password){
-            $user->password = bcrypt($request->password);
-        }
+        $user->update([
+            'name'=> $request->name,
+            'email'=> $request->email,
+            'password'=> bcrypt($request->password),
+        ]);
+        
 
         // Handle picture upload if provided
         if($request->hasFile('picture')){
             $file = $request->file('picture');
-            $filename = time().'_'.$file->getClientOriginalName();
-            $filePath = $file->storeAs('uploads/profile_pictures', $filename, 'public');
-            $user->profile_photo_path = '/storage/'.$filePath;
+            $location = 'profile/pictures/'
+            if($user->profile_photo_path){
+                $this->storeFile($user, 'profile_photo_path', $file, $location);
+            }else{
+                $this->updateFile($user, 'profile_photo_path', $file, $location);
+            }
         }
-
-        $user->save();
 
         return redirect()->back()->with('success', 'Profile updated successfully.');    
         
