@@ -18,38 +18,7 @@
   <link rel="stylesheet" href="{{asset('css/slide.css')}}">
 </head>
 <body>
-@php 
-foreach(App\Models\Subject::all() as $subject){
-  $subject->delete();
-}
 
-$subjects =[
-            "Arabic", 
-            "Basic technology",
-            "Basic science", 
-            "Business studies",
-            "CCA",
-            "Civic Education",
-            "Colouring",
-            "Computer",
-            "English",
-            "Hand Writing",
-            "Hausa", 
-            "Hausa Mukaranta",
-            "Home Economics",
-            "IRK",
-            "Jolly phonics", 
-            "Let's read",
-            "Mathematics", 
-            "PHE",
-            "Poem",
-            "Social studies"         
-            
-        ];
-        foreach($subjects as $subject){
-          App\Models\Subject::firstOrCreate(['name'=>strtoupper($subject)]);
-        }
-@endphp
   <!-- Navigation Bar -->
   <div class="page-watermark"></div>
   <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom" style="background-color: white !important;">
