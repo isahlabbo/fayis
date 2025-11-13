@@ -28,6 +28,7 @@ class SubjectController extends Controller
         $sectionClass = SectionClass::find($sectionClassId);
         foreach($request->all() as $subjectId => $subjectName){
             $subject = Subject::find($subjectId);
+            
             if($subject){
                 $subjectClass = $sectionClass->sectionClassSubjects()->firstOrCreate(['name'=>strtoupper($subject->name),'subject_id'=>$subject->id]);
             }
@@ -40,6 +41,8 @@ class SubjectController extends Controller
 
     public function update(Request $request, $sectionClassId, $sectionClassSubjectId)
     {
+        dd('from update');
+
         $sectionClass = SectionClass::find($sectionClassId);
         if(count($sectionClass->sectionClassSubjects->where('name',$request->name)) > 0){
             return redirect()->route('section.class.subject.index',[$sectionClassId])

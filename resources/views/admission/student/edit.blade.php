@@ -66,7 +66,7 @@
                                             <div class="col-md-3"><label for="">Class</label></div>
                                             <div class="col-md-9">
                                                 <select name="class" id="" class="form-control">
-                                                    <option value="{{$student->activeSectionClass()->sectionClass->id ?? ''}}">{{$student->activeSectionClass()->sectionClass->name ?? 'Select Class'}}</option>
+                                                    <option value="{{$student->activeSectionClass()->id ?? ''}}">{{$student->activeSectionClass()->name ?? 'Select Class'}}</option>
                                                     @foreach(App\Models\SectionClass::all() as $sectionClass)
                                                         <option value="{{$sectionClass->id}}">{{$sectionClass->name}}</option>
                                                     @endforeach

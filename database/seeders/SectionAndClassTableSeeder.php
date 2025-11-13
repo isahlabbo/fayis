@@ -23,8 +23,10 @@ class SectionAndClassTableSeeder extends Seeder
             "Business studies",
             "CCA",
             "Civic Education",
+            "Colouring",
             "Computer",
             "English",
+            "Hand Writing",
             "Hausa", 
             "Hausa Mukaranta",
             "Home Economics",
@@ -33,6 +35,7 @@ class SectionAndClassTableSeeder extends Seeder
             "Let's read",
             "Mathematics", 
             "PHE",
+            "Poem",
             "Social studies"         
             
         ];

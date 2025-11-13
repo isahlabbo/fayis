@@ -10,6 +10,7 @@
       <div class="modal-body">
         <form action="{{route('section.class.subject.register',[$sectionClass->id])}}" method="post" enctype="multipart/form-data">
             @csrf
+            @method('PUT')
             <div class="row">
             @foreach(App\Models\Subject::all() as $subject)
             <div class="col-md-6">
