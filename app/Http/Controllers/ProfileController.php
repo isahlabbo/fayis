@@ -38,7 +38,7 @@ class ProfileController extends Controller
         // Handle picture upload if provided
         if($request->hasFile('picture')){
             $file = $request->file('picture');
-            $location = 'profile/pictures/'
+            $location = 'profile/pictures/';
             if($user->profile_photo_path){
                 $this->storeFile($user, 'profile_photo_path', $file, $location);
             }else{

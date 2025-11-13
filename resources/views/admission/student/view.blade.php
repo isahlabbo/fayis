@@ -35,6 +35,7 @@
         </thead>
         <tbody>
             @foreach($sectionClass->sectionClassStudents->where('status','Active') as $sectionClassStudent)
+                @if($sectionClassStudent->student)
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>
@@ -56,12 +57,17 @@
                         <a href="{{route('admission.student.edit',[$sectionClassStudent->student->id])}}">
                             <button class="btn btn-secondary"><i class="fas fa-edit"></i>Edit</button>
                         </a>
-                        <a href="{{route('admission.student.delete',[$sectionClassStudent->student->id])}}" onclick="return confirm('Are you sure, you want delete this student record')">
-                        <button class="btn btn-danger"><i class="fas fa-trash"></i>Delete</button>
-                        </a>
+                        <form action="{{route('admission.student.delete',[$sectionClassStudent->student->id])}}" method="post">
+                        @csrf
+                        @method('DELETE') 
+                        <input type="hidden" value="{{$sectionClass->id}}" name="class">   
+                        <button class="btn btn-danger" onclick="return confirm('Are you sure, you want delete this student record')"><i class="fas fa-trash"></i>Delete</button>
+                        </form>
+                        
                     </td>
                     
                 </tr>
+                @endif
             @endforeach
         </tbody>
         </table>

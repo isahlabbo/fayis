@@ -11,7 +11,7 @@ Route::middleware(['auth','verified', 'admission'])->name('admission.')->prefix(
         Route::get('/{classId}', 'StudentController@view')->name('view');
         Route::get('/{classId}/create', 'StudentController@create')->name('create');
         Route::get('/download', 'StudentController@download')->name('download');
-        Route::get('/student/{studentId}/delete', 'StudentController@delete')->name('delete');
+        Route::delete('/student/{studentId}/delete', 'StudentController@delete')->name('delete');
         Route::get('/student/{studentId}/edit', 'StudentController@edit')->name('edit');
         Route::post('/student/{studentId}/update', 'StudentController@update')->name('update');
         Route::post('/{classId}/register', 'StudentController@register')->name('register');

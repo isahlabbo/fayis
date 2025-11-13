@@ -57,7 +57,7 @@
                                         <div class="form-group row">
                                             <div class="col-md-3"><label for="">Name</label></div>
                                             <div class="col-md-9">
-                                                <input type="text" class="form-control" name="name" value="" placeholder="Enter Teacher's Name">
+                                                <input type="text" class="form-control" name="name" value="" placeholder="Enter Child's Full Name">
                                             </div>
                                         </div>
                                         
@@ -75,13 +75,13 @@
                                         <div class="form-group row">
                                             <div class="col-md-3"><label for="">Date Of Birth</label></div>
                                             <div class="col-md-9">
-                                                <input type="date" class="form-control" name="date_of_birth" value="" placeholder="Teacher's Date of birth">
+                                                <input type="date" class="form-control" name="date_of_birth" value="" placeholder="Child's Date of birth">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <div class="col-md-3"><label for="">Select Picture</label></div>
                                             <div class="col-md-9">
-                                                <input type="file" class="form-control" name="picture" value="" placeholder="Teacher's Date of birth">
+                                                <input type="file" class="form-control" name="picture" value="" placeholder="Child's Date of birth">
                                             </div>
                                         </div>
                                         <div class="form-group row">

@@ -63,19 +63,20 @@ class StudentController extends Controller
         return redirect()->route('dashboard')->withSuccess('All Students Info has been updated to the next term');
     }
 
-    public function delete($studentId) {
+    public function delete(Request $request, $studentId) {
 
         $student = Student::find($studentId);
-       
-        foreach($student->sectionClassStudents() as $sectionClassStudent){
+   
+        foreach($student->sectionClassStudents as $sectionClassStudent){
             foreach($sectionClassStudent->sectionClassStudentTerms as $sectionClassStudentTerm){
                 $sectionClassStudentTerm->delete();
             }
-            $sectionClassStudent;
+            $sectionClassStudent->delete();
         }
+        $student->delete();
         
 
-        return redirect()->route('admission.student.index')->withSuccess('Student Information Deleted');
+        return redirect()->route('admission.student.view',[$request->class])->withSuccess('Student Information Deleted');
     }
 
     public function register(Request $request, $sectionClassId)
@@ -161,15 +162,12 @@ class StudentController extends Controller
         ]);
 
         if($request->picture){
-            $this->storeFile($student,'picture',$request->picture,
-            $sectionClass->section->name.'/'
-            .$sectionClass->name.'/'
-            .str_replace('/','-',$sectionClass->currentSession()->name)
-            ."/Admission/");
+            $this->storeFile($student,'picture',$request->picture,'/Student/Pictures/');
         }
 
         $classStudent = $student->sectionClassStudents()->firstOrCreate([
-            'section_class_id'=>$request->class, 
+            'section_class_id'=>$request->class,
+            'academic_session_id'=> $student->currentSession()->id
         ]);
         
         
