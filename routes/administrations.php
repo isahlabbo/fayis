@@ -12,6 +12,16 @@ Route::middleware(['auth','verified'])->name('administration.')->group(function 
         Route::post('/configuration/termly/update', 'AcademicSessionController@updateTermlyCalendar')->name('configuration.term.update');
     });
 
+    Route::name('card.')
+    ->prefix('/card')
+    ->group(function (){
+        Route::get('/', 'IDCardController@index')->name('index');
+        Route::get('/{requestId}/approve', 'IDCardController@approve')->name('approve');
+        Route::get('/{requestId}/delete', 'IDCardController@delete')->name('delete');
+        Route::put('/{cardRequestId}/update', 'IDCardController@update')->name('update');
+        Route::post('/register', 'IDCardController@register')->name('register');
+    });
+
     Route::namespace('School')
     ->name('teacher.')
     ->prefix('/teacher')

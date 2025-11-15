@@ -43,6 +43,7 @@
         <a href="{{route('administration.session.index')}}"><i class="fas fa-calendar"></i> Academic Calendars</a>
         <a href="{{route('administration.teacher.index')}}"><i class="fas fa-chalkboard-teacher"></i> Teachers</a>
         <a href="{{route('administration.staff.index')}}"><i class="fas fa-chalkboard-teacher"></i> Other Staff</a>
+        <a href="{{route('administration.card.index')}}"><i class="fas fa-id-card"></i> ID Card Requests</a>
     </div>  
 </li>
 
