@@ -32,7 +32,7 @@
                     <td>
                     <a href="{{route('section.class.subject.delete',[$sectionClass->id,$sectionClassSubject->id])}}" onclick="return confirm('are sure, you want to delete this subject')"><button  class="btn btn-outline-danger">Delete</button></a></td>
                 </tr>
-                @include('section.class.subject.edit')
+                
             @endforeach
         </tbody>
         </table>
