@@ -372,12 +372,24 @@ class SectionClass extends BaseModel
             'admission_no'=>$admissionNo
             ]);
     }
-    public function generateAdmissionNo($number = null)
+    public function generateAdmissionNo()
     {
+        $admissionYear = substr(date('Y') - ($this->year_sequence - 1), 2, 2);
+        $code = config('app.code');
+        $classInitial = $this->section->class_tag;
 
-        $admissionNo = config('app.code').'/'.$this->getAdmissionYear().substr($this->section->name,0,1).'/'.$this->getAdmissionSerialNo($number);
+        for($number = 1; $number <= $this->capacity; $number++){
+            // format number into 001 format
+            $number = $this->formatSerialNo($number);
+            $admissionNo = $code.'/'.$admissionYear.$classInitial.'/'.$number;
+            // check if admission no exist
+            $existing = Student::where('admission_no',$admissionNo)->first();
+            if(!$existing){
+                return $admissionNo;
+            }
+        }
         
-        return $admissionNo;
+        return null;
     }
 
     public function getAdmissionSerialNo($number)
