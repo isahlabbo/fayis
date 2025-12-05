@@ -378,7 +378,7 @@ class SectionClass extends BaseModel
         $code = config('app.code');
         $classInitial = $this->section->class_tag;
 
-        for($number = 1; $number <= $this->capacity; $number++){
+        for($number = 1; $number <= $this->capacity*2; $number++){
             // format number into 001 format
             $number = $this->formatSerialNo($number);
             $admissionNo = $code.'/'.$admissionYear.$classInitial.'/'.$number;
