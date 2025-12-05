@@ -18,7 +18,7 @@
         <a href="">
             <i class="fas fa-check-circle"></i> Confirmation
         </a>
-        <a href="">
+        <a href="{{route('admission.student.index')}}">
             <i class="fas fa-user-graduate"></i> Students
         </a>
     </div>
