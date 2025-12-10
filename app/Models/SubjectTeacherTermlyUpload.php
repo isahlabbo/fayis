@@ -96,7 +96,7 @@ class SubjectTeacherTermlyUpload extends BaseModel
     {
         $count = 0;
         foreach($this->studentResults->where('grade',$grade) as $studentResult){
-            if($studentResult->sectionClassStudentTerm->academicSessionTerm->id == $this->currentSessionTerm()->id){
+            if($studentResult->sectionClassStudentTerm && $studentResult->sectionClassStudentTerm->academicSessionTerm->id == $this->currentSessionTerm()->id){
                 $count++;
             }
         }

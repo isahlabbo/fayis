@@ -64,7 +64,7 @@
                     <a class="mb-4 btn btn-outline-info" href="{{route('teacher.subject.assignment.index',[$upload->id])}}"> Goto Assignment</a> 
                     @if($upload->status == 0)
                     <button class="mb-4 btn btn-primary">Save Exam</button>
-                    <a href="{{route('teacher.subject.exam.submit',[$upload->id])}}" class="mb-4 btn btn-danger" onclick="return confirm('Are you sure you want to submit this result to Exam Office? Note that if you click OK you will no have access to this result again')">Submit to Class Master</a>
+                    <a href="{{route('teacher.subject.exam.submit',[$upload->id])}}" class="mb-4 btn btn-danger" onclick="return confirm('Are you sure you want to submit this result to Class Master Office? Note that if you click OK you will no have access to this result again')">Submit to Class Master</a>
                     @endif
                 </div>
             </form>
