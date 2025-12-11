@@ -54,11 +54,21 @@ class SubjectTeacherTermlyUpload extends BaseModel
     public function gradePercentage($grade)
     {
         $count = $this->gradeCount($grade);
-        $total = count($this->studentResults);
+        $total = $this->totalGradeCounts();
+
         if($total == 0){ 
             $total = 1;
-         }  
-        return number_format($total * ($count/100),2);
+        }  
+
+        return number_format(($count/$total)*100,2);
+    }
+
+    function totalGradeCounts() {
+        $count = 0;
+        foreach(GradeScale::cursor() as $gradeScale){
+            $count += $this->gradeCount($gradeScale->grade);
+        }
+        return $count;
     }
 
     public function expectedScoresOfAllStudents()
