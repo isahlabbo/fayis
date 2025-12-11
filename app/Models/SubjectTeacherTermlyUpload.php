@@ -58,7 +58,7 @@ class SubjectTeacherTermlyUpload extends BaseModel
         if($total == 0){ 
             $total = 1;
          }  
-        return number_format(100 * ($count/$total),2);
+        return number_format($total * ($count/100),2);
     }
 
     public function expectedScoresOfAllStudents()
