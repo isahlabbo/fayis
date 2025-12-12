@@ -41,7 +41,7 @@ class SubjectController extends Controller
 
     public function update(Request $request, $sectionClassId, $sectionClassSubjectId)
     {
-        dd('from update');
+        
 
         $sectionClass = SectionClass::find($sectionClassId);
         if(count($sectionClass->sectionClassSubjects->where('name',$request->name)) > 0){
@@ -60,7 +60,7 @@ class SubjectController extends Controller
     {
         $sectionClassSubject = SectionClassSubject::find($sectionClassSubjectId);
         if(count($sectionClassSubject->availableResultUploads())>0){
-            return redirect()->route('section.class.subject.index',[$sectionClassId])
+            return redirect()->route('section.class.subject.index',[$sectionClassSubject->section_class_id])
             ->withwarning('Sorry we cant delete this subject there are result uploade on it');
         }else{
             $sectionClassSubject->delete();
