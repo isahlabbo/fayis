@@ -7,20 +7,14 @@
        
     @endsection
     @section('content')
-       
-        <div class="row">
-            @foreach($section->sectionClasses as $sectionClass)
-                <div class="col-md-3 mb-3">
-                    <div class="card shadow">
-                        <div class="card-body">
-                            <h5><b>{{$sectionClass->name}}</b></h5>
-                            <a href="{{route('patron.section.performance.index',[$sectionClass->id])}}">
-                                <button class="btn btn-outline-primary">View Performance</button>
-                            </a>
-                        </div>
-                    </div>
+       <div class="row">
+            <div class="col-md-12">
+                <div style="width: 100%; max-width: 900px; margin: 0 auto;">
+                    {!! $chart->container() !!}
                 </div>
-            @endforeach
-        </div>
-            
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                {{ $chart->script() }}
+            </div>
+       </div>
     @endsection
