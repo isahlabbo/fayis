@@ -17,6 +17,8 @@
             @include('dashboard.admission_officer')
         @elseif(Auth::user()->role == 'finance_officer')
             @include('dashboard.finance_officer')
+        @elseif(Auth::user()->role == 'patron')
+            @include('dashboard.patron')
         @else
             @include('dashboard.teacher')
         @endif

@@ -56,6 +56,8 @@
               @include('menu.exam_officer')
           @elseif(Auth::user()->role == 'finance_officer')
               @include('menu.finance_officer')
+          @elseif(Auth::user()->role == 'patron')
+              @include('menu.patron')
           @else
               @include('menu.teacher')
           @endif
