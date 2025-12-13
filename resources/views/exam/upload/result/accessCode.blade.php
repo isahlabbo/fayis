@@ -16,9 +16,10 @@
                             $sectionClassStudentTerm = $sectionClassStudent->currentStudentTerm();
                         @endphp
                         @if($sectionClassStudentTerm)
+                        
                             <div class="col-md-3" style="border:1px solid #ccc;">
-                                
-                                    <div class="card-body">
+                                <!-- avoid page break -->
+                                    <div class="card-body" style="page-break-inside: avoid; margin-bottom:10px; margin-top:10px;">
                                     <h6><b>{{$sectionClassStudent->student->name}}</b></h6>    
                                     <table>
                                         <tr>
