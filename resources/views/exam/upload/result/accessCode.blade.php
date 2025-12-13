@@ -1,0 +1,50 @@
+<x-app-layout>
+    @section('title')
+        Result Access Code for {{$section->name}}   
+    @endsection
+    @section('breadcrumb')
+       
+    @endsection
+    @section('content')
+            <div class="h3">
+            <b>Result Access Code for {{$section->name}}</b>
+            </div>
+            <div class="row">
+                @foreach($section->sectionClasses as $sectionClass)
+                    @foreach($sectionClass->sectionClassStudents as $sectionClassStudent)
+                        @php
+                            $sectionClassStudentTerm = $sectionClassStudent->currentStudentTerm();
+                        @endphp
+                        @if($sectionClassStudentTerm)
+                            <div class="col-md-3" style="border:1px solid #ccc;">
+                                
+                                    <div class="card-body">
+                                    <h6><b>{{$sectionClassStudent->student->name}}</b></h6>    
+                                    <table>
+                                        <tr>
+                                            <td>Class</td>
+                                            <td>{{$sectionClass->name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Session</td>
+                                            <td>{{$sectionClassStudentTerm->academicSessionTerm->academicSession->name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Term</td>
+                                            <td>{{$sectionClass->name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Code</td>
+                                            <td>{{$sectionClassStudentTerm->access_code}}</td>
+                                        </tr>
+                                    </table>
+                                </div>  
+                        </div>
+                        @endif
+                    @endforeach
+                @endforeach
+            </div>
+        
+    @endsection
+    
+</x-app-layout>

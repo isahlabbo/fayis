@@ -16,6 +16,7 @@ Route::middleware(['auth','verified','exam'])
         ->group(function (){
             Route::put('/{studentResultId}/update', 'ResultController@update')->name('update');
             Route::get('/{sectionClassId}/publish', 'ResultController@publish')->name('publish');
+            Route::get('/{sectionId}/access-code', 'ResultController@accessCode')->name('accessCode');
         });
     });
 });

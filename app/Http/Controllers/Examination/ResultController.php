@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Examination;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Section;
+use App\Models\SectionClass;
 use App\Models\StudentResult;
 
 class ResultController extends Controller
@@ -35,5 +37,10 @@ class ResultController extends Controller
         }
 
         return redirect()->route('exam.upload.summary',[$sectionClassId])->withSuccess('Results Published Successfully');
+    }
+
+    public function accessCode($sectionId) {
+        $section = Section::find($sectionId);
+        return view('exam.upload.result.accessCode', ['section'=>$section]);
     }
 }

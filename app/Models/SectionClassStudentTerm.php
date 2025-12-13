@@ -42,6 +42,19 @@ class SectionClassStudentTerm extends BaseModel
         return $this->totalPayableAmount() - $this->payableDiscount();
     }
 
+    public function generateResultAccessCode(){
+        // Generate unique access code
+        $code = \Str::upper(\Str::random(8));
+
+        // check uniqueness
+        while(SectionClassStudentTerm::where('access_code',$code)->exists()){
+            $code = \Str::upper(\Str::random(8));
+        }
+        
+        $this->access_code = $code;
+        $this->save();
+    }
+
     public function generateInvoice()
     {
         $amount = $this->actualPayableAmount();

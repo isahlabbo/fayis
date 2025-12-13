@@ -18,6 +18,9 @@
         <a href="">
             <i class="fas fa-clipboard-check"></i> Assessment
         </a>
+        <a href="{{route('exam.upload.result.accessCode',[$section->id])}}">
+            <i class="fas fa-key"></i> Access Code
+        </a>
     </div>
 </li>
 @endforeach
