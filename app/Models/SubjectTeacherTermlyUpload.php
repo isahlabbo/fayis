@@ -32,7 +32,7 @@ class SubjectTeacherTermlyUpload extends BaseModel
         $count = 0;
         $total = 0;
         foreach($this->studentResults as $result){
-            if($result->sectionClassStudentTerm->academic_session_term_id == $this->currentSessionTerm()->id){
+            if($result->sectionClassStudentTerm && $result->sectionClassStudentTerm->academic_session_term_id == $this->currentSessionTerm()->id){
                 $count++;
                 $total += ($result->first_ca + $result->second_ca + $result->assignment + $result->exam);
             }
