@@ -38,7 +38,7 @@ class TermlySubjectEvaluation extends Chart
         foreach ($subjects as $index => $subjectName) {
             $values = [];
             foreach ($classes as $sectionClass) {
-                $values[] = rand(50, 100); // Replace with your real data query
+                $values[] = $sectionClass->getThisSubjectAverageScore($subjectName); // Replace with your real data query
             }
 
             $color = $colors[$index % count($colors)];

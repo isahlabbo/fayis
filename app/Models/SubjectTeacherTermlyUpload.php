@@ -27,6 +27,13 @@ class SubjectTeacherTermlyUpload extends BaseModel
         return $this->hasMany(StudentResult::class);
     }
 
+    public function average()
+    {
+        return $this->studentResults->isNotEmpty()
+            ? $this->studentResults->avg('total')
+            : 0;
+    }
+
     public function getLevel() {
         $level = 0;
         foreach($this->studentResults as $result){

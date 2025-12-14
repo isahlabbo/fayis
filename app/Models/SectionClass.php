@@ -239,6 +239,20 @@ class SectionClass extends BaseModel
         }
     }
 
+    function getThisSubjectAverageScore($subjectName) {
+        $average = 0;
+        $subject = Subject::where('name', $subjectName)->first();
+        $classSubject = $this->sectionClassSubjects->where('subject_id', $subject->id)->first();
+        if($classSubject && $classSubject->activeSectionClassSubjectTeacher()){
+            $subjectUpload = $classSubject->activeSectionClassSubjectTeacher()->subjectTeacherTermlyUploads->where('academic_session_id', $this->currentSession()->id)->where('term_id',$this->currentSessionTerm()->term->id)->first();
+            if($subjectUpload){
+                $average = $subjectUpload->average();
+            }
+            
+        }
+        
+        return $average;
+    }
     public function studentPosition($sectionClassStudentTerm)
     {
         if(config('app.nursery_class_position') == true && $this->section->name == 'NURSERY'){
