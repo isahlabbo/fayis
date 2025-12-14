@@ -8,7 +8,7 @@
 @section('content')
 <div class="row mt-4">
     <!-- Students -->
-    <div class="col-md-3 mb-4">
+    <div class="col-md-4 mb-4">
         <a href="{{route('teacher.class.students',[$classTeacher->sectionClass->id])}}" class="text-decoration-none">
             <div class="card-body shadow text-center rounded-3">
                 <h5 class="text-primary">
@@ -20,7 +20,7 @@
     </div>
 
     <!-- Report Card -->
-    <div class="col-md-3 mb-4">
+    <div class="col-md-4 mb-4">
         <a href="{{route('teacher.class.result.index',[$classTeacher->sectionClass->id])}}" class="text-decoration-none">
             <div class="card-body shadow text-center rounded-3">
                 <h5 class="text-primary">
@@ -32,7 +32,7 @@
     </div>
 
     <!-- Assessment -->
-    <div class="col-md-3 mb-4">
+    <div class="col-md-4 mb-4">
         <a href="{{route('teacher.class.assessment.index',[$classTeacher->id])}}" class="text-decoration-none">
             <div class="card-body shadow text-center rounded-3">
                 <h5 class="text-primary">
@@ -43,16 +43,7 @@
         </a>
     </div>
     <!-- Attendance -->
-    <div class="col-md-3 mb-4">
-        <a href="{{route('teacher.class.attendance.index',[$classTeacher->sectionClass->id])}}" class="text-decoration-none">
-            <div class="card-body shadow text-center rounded-3">
-                <h5 class="text-primary">
-                    <i class="fas fa-user-check"></i> Attendance
-                </h5>
-                <h6 class="text-muted">Manage student attendance records</h6>
-            </div>
-        </a>
-    </div>
+    
 </div>
 
 @endsection

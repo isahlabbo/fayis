@@ -25,6 +25,6 @@ class AttendanceController extends Controller
         return redirect()->route('teacher.class.attendance.index',[$assessment->sectionClassStudentTerm->sectionClassStudent->sectionClass->id])
         ->withSuccess('Attendance Updated');
         }
-        return redirect()->back()->withError('Invalid Attendance Record: Days prsent + Days Absent must be equal to Days School Open');
+        return redirect()->route('teacher.class.attendance.index',[$assessment->sectionClassStudentTerm->sectionClassStudent->sectionClass->id])->withWarning('Invalid Attendance Record: Days prsent + Days Absent must be equal to Days School Open');
     }
 }

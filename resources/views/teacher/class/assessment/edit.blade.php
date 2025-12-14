@@ -11,7 +11,7 @@
       <div class="form-group">
             <label for="">Teachers Comment <span style="color:red;">*</span></label>
             <select name="teacher_comment" id="" class="form-control">
-                <option value="">Select Teacher's Comment</option>
+                <option value="{{$studentTerm->sectionClassStudentTermAccessment->teacherComment->name ?? ''}}">{{$studentTerm->sectionClassStudentTermAccessment->teacherComment->name ?? ''}}</option>
                 @foreach(App\Models\TeacherComment::where('gender',$studentTerm->sectionClassStudent->student->gender_id)->get() as $teacherComment)
                 <option value="{{$teacherComment->id}}">{{$teacherComment->name}}</option>
                 @endforeach
@@ -21,7 +21,7 @@
         <div class="form-group">
             <label for="">Head of School Comment <span style="color:red;">*</span></label>
             <select name="head_of_school_comment" id="" class="form-control">
-                <option value="">Select Head of School Comment</option>
+                <option value="{{$studentTerm->sectionClassStudentTermAccessment->headTeacherComment->id ?? ''}}">{{$studentTerm->sectionClassStudentTermAccessment->headTeacherComment->name}}</option>
                 @foreach(App\Models\HeadTeacherComment::where('gender',$studentTerm->sectionClassStudent->student->gender_id)->get() as $headOfSchoolComment)
                 <option value="{{$headOfSchoolComment->id}}">{{$headOfSchoolComment->name}}</option>
                 @endforeach
@@ -60,7 +60,27 @@
             </div>
              @endforeach
         </div>
-        
+        <div class="alert alert-success">Attendance</div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="days_school_open">DAYS SCHOOL OPEN <span style="color:red;">*</span></label>
+                    <input type="number" value="{{$studentTerm->sectionClassStudentTermAccessment->days_school_open ?? ''}}" name="days_school_open" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="days_present">DAYS PRESENT <span style="color:red;">*</span></label>
+                    <input type="number" value="{{$studentTerm->sectionClassStudentTermAccessment->days_present ?? ''}}" name="days_present" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="days_absent">DAYS ABSENT <span style="color:red;">*</span></label>
+                    <input type="number" value="{{$studentTerm->sectionClassStudentTermAccessment->days_absent ?? ''}}" name="days_absent" class="form-control">
+                </div>
+            </div>
+        </div>
         
         <div class="form-group">
             <button class="btn btn-secondary">Submit Assessment</button>   
