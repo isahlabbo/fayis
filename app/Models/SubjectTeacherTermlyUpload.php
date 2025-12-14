@@ -29,14 +29,18 @@ class SubjectTeacherTermlyUpload extends BaseModel
 
     public function average()
     {
-        $count = count($this->studentResults);
+        $count = 0;
         $total = 0;
         foreach($this->studentResults as $result){
-            $total += ($result->first_ca + $result->second_ca + $result->assignment + $result->exam);
+            if($result->sectionClassStudentTerm->academic_session_term_id == $this->currentSessionTerm()->id){
+                $count++;
+                $total += ($result->first_ca + $result->second_ca + $result->assignment + $result->exam);
+            }
         }
         if($count == 0){
             $count = 1;
         }
+        
         return $total/$count;
     }
 

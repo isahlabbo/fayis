@@ -43,7 +43,7 @@ class TermlySubjectEvaluation extends Chart
 
             $color = $colors[$index % count($colors)];
 
-            $this->dataset($subjectName, 'line', $values)
+            $this->dataset($subjectName, 'bar', $values)
                  ->color($color)
                  ->backgroundcolor($this->hexToRgba($color, 0.2))
                  ->options(['fill' => true, 'lineTension' => 0.2]);
