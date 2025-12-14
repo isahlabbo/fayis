@@ -7,9 +7,29 @@
     <div class="col-md-8">
       <form action="{{route('teacher.class.assessment.update',[$studentTerm->id])}}" method="post">
       @csrf
+      <div class="alert alert-success">Comments</div>
+      <div class="form-group">
+            <label for="">Teachers Comment <span style="color:red;">*</span></label>
+            <select name="teacher_comment" id="" class="form-control">
+                <option value="">Select Teacher's Comment</option>
+                @foreach(App\Models\TeacherComment::where('gender',$studentTerm->sectionClassStudent->student->gender_id)->get() as $teacherComment)
+                <option value="{{$teacherComment->id}}">{{$teacherComment->name}}</option>
+                @endforeach
+            </select>
+        </div>
+        <!-- head of school Comments -->
+        <div class="form-group">
+            <label for="">Head of School Comment <span style="color:red;">*</span></label>
+            <select name="head_of_school_comment" id="" class="form-control">
+                <option value="">Select Head of School Comment</option>
+                @foreach(App\Models\HeadTeacherComment::where('gender',$studentTerm->sectionClassStudent->student->gender_id)->get() as $headOfSchoolComment)
+                <option value="{{$headOfSchoolComment->id}}">{{$headOfSchoolComment->name}}</option>
+                @endforeach
+            </select>
+        </div>
       <div class="alert alert-success">Psychomotors Assessment</div>
         <div class="row">
-            @foreach(App\Models\Psychomotor::all() as $psychomotor)
+            @foreach($studentTerm->sectionClassStudent->sectionClass->section->psychomotors as $psychomotor)
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="">{{$psychomotor->name}}</label>
@@ -26,7 +46,7 @@
 
         <div class="alert alert-success">Affective Traits Assessment</div>
         <div class="row">
-            @foreach(App\Models\AffectiveTrait::all() as $affectiveTrait)
+            @foreach($studentTerm->sectionClassStudent->sectionClass->section->affectiveTraits as $affectiveTrait)
             <div class="col-md-3">
                 <div class="form-group">
                     <label for="">{{$affectiveTrait->name}}</label>
@@ -40,26 +60,8 @@
             </div>
              @endforeach
         </div>
-        <div class="alert alert-success">Psychomotors Assessment</div>
-        <div class="form-group">
-            <label for="">Teachers Comment</label>
-            <select name="teacher_comment" id="" class="form-control">
-                <option value="">Select Teacher's Comment</option>
-                @foreach(App\Models\TeacherComment::where('gender',$studentTerm->sectionClassStudent->student->gender_id)->get() as $teacherComment)
-                <option value="{{$teacherComment->id}}">{{$teacherComment->name}}</option>
-                @endforeach
-            </select>
-        </div>
-        <!-- head of school Comments -->
-        <div class="form-group">
-            <label for="">Head of School Comment</label>
-            <select name="head_of_school_comment" id="" class="form-control">
-                <option value="">Select Head of School Comment</option>
-                @foreach(App\Models\HeadTeacherComment::where('gender',$studentTerm->sectionClassStudent->student->gender_id)->get() as $headOfSchoolComment)
-                <option value="{{$headOfSchoolComment->id}}">{{$headOfSchoolComment->name}}</option>
-                @endforeach
-            </select>
-        </div>
+        
+        
         <div class="form-group">
             <button class="btn btn-secondary">Submit Assessment</button>   
         </div>

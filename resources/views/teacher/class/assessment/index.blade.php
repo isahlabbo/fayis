@@ -7,7 +7,9 @@
 @endsection 
 
 @section('content')
-<div class="alert alert-success">{{$classTeacher->sectionClass->name}} - Assessment for {{$classTeacher->currentSessionTerm()->term->name}}</div>
+<div class="alert alert-success">{{$classTeacher->sectionClass->name}} - Assessment for {{$classTeacher->currentSessionTerm()->term->name}}
+    <a class="btn btn-outline-success" href="{{route('teacher.class.attendance.index',[$classTeacher->sectionClass->id])}}">Record Attendance</a>
+</div>
 <table class="table table-sm table-striped">
     <thead>
         <tr>

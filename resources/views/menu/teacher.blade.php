@@ -15,7 +15,9 @@
     </a>
     <div class="dropdown-content">
         @foreach(App\Models\SectionClassSubjectTeacher::where('teacher_id',Auth::user()->teacher->id)->get() as $subject)
-        <a class="fw-bold" href="{{route('teacher.subject.index', $subject->id)}}">{{$subject->sectionClassSubject->subject->name}}</a>
+            @if($subject->sectionClassSubject && $subject->sectionClassSubject->status == 'active')
+            <a class="fw-bold" href="{{route('teacher.subject.index', $subject->id)}}">{{$subject->sectionClassSubject->subject->name}}</a>
+            @endif
         @endforeach
     </div>  
 </li>

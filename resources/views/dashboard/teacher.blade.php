@@ -1,5 +1,6 @@
 <div class="row">
 @foreach(App\Models\SectionClassSubjectTeacher::where('teacher_id',Auth::user()->teacher->id)->get() as $subject)
+    @if($subject->sectionClassSubject && $subject->sectionClassSubject->status == 'active')
     <div class="col-md-4 mb-4">
         <a href="{{route('teacher.subject.index', $subject->id)}}" class="text-decoration-none">
             <div class="card-body shadow text-center rounded-3">
@@ -12,7 +13,7 @@
             </div>
         </a>
     </div>        
-
+    @endif
 @endforeach
 
 </div>

@@ -18,18 +18,25 @@ class AssessmentController extends Controller
     }
 
     public function update(Request $request, $studentTermId){
+        
+        $request->validate([
+            'teacher_comment'=>'required',
+            'head_of_school_comment'=>'required',
+        ]);
+
         $traits = $request->traits;
         $psychomotors = $request->psychomotors;
 
         $studentTerm = SectionClassStudentTerm::find($studentTermId);
-        $assessment = $studentTerm->sectionClassStudentTermAccessment()->firstOrCreate(['days_school_open'=>1,
+        $assessment = $studentTerm->sectionClassStudentTermAccessment()->firstOrCreate([
+            'days_school_open'=>1,
             'days_present'=>1,
-            'days_absent'=>1]);
-        $assessment->update([
+            'days_absent'=>1,
             'teacher_comment_id'=>$request->teacher_comment,
             'head_teacher_comment_id'=>$request->head_of_school_comment,
-            
+        
         ]);
+        
 
         foreach($traits as $traitId => $traitRate){
             if($traitRate){
