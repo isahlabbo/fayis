@@ -29,9 +29,15 @@ class SubjectTeacherTermlyUpload extends BaseModel
 
     public function average()
     {
-        return $this->studentResults->isNotEmpty()
-            ? $this->studentResults->avg('total')
-            : 0;
+        $count = count($this->studentResults);
+        $total = 0;
+        foreach($this->studentResults as $result){
+            $total += ($result->first_ca + $result->second_ca + $result->assignment + $result->exam);
+        }
+        if($count == 0){
+            $count = 1;
+        }
+        return $total/$count;
     }
 
     public function getLevel() {
