@@ -59,7 +59,6 @@ class TermVsClassAverageChart extends Chart
                 ->options([
                     'fill' => true,
                     'lineTension' => 0.2,
-                    'yAxisID' => 'yPercentage'
                 ]);
 
             // 🔹 Dataset: Total Marks
@@ -69,8 +68,7 @@ class TermVsClassAverageChart extends Chart
                 ->options([
                     'fill' => true,
                     'lineTension' => 0.2,
-                    'borderDash' => [5, 5],
-                    'yAxisID' => 'yTotal'
+                    'borderDash' => [5, 5]
                 ]);
         }
 
