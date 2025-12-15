@@ -171,9 +171,10 @@
             <div class="card-body">
               <h3 class="card-title text-center text-primary">Check Your Child's Result</h3>
               <p class="text-center">Enter your child's result reference code here to view their academic performance.</p>
-              <form class="result-form">
-                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Enter Reference Code" required>
+              <form method="post" action="{{route('result.search')}}"class="result-form">
+              @csrf  
+              <div class="form-group">
+                  <input type="text" class="form-control" name="access_code" placeholder="Enter Reference Code" required>
                 </div>
                 <button class="btn btn-sm btn-outline-primary" type="submit">Check Result</button>
               </form>

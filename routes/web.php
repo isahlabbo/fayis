@@ -29,6 +29,13 @@ Route::prefix('ajax')
     Route::get('/address/state/{stateId}/get-lgas', 'AjaxController@getLgas');
 
 });
+Route::prefix('result')->name('result.')
+   ->group(function() {
+    Route::post('/search', 'ResultSearchController@search')->name('search');
+    Route::get('/{stutenTermId}/guardian', 'ResultSearchController@guardian')->name('guardian');
+    Route::get('/{stutenTermId}/view', 'ResultSearchController@view')->name('view');
+    Route::post('/guardian/{guardianId}/result/{stutenTermId}', 'ResultSearchController@updateGuardian')->name('guardian.update');
+});
 
 Route::prefix('payment')->name('payment.')
    ->group(function() {
@@ -52,7 +59,7 @@ Route::prefix('payment')->name('payment.')
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::get('/access/restricted', function () {
     return view('access.restrict');
