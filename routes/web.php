@@ -9,6 +9,7 @@ use Modules\Admin\Entities\Admin;
 use App\Models\AcademicSession;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Notifications\SchoolFeesPaymentCollectedSMS;
+use App\Charts\TermVsClassAverageChart;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -65,7 +66,10 @@ Route::get('/sms', function () {
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
+   
+    $chart = new TermVsClassAverageChart();
+    $chart->build();
+    return view('dashboard', ['chart'=>$chart]);
 })->name('dashboard');
 
 

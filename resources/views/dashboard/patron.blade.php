@@ -1,12 +1,11 @@
 <div class="row">
-@foreach(\App\Models\Section::all() as $section)
-<div class="col-md-3 mb-4" style="border-radius: 10px !important;">
-    <a href="{{route('patron.section.index',[$section->id])}}">
-        <div class="card-body shadow text text-center" style="border-radius: 10px !important;">
-            <h5 class="text text-primary center">{{$section->name}}</h5>
-            <h5 class="text text-primary"> {{count($section->sectionClasses)}} Classes</h5>
+    <div class="col-md-12">
+        <p>{{\App\Models\Section::find(1)->currentSession()->name}} Class Performance Dashboard</p>
+        <div style="width: 100%; max-width: 900px; margin: 0 auto;">
+            {!! $chart->container() !!}
         </div>
-    </a>
-</div>
-@endforeach
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        {{ $chart->script() }}
+    </div>
 </div>

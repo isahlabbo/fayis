@@ -56,6 +56,23 @@ class SectionClass extends BaseModel
         return $this->hasMany(SectionClassReservedAdmissionNo::class);
     }
 
+    public function getClassTermAverage($termId){
+        $count = 0;
+        $totalScore = 0;
+        foreach($this->sectionClassStudents->where('status', 'Active') as $student){
+            foreach($student->sectionClassStudentTerms as $studentTerm){
+                if($studentTerm->academicSessionTerm->term_id == $termId){
+                    $totalScore += $studentTerm->studentTotalScore();
+                    $count++;
+                }
+            }
+        }
+        if($count == 0){
+            $count = 1;
+        }
+        return $totalScore/$count;
+    }
+
     public function updateAndGetAllActiveStudentResultForThisTerms($uploadId = null) {
         // enusure all active sectionClassStudents has 3 sectionClassStudentTerms and eachsectionClassStudentTerm has studentResults
 

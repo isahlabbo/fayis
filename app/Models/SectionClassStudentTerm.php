@@ -106,6 +106,11 @@ class SectionClassStudentTerm extends BaseModel
         }
         return number_format($total/$count,2);
     }
+
+    public function studentTotalScore()
+    {
+        return $this->studentResults->sum('total');
+    }
     
     public function publishThisTermResult()
     {
