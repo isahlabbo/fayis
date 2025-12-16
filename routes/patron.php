@@ -15,5 +15,10 @@ Route::middleware(['auth','verified'])
         });
     });
 
+    Route::name('analysis.')
+        ->prefix('/analysis')
+        ->group(function (){
+        Route::get('/teaching', 'AnalysisController@teaching')->name('teaching');
+    });
 
 });
