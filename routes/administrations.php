@@ -43,7 +43,14 @@ Route::middleware(['auth','verified'])->name('administration.')->group(function 
         Route::post('/register', 'TeacherController@register')->name('register');
         Route::post('/{teacherId}/update', 'TeacherController@update')->name('update');
         Route::get('/{teacherId}/delete', 'TeacherController@delete')->name('delete');
-
+        // 
+        Route::name('subject.')
+            ->prefix('/{teacherId}/subject')
+            ->group(function (){
+                Route::get('/', 'TeacherSubjectController@index')->name('index');
+                Route::post('/add', 'TeacherSubjectController@add')->name('add');
+                Route::get('/{subjectId}/remove', 'TeacherSubjectController@remove')->name('remove');
+        });
         // school.teacher.evaluation
         Route::name('evaluation.')
         ->prefix('/evaluation')

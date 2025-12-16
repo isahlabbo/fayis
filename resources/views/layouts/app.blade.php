@@ -95,6 +95,7 @@
 
   <script src="{{ asset('js/Ajax/address.js') }}"></script>
   <script src="{{ asset('js/Ajax/sectionClasses.js') }}"></script>
+  <script src="{{ asset('js/Ajax/classSubjects.js') }}"></script>
   <script src="{{ asset('assets/js/spinner.js') }}"></script>
 
   <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>

@@ -14,6 +14,8 @@
                 <th>EMAIL</th>
                 <th>PHONE</th>
                 <th>ADDRESS</th>
+                <th>CLASSES</th>
+                <th>SUBJECTS</th>
                 
                 <th><a href="{{route('administration.teacher.create')}}">
                 <button class="btn btn-primary">New Teacher</button></a></th>
@@ -30,6 +32,8 @@
                     <td>
                         {{$teacher->address}}
                     </td>
+                    <td>{{count($teacher->sectionClassTeachers)}}</td>
+                    <td>{{count($teacher->sectionClassSubjectTeachers)}} <a href="{{route('administration.teacher.subject.index',[$teacher->id])}}">View</a></td>
                     
                     <td><button data-toggle="modal" data-target="#teacher_{{$teacher->id}}" class="btn btn-secondary">Edit</button>
                     <a href="{{route('administration.teacher.delete',[$teacher->id])}}" onclick="return confirm('Are you sure you want delete this teacher from teachers records')"><button class="btn btn-danger">Delete</button></a></td>
