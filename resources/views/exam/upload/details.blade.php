@@ -30,7 +30,7 @@
                 </thead>
                 <tbody>
                     @foreach($subjectTeacherTermlyUpload->studentResults as $studentResult)
-                    @if($studentResult->sectionClassStudentTerm->academicSessionTerm->id == $studentResult->currentSessionTerm()->id)
+                    @if($studentResult->sectionClassStudentTerm &&$studentResult->sectionClassStudentTerm->academicSessionTerm->id == $studentResult->currentSessionTerm()->id)
                     
                     <tr>
                         <td>{{$loop->iteration}}</td>
