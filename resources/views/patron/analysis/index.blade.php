@@ -49,7 +49,7 @@
                         <option value="1">Teacher Effectiveness Index (One normalized effectiveness score per teacher)</option>
                         <option value="2">Subject vs Class Performance (Identify strong and weak subjects per class)</option>
                         <option value="3">Term vs Class Average Performance (Track class improvement or decline across terms)</option>
-                        <option value="TeachersComparisonSubjectClassChart">Teacher vs Subject–Class Performance Comparison (Compare how teachers perform across subjects and classes)</option>
+                        <option value="4">Teacher vs Subject–Class Performance Comparison (Compare how teachers perform across subjects and classes)</option>
                     </select>
                 </div>
                 <div class="form-group">
