@@ -11,7 +11,7 @@
       <div class="form-group">
             <label for="">Teachers Comment <span style="color:red;">*</span></label>
             <select name="teacher_comment" id="" class="form-control">
-                <option value="{{$studentTerm->sectionClassStudentTermAccessment->teacherComment->name ?? ''}}">{{$studentTerm->sectionClassStudentTermAccessment->teacherComment->name ?? ''}}</option>
+                <option value="">Select Class Master Comment</option>
                 @foreach(App\Models\TeacherComment::where('gender',$studentTerm->sectionClassStudent->student->gender_id)->get() as $teacherComment)
                 <option value="{{$teacherComment->id}}">{{$teacherComment->name}}</option>
                 @endforeach
@@ -21,7 +21,7 @@
         <div class="form-group">
             <label for="">Head of School Comment <span style="color:red;">*</span></label>
             <select name="head_of_school_comment" id="" class="form-control">
-                <option value="{{$studentTerm->sectionClassStudentTermAccessment->headTeacherComment->id ?? ''}}">{{$studentTerm->sectionClassStudentTermAccessment->headTeacherComment->name}}</option>
+                <option value="">Select Head of School Comment</option>
                 @foreach(App\Models\HeadTeacherComment::where('gender',$studentTerm->sectionClassStudent->student->gender_id)->get() as $headOfSchoolComment)
                 <option value="{{$headOfSchoolComment->id}}">{{$headOfSchoolComment->name}}</option>
                 @endforeach
