@@ -39,7 +39,7 @@
             <div class="row">
             
             @foreach($sectionClass->subjectResultUploads()['uploaded'] as $result)
-            @if($result->status == 2)
+            @if($result->status == 1)
                 <div class="col-md-4"><br>
                         <div class="card shadow">
                             <div class="card-body">

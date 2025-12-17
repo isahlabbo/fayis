@@ -18,7 +18,6 @@
             <th>ADMISSION NO</th>
             <th>TEACHERS COMMENT</th>
             <th>HEAD OF SCHOOL COMMENT</th>
-            
             <th></th>
         </tr>
     </thead>
