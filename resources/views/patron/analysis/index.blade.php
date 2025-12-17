@@ -12,7 +12,7 @@
         <div class="col-md-6">
             <div class="card-body shadow-sm">
                 <h6 class="text text-success text-center">
-                    <img src="{{asset('images/logo.png')}}" alt=""><b>Give us some information here to help you with some in this school Data</b></h6>
+                    <img src="{{asset('images/logo.png')}}" alt=""><b>Give us some information here to help you with some statistics in your school Data</b></h6>
             <form action="{{route('patron.analysis.search')}}" method="post">
                 @csrf
                 <div class="form-group">
