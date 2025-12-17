@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
     @section('title')
-        teaching analysis
+         analysis view
     @endsection
     @section('breadcrumb')
        

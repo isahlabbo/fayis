@@ -73,10 +73,7 @@ Route::get('/sms', function () {
 
 
 Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-   
-    $chart = new TermVsClassAverageChart();
-    $chart->build();
-    return view('dashboard', ['chart'=>$chart]);
+    return view('dashboard');
 })->name('dashboard');
 
 
