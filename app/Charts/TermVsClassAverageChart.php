@@ -15,7 +15,7 @@ class TermVsClassAverageChart extends Chart
     
     
 
-    public function __construct(int $sectionId, int $academicSessionId, int $termIdl)
+    public function __construct(int $sectionId, int $academicSessionId, int $termId)
     {
         parent::__construct();
         $this->academicSessionId = $academicSessionId;
