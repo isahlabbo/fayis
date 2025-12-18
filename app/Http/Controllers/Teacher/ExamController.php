@@ -16,7 +16,7 @@ class ExamController extends Controller
     public function submit($uploadId) {
         $upload = SubjectTeacherTermlyUpload::find($uploadId);
         $upload->update(['status'=>1]);
-        return redirect()->route('teacher.subject.exam.index',[$upload->id])->withSuccess('Result Submitted to Exam Office');
+        return redirect()->route('teacher.subject.exam.index',[$upload->id])->withSuccess('Result Submitted to Class Master Successfully');
     }
 
 

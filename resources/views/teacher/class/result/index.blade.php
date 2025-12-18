@@ -42,7 +42,7 @@
             <div class="row">
             
             @foreach($sectionClass->subjectResultUploads()['uploaded'] as $result)
-            @if($result->status == 1)
+            
                 <div class="col-md-4"><br>
                         <div class="card shadow">
                             <div class="card-body">
@@ -87,12 +87,15 @@
                                     <td>{{$result->gradePercentage('Absent')}}%</td>
                                     </tr>
                                 </table>
-                                <a href="{{route('teacher.class.result.details',[$result->id])}}"><button class="btn btn-primary">View Detail</button></a>
+                                @if($result->status < 2)
+                                <a href="{{route('teacher.class.result.details',[$result->id])}}"><button class="btn btn-outline-primary">View Detail</button></a>
                                 <a href="{{route('teacher.class.result.return',[$result->id])}}" class="btn btn-outline-danger">Return for Correction</a>
+                                <a href="{{route('teacher.class.result.submit',[$result->id])}}" class="mb-4 btn btn-danger" onclick="return confirm('Are you sure you want to submit this result to Exam Office? Note that if you click OK you will no have access to this result again')">Submit to Exam Officer</a>
+                                @endif
                             </div>
                         </div>
                 </div><br>
-                @endif
+                
             @endforeach
             </div>
         </div>

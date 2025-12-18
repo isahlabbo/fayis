@@ -16,13 +16,13 @@
             $totalSubjects = count($sectionClass->sectionClassSubjects);
             $uploaded = 0;
             foreach($sectionClass->subjectResultUploads()['uploaded'] as $result){
-                if($result->status == 1){
+                if($result->status == 2){
                     $uploaded = $uploaded + 1;
                 }
             }
             $remaining = $totalSubjects - $uploaded;
            @endphp
-            @if($remaining < 1)
+            @if($remaining)
             <a href="{{route('exam.upload.result.publish',[$sectionClass->id])}}" onclick="confirm('Are you sure you want to publish this result? Please note that publishing indicates you have reviewed and verified the result and consider it accurate and ready to be viewed by the public, including parents and guardians.')" class="btn btn-primary">Publish Result</a>
             @endif    
         </div>
@@ -40,7 +40,7 @@
             <div class="row">
             
             @foreach($sectionClass->subjectResultUploads()['uploaded'] as $result)
-            @if($result->status == 2)
+            @if($result->status >= 2)
                 <div class="col-md-4"><br>
                         <div class="card shadow">
                             <div class="card-body">
@@ -85,7 +85,8 @@
                                     <td>{{$result->gradePercentage('Absent')}}%</td>
                                     </tr>
                                 </table>
-                                @if($result->status == 3)
+                                
+                                @if($result->status == 2)
                                 <a href="{{route('exam.upload.details',[$result->id])}}"><button class="btn btn-primary">View Detail</button></a>
                                 <a href="{{route('exam.upload.edit',[$result->id])}}"><button class="btn btn-outline-danger">Return for Correction</button></a>
                                 @else

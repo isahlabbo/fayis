@@ -12,7 +12,7 @@
     $uploaded = count($sectionClass->subjectResultUploads()['uploaded']);
     $submitted = 0;
     foreach($sectionClass->subjectResultUploads()['uploaded'] as $result){
-        if($result->status == 1){
+        if($result->status == 2){
             $submitted = $submitted + 1;
         }
     }

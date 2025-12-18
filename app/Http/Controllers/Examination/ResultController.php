@@ -30,8 +30,8 @@ class ResultController extends Controller
     public function publish($sectionClassId) {
         $sectionClass = SectionClass::find($sectionClassId);
         foreach($sectionClass->sectionClassStudents->where('status', 'Active') as $studentInClass){
-            foreach($studentInClass->sectionClassStudentTerms->where('academic_session_id', $sectionClass->currentSessionTerm()->id) as $studentTerm){
-                $publish = $studentTerm->sectionClassStudentTermPublishResult()->firstOrCreate();
+            foreach($studentInClass->sectionClassStudentTerms->where('academic_session_term_id', $sectionClass->currentSessionTerm()->id) as $studentTerm){
+                $publish = $studentTerm->sectionClassStudentTermResultPublish()->firstOrCreate();
                 $publish->updatePublishRecord();
                 $studentTerm->publishUpload();
             }

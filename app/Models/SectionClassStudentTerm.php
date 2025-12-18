@@ -27,9 +27,10 @@ class SectionClassStudentTerm extends BaseModel
 
     public function publishUpload()
     {
+        
         foreach($this->studentResults as $studentResult){
-            if($studentResult->subjectTermlyUpload && $studentResult->subjectTermlyUpload->status != 3){
-                $studentResult->subjectTermlyUpload()->update(['status'=>3]);
+            if($studentResult->subjectTeacherTermlyUpload && $studentResult->subjectTeacherTermlyUpload->status != 3){
+                $studentResult->subjectTeacherTermlyUpload()->update(['status'=>3]);
             }
         }
         

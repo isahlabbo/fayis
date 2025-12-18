@@ -94,7 +94,7 @@ class ComputeTermlyAnalytics extends Command
                 if ($results->isEmpty()) continue;
 
                 $totalObtained += $results->sum('total');
-                $totalPossible += $results->count() * 100;
+                $totalPossible += $assignment->sectionClassSubject->sectionClass->sectionClassSubjects->where('status', 'Active')->count() * 100;
 
                 $students = $students->merge($results->pluck('sectionClassStudentTerm.section_class_student_id'));
                 $subjects->push($assignment->sectionClassSubject->subject_id);
@@ -130,7 +130,7 @@ class ComputeTermlyAnalytics extends Command
 
             if ($results->isEmpty()) continue;
 
-            $studentsCount = $results->count();
+            $studentsCount = $assignment->sectionClassSubject->sectionClass->sectionClassStudents->where('status', 'Active')->count();
             $totalObtained = $results->sum('total');
             $totalPossible = $studentsCount * 100;
 
@@ -163,7 +163,7 @@ class ComputeTermlyAnalytics extends Command
 
                 if ($results->isEmpty()) continue;
 
-                $studentsCount = $results->count();
+                $studentsCount = $class->sectionClassStudents->where('status', 'Active')->count();
                 $totalObtained = $results->sum('total');
                 $totalPossible = $studentsCount * 100;
 
@@ -192,8 +192,8 @@ class ComputeTermlyAnalytics extends Command
 
             if ($results->isEmpty()) continue;
 
-            $studentsCount = $results->pluck('sectionClassStudentTerm.section_class_student_id')->unique()->count();
-            $subjectsCount = $results->pluck('subject_id')->unique()->count();
+            $studentsCount = $class->sectionClassStudents->where('status', 'Active')->count();
+            $subjectsCount = $class->sectionClassSubjects->where('status', 'Active')->count();
             $totalObtained = $results->sum('total');
             $totalPossible = $studentsCount * $subjectsCount * 100;
 

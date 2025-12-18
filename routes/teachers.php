@@ -17,6 +17,7 @@ Route::middleware(['auth','verified','teacher'])
             Route::get('{resultId}/return', 'ResultController@returnForCorrection')->name('return');
             Route::get('{resultId}/details', 'ResultController@details')->name('details');
             Route::put('{resultId}/update', 'ResultController@update')->name('update');
+            Route::get('{resultId}/submit', 'ResultController@submit')->name('submit');
             
         });
         //    assessment routes

@@ -24,6 +24,12 @@ class ResultController extends Controller
         return redirect()->route('teacher.class.result.index',[$result->sectionClassSubjectTeacher->sectionClassSubject->sectionClass->id])->withSuccess('The result return to subject teacher for correction');
     }
 
+    public function submit($resultId) {
+        $result = SubjectTeacherTermlyUpload::find($resultId);
+        $result->update(['status'=>2]);  
+        return redirect()->route('teacher.class.result.index',[$result->sectionClassSubjectTeacher->sectionClassSubject->sectionClass->id])->withSuccess('The result has been submitted to Exam Officer');
+    }
+
     public function update(Request $request, $studentResultId) {
         $request->validate([
             'first_ca'=>'required|numeric|min:0|max:15',
