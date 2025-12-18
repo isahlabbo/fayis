@@ -34,11 +34,19 @@ class ComputeTermlyAnalytics extends Command
         DB::transaction(function () use ($sessionId, $termId) {
 
             $this->clearOldAnalytics($sessionId, $termId);
+            $this->info("Old analytics cleared.");
 
             $this->computeTeacherEffectiveness($sessionId, $termId);
+            $this->info("✅ Teacher Effectiveness Index computed.");
+
             $this->computeTeacherClassSubjectComparison($sessionId, $termId);
+            $this->info("✅ Teacher × Class × Subject Comparison computed.");
+
             $this->computeSubjectEvaluation($sessionId, $termId);
+            $this->info("✅ Termly Subject Evaluation computed.");
+            
             $this->computeClassAveraging($sessionId, $termId);
+            $this->info("✅ Termly Class Averaging computed.");
         });
 
         $this->info('✅ Analytics computation completed successfully!');
