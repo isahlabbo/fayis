@@ -11,7 +11,7 @@ class TeachersComparisonSubjectClassChart extends Chart
     protected int $academicSessionId;
     protected int $termId;
 
-    public function __construct(int $academicSessionId, int $termId, int $sectionId)
+    public function __construct(int $sectionId, int $academicSessionId, int $termId)
     {
         parent::__construct();
         $this->academicSessionId = $academicSessionId;

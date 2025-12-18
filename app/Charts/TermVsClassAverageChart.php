@@ -9,10 +9,10 @@ use App\Models\TermlyClassAveraging;
 
 class TermVsClassAverageChart extends Chart
 {
-    protected ?int $sectionId = null;
+    protected int $sectionId;
     protected int $academicSessionId;
     protected int $termId;
-    protected int $sectionId;
+    
     
 
     public function __construct(int $sectionId, int $academicSessionId, int $termIdl)
