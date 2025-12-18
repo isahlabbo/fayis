@@ -135,6 +135,7 @@ class ComputeTermlyAnalytics extends Command
             $totalPossible = $studentsCount * 100;
 
             TeachersClassSubjectComparison::create([
+                'section_id' => $assignment->sectionClassSubject->sectionClass->section_id,
                 'academic_session_id' => $sessionId,
                 'teacher_id' => $assignment->teacher_id,
                 'section_class_id' => $assignment->sectionClassSubject->section_class_id,

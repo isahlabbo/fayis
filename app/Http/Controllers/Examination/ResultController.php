@@ -33,9 +33,10 @@ class ResultController extends Controller
             foreach($studentInClass->sectionClassStudentTerms->where('academic_session_id', $sectionClass->currentSessionTerm()->id) as $studentTerm){
                 $publish = $studentTerm->sectionClassStudentTermPublishResult()->firstOrCreate();
                 $publish->updatePublishRecord();
+                $studentTerm->publishUpload();
             }
         }
-        
+
 
         return redirect()->route('exam.upload.summary',[$sectionClassId])->withSuccess('Results Published Successfully');
     }

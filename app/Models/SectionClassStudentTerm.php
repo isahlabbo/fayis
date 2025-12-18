@@ -25,6 +25,16 @@ class SectionClassStudentTerm extends BaseModel
         return $this->hasOne(Invoice::class);
     }
 
+    public function publishUpload()
+    {
+        foreach($this->studentResults as $studentResult){
+            if($studentResult->subjectTermlyUpload && $studentResult->subjectTermlyUpload->status != 3){
+                $studentResult->subjectTermlyUpload()->update(['status'=>3]);
+            }
+        }
+        
+        
+    }
     
 
     public function totalPayableAmount()

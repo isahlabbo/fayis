@@ -11,11 +11,12 @@ class TeachersComparisonSubjectClassChart extends Chart
     protected int $academicSessionId;
     protected int $termId;
 
-    public function __construct(int $academicSessionId, int $termId)
+    public function __construct(int $academicSessionId, int $termId, int $sectionId)
     {
         parent::__construct();
         $this->academicSessionId = $academicSessionId;
         $this->termId = $termId;
+        $this->sectionId = $sectionId;
     }
 
     public function build(): void
@@ -27,6 +28,7 @@ class TeachersComparisonSubjectClassChart extends Chart
                 'sectionClass'
             ])
             ->where([
+                'section_id' => $this->sectionId,
                 'academic_session_id' => $this->academicSessionId,
                 'term_id' => $this->termId
             ])
