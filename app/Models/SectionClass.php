@@ -56,6 +56,18 @@ class SectionClass extends BaseModel
         return $this->hasMany(SectionClassReservedAdmissionNo::class);
     }
 
+    public function numberofUnpublishedResults() {
+        $count = 0;
+        foreach($this->sectionClassStudents->where('status', 'Active') as $studentInClass){
+            foreach($studentInClass->sectionClassStudentTerms as $studentTerm){
+                if(!$studentTerm->sectionClassStudentTermResultPublish){
+                    $count++;
+                }
+            }
+        }
+        return $count;
+    }
+
     public function getStudentSessionResultsForTerm($sessionId, $termId)
     {
         $results = [];

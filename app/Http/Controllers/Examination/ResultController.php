@@ -35,6 +35,7 @@ class ResultController extends Controller
                 $publish->updatePublishRecord();
             }
         }
+        
 
         return redirect()->route('exam.upload.summary',[$sectionClassId])->withSuccess('Results Published Successfully');
     }

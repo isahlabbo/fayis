@@ -6,10 +6,11 @@
        {{Breadcrumbs::render('dashboard')}}
     @endsection
     @section('content')
-   
+   @if($sectionClass->numberofUnpublishedResults() > 0)
     <div class="card shadow">
         <div class="card-body">
             <div class="card-header shadow h4 mb-4">
+                
             <b>{{$sectionClass->name}} of {{$sectionClass->currentSession()->name}} Academic Session  Result Summary</b>
            @php
             $totalSubjects = count($sectionClass->sectionClassSubjects);
@@ -95,7 +96,11 @@
             </div>
         </div>
     </div>
-        
+    @else
+    <div class="alert alert-success">
+        <h4 class="text text-center">All results for {{$sectionClass->name}} of {{$sectionClass->currentSession()->name}} Academic Session have been uploaded and published successfully!</h4>
+    </div>
+    @endif    
     @endsection
     
 </x-app-layout>
