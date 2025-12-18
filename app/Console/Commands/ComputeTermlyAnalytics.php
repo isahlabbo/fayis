@@ -96,7 +96,12 @@ class ComputeTermlyAnalytics extends Command
                 $totalObtained += $results->sum('total');
                 $totalPossible += $assignment->sectionClassSubject->sectionClass->sectionClassSubjects->where('status', 'Active')->count() * 100;
 
-                $students = $students->merge($results->pluck('sectionClassStudentTerm.section_class_student_id'));
+                $students = $students->push(
+                    $assignment->sectionClassSubject->sectionClass->sectionClassStudents
+                        ->where('status', 'Active')
+                        ->pluck('student_id')
+                )->flatten();
+                
                 $subjects->push($assignment->sectionClassSubject->subject_id);
                 $classes->push($assignment->sectionClassSubject->section_class_id);
             }
