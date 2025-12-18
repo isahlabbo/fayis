@@ -12,8 +12,10 @@ class TermVsClassAverageChart extends Chart
     protected ?int $sectionId = null;
     protected int $academicSessionId;
     protected int $termId;
+    protected int $sectionId;
+    
 
-    public function __construct(int $academicSessionId, int $termId, ?int $sectionId = null)
+    public function __construct(int $sectionId, int $academicSessionId, int $termIdl)
     {
         parent::__construct();
         $this->academicSessionId = $academicSessionId;
@@ -24,7 +26,7 @@ class TermVsClassAverageChart extends Chart
     public function build(): void
     {
         // 1️⃣ Get classes
-        $classesQuery = SectionClass::orderBy('id');
+        $classesQuery = SectionClass::where('section_id', $this->sectionId)->orderBy('id');
         if ($this->sectionId) {
             $classesQuery->where('section_id', $this->sectionId);
         }

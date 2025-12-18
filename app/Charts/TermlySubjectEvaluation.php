@@ -25,6 +25,7 @@ class TermlySubjectEvaluationChart extends Chart
     {
         // 1️⃣ Fetch precomputed analytics
         $query = TermlySubjectEvaluation::with(['subject', 'sectionClass'])
+            ->where('section_id', $this->sectionId)
             ->where('academic_session_id', $this->academicSessionId)
             ->where('term_id', $this->termId);
 

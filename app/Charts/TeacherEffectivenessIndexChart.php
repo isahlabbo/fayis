@@ -11,11 +11,12 @@ class TeacherEffectivenessIndexChart extends Chart
     protected int $academicSessionId;
     protected int $termId;
 
-    public function __construct(int $academicSessionId, int $termId)
+    public function __construct(int $sectionId, int $academicSessionId, int $termId)
     {
         parent::__construct();
         $this->academicSessionId = $academicSessionId;
         $this->termId = $termId;
+        $this->sectionId = $sectionId;
     }
 
     public function build(): void
@@ -23,6 +24,7 @@ class TeacherEffectivenessIndexChart extends Chart
         // 1️⃣ Fetch analytics data (precomputed)
         $analytics = TermlyTeacherEffectiveIndex::with('teacher.user')
             ->where([
+                'section_id' => $this->sectionId,
                 'academic_session_id' => $this->academicSessionId,
                 'term_id' => $this->termId
             ])
