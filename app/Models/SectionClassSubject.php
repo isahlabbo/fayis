@@ -46,6 +46,18 @@ class SectionClassSubject extends BaseModel
     {
         return $this->examSubjectQuestionSections->where('section_class_termly_exam_id', $this->currentExam()->id);
     }
+
+    public function getStudentSessionResultsForTerm($sessionId, $termId) {
+        $results = [];
+        foreach ($this->sectionClassSubjectTeachers as $classTeacher) {
+            $teacherResults = $classTeacher->getStudentSessionResultsForTerm($sessionId, $termId);
+            foreach ($teacherResults as $result) {
+                $results[] = $result;
+            }
+        }
+        return collect($results);
+        
+    }
     public function thisSessionTermResultUpload($session, $term)
     {
         foreach ($this->sectionClassSubjectTeachers as $classTeacher) {

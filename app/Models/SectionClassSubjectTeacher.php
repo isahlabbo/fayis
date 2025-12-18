@@ -21,6 +21,16 @@ class SectionClassSubjectTeacher extends BaseModel
     {
         return $this->hasMany(SubjectTeacherTermlyUpload::class);
     }
+    public function getStudentSessionResultsForTerm($sessionId, $termId) {
+        $results = [];
+        foreach($this->subjectTeacherTermlyUploads()->where('academic_session_id', $sessionId)->where('term_id', $termId)->get() as $upload) {
+            foreach($upload->studentResults as $result) {
+                $results[] = $result;
+            }
+        }
+        return collect($results);
+    }
+    
     public function getDownloadableName()
     {
         

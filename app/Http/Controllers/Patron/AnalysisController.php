@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Charts\TeachersComparisonSubjectClassChart;
 use App\Charts\TeacherEffectivenessIndexChart;
 use App\Charts\TermVsClassAverageChart;
-use App\Charts\TermlySubjectEvaluation;
+use App\Charts\TermlySubjectEvaluationChart;
 
 class AnalysisController extends Controller
 {
@@ -28,7 +28,7 @@ class AnalysisController extends Controller
                 $chart = new TeacherEffectivenessIndexChart($request->section, $request->session, $request->term);
                 break;
             case '2':
-                $chart = new TermlySubjectEvaluation($request->section, $request->session, $request->term);
+                $chart = new TermlySubjectEvaluationChart($request->section, $request->session, $request->term);
                 break;
             case '3':
                 $chart = new TermVsClassAverageChart($request->section, $request->session, $request->term);

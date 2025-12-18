@@ -89,18 +89,7 @@ class ComputeTermlyAnalytics extends Command
 
             foreach ($assignments as $assignment) {
 
-                $results = StudentResult::whereHas(
-                    'sectionClassStudentTerm.academicSessionTerm',
-                    function ($q) use ($sessionId, $termId) {
-                        $q->where('academic_session_id', $sessionId)
-                          ->where('term_id', $termId);
-                    }
-                )->whereHas(
-                    'subjectTeacherTermlyUpload',
-                    function ($q) use ($assignment) {
-                        $q->where('section_class_subject_teacher_id', $assignment->id);
-                    }
-                )->get();
+                $results = $assignment->getStudentSessionResultsForTerm($sessionId, $termId);
 
                 if ($results->isEmpty()) continue;
 
@@ -137,18 +126,7 @@ class ComputeTermlyAnalytics extends Command
 
         foreach ($assignments as $assignment) {
 
-            $results = StudentResult::whereHas(
-                'sectionClassStudentTerm.academicSessionTerm',
-                function ($q) use ($sessionId, $termId) {
-                    $q->where('academic_session_id', $sessionId)
-                      ->where('term_id', $termId);
-                }
-            )->whereHas(
-                'subjectTeacherTermlyUpload',
-                function ($q) use ($assignment) {
-                    $q->where('section_class_subject_teacher_id', $assignment->id);
-                }
-            )->get();
+            $results = $assignment->getStudentSessionResultsForTerm($sessionId, $termId);
 
             if ($results->isEmpty()) continue;
 
@@ -180,18 +158,7 @@ class ComputeTermlyAnalytics extends Command
         foreach ($classes as $class) {
             foreach ($class->sectionClassSubjects as $scs) {
 
-                $results = StudentResult::whereHas(
-                    'sectionClassStudentTerm.academicSessionTerm',
-                    function ($q) use ($sessionId, $termId) {
-                        $q->where('academic_session_id', $sessionId)
-                          ->where('term_id', $termId);
-                    }
-                )->whereHas(
-                    'subjectTeacherTermlyUpload',
-                    function ($q) use ($scs) {
-                        $q->where('section_class_subject_id', $scs->id);
-                    }
-                )->get();
+                $results = $scs->getStudentSessionResultsForTerm($sessionId, $termId);
 
                 if ($results->isEmpty()) continue;
 
@@ -220,13 +187,7 @@ class ComputeTermlyAnalytics extends Command
     {
         foreach (SectionClass::all() as $class) {
 
-            $results = StudentResult::whereHas(
-                'sectionClassStudentTerm.academicSessionTerm',
-                function ($q) use ($sessionId, $termId) {
-                    $q->where('academic_session_id', $sessionId)
-                      ->where('term_id', $termId);
-                }
-            )->get();
+            $results = $class->getStudentSessionResultsForTerm($sessionId, $termId);
 
             if ($results->isEmpty()) continue;
 

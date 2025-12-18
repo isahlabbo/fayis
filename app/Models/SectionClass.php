@@ -56,6 +56,21 @@ class SectionClass extends BaseModel
         return $this->hasMany(SectionClassReservedAdmissionNo::class);
     }
 
+    public function getStudentSessionResultsForTerm($sessionId, $termId)
+    {
+        $results = [];
+        foreach($this->sectionClassStudents as $studentInClass){
+            foreach($studentInClass->sectionClassStudentTerms as $studentTerm){
+                if($studentTerm->academicSessionTerm->academic_session_id == $sessionId && $studentTerm->academicSessionTerm->term_id == $termId){
+                    foreach($studentTerm->studentResults as $result){
+                        $results[] = $result;
+                    }
+                }
+            }
+        }
+        return collect($results);
+    }
+
     public function getClassTermAverage($termId){
         $count = 0;
         $totalScore = 0;

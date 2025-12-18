@@ -4,36 +4,47 @@ namespace App\Charts;
 
 use ConsoleTVs\Charts\Classes\Chartjs\Chart;
 use App\Models\Teacher;
-use App\Models\SectionClassSubjectTeacher;
-use App\Models\StudentResult;
+use App\Models\TermlyTeacherEffectiveIndex;
 
 class TeacherEffectivenessIndexChart extends Chart
 {
+    protected int $academicSessionId;
     protected int $termId;
 
-    public function __construct(int $termId)
+    public function __construct(int $academicSessionId, int $termId)
     {
         parent::__construct();
+        $this->academicSessionId = $academicSessionId;
         $this->termId = $termId;
     }
 
     public function build(): void
     {
-        // 1️⃣ Teachers
-        $teachers = Teacher::with('user')->orderBy('id')->get();
+        // 1️⃣ Fetch analytics data (precomputed)
+        $analytics = TermlyTeacherEffectiveIndex::with('teacher.user')
+            ->where([
+                'academic_session_id' => $this->academicSessionId,
+                'term_id' => $this->termId
+            ])
+            ->orderByDesc('effectiveness_index')
+            ->get();
 
-        $labels = $teachers->map(fn($t) => $t->user->name)->toArray();
-        $this->labels($labels);
-
-        // 2️⃣ Calculate TEI per teacher
-        $values = [];
-
-        foreach ($teachers as $teacher) {
-            $values[] = $this->calculateTeacherEffectiveness($teacher->id);
+        // Safety check
+        if ($analytics->isEmpty()) {
+            return;
         }
 
-        // 3️⃣ Main dataset
-        $this->dataset('Teacher Effectiveness Index (%)', 'line', $values)
+        // 2️⃣ Labels (Teacher names)
+        $labels = $analytics->map(
+            fn ($row) => $row->teacher->user->name ?? 'Unknown'
+        )->toArray();
+
+        $this->labels($labels);
+
+        // 3️⃣ Effectiveness values
+        $values = $analytics->pluck('effectiveness_index')->toArray();
+
+        $this->dataset('Teacher Effectiveness Index (%)', 'bar', $values)
             ->backgroundcolor($this->hexToRgba('#3498DB', 0.7))
             ->color('#3498DB');
 
@@ -57,51 +68,6 @@ class TeacherEffectivenessIndexChart extends Chart
             ]);
     }
 
-    // -------------------- CORE LOGIC --------------------
-
-    private function calculateTeacherEffectiveness(
-        int $teacherId,
-        int $maxTotalPerStudent = 100
-    ): float {
-        // All subject-class assignments for this teacher
-        $assignments = SectionClassSubjectTeacher::where([
-                'teacher_id' => $teacherId,
-                'status' => 'Active'
-            ])->get();
-
-        if ($assignments->isEmpty()) {
-            return 0;
-        }
-
-        $totalObtained = 0;
-        $totalPossible = 0;
-
-        foreach ($assignments as $assignment) {
-            $results = StudentResult::whereHas(
-                'subjectTeacherTermlyUpload',
-                function ($q) use ($assignment) {
-                    $q->where('section_class_subject_teacher_id', $assignment->id)
-                      ->where('term_id', $this->termId);
-                }
-            )->get();
-
-            if ($results->isEmpty()) {
-                continue;
-            }
-
-            $studentsCount = $results->count();
-
-            $totalObtained += $results->sum('total');
-            $totalPossible += $studentsCount * $maxTotalPerStudent;
-        }
-
-        if ($totalPossible === 0) {
-            return 0;
-        }
-
-        return round(($totalObtained / $totalPossible) * 100, 2);
-    }
-
     // -------------------- HELPERS --------------------
 
     private function hexToRgba(string $hex, float $alpha): string
@@ -110,6 +76,7 @@ class TeacherEffectivenessIndexChart extends Chart
         $r = hexdec(substr($hex, 0, 2));
         $g = hexdec(substr($hex, 2, 2));
         $b = hexdec(substr($hex, 4, 2));
+
         return "rgba({$r}, {$g}, {$b}, {$alpha})";
     }
 }
