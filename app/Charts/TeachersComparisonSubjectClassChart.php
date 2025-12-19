@@ -76,7 +76,7 @@ class TeachersComparisonSubjectClassChart extends Chart
 
             $color = $colors[$index];
 
-            $this->dataset($key, 'bar', $values)
+            $this->dataset($key, 'line', $values)
                 ->backgroundcolor($this->hexToRgba($color, 0.7))
                 ->color($color);
         }
