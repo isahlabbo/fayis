@@ -405,13 +405,7 @@ class SectionClass extends BaseModel
 
     public function activeClassTeacher()
     {
-        $teacher = null;
-        foreach($this->sectionClassTeachers as $teacher){
-            if($teacher->status == 'Active'){
-                return $teacher;
-            }
-        }
-        return $teacher;
+        return $this->sectionClassTeachers->where('status','Active')->first();
     }
 
     public function currentStudents()

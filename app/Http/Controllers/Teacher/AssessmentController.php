@@ -52,9 +52,9 @@ class AssessmentController extends Controller
                     $newpsychomotor->update(['value'=>$psychomotorRate]);
                 }
             }
-            return redirect()->route('teacher.class.assessment.index',[$studentTerm->sectionClassStudent->sectionClass->id]);
+            return redirect()->route('teacher.class.assessment.index',[$studentTerm->sectionClassStudent->sectionClass->activeClassTeacher()->id]);
         }
         
-        return redirect()->route('teacher.class.assessment.index',[$studentTerm->sectionClassStudent->sectionClass->id])->withWarning('Invalid Attendance Record: Days prsent + Days Absent must be equal to Days School Open');
+        return redirect()->route('teacher.class.assessment.index',[$studentTerm->sectionClassStudent->sectionClass->activeClassTeacher()->id])->withWarning('Invalid Attendance Record: Days prsent + Days Absent must be equal to Days School Open');
     }
 }

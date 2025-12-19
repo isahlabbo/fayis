@@ -11,7 +11,8 @@ use App\Models\Subject;
 use App\Models\SectionClassSubjectTeacher;
 use App\Models\StudentResult;
 use App\Models\Section;
-
+use Illuminate\Support\Collection;
+use App\Models\CentralAndDisperseResultMeasure;
 use App\Models\TermlyTeacherEffectiveIndex;
 use App\Models\TeachersClassSubjectComparison;
 use App\Models\TermlySubjectEvaluation;
@@ -51,6 +52,9 @@ class ComputeTermlyAnalytics extends Command
                 
                 $this->computeClassAveraging($sectionId, $sessionId, $termId);
                 $this->info("✅ Termly Class Averaging computed.");
+
+                $this->computeCentralAndDispersionMeasures($sectionId, $sessionId, $termId);
+                $this->info("✅ Central and Dispersion Measures computed.");
             });
         }
 
@@ -84,6 +88,12 @@ class ComputeTermlyAnalytics extends Command
             'academic_session_id' => $sessionId,
             'section_id' => $sectionId,
             'term_id' => $termId
+        ])->delete();
+        // Central and Dispersion Measures
+        CentralAndDisperseResultMeasure::where([
+            'academic_session_id' => $sessionId,
+            'term_id' => $termId,
+            'section_id' => $sectionId
         ])->delete();
     }
 
@@ -311,5 +321,134 @@ class ComputeTermlyAnalytics extends Command
             );
         }
     }
+
+    private function computeCentralAndDispersionMeasures($sectionId, $sessionId, $termId)
+    {
+        $section = Section::find($sectionId);
+
+        $assignments = $section->allTeachersAllocationInSection();
+
+        $sessionTermId = DB::table('academic_session_terms')
+            ->where('academic_session_id', $sessionId)
+            ->where('term_id', $termId)
+            ->value('id');
+
+        foreach ($assignments as $assignment) {
+            
+            // 1️⃣ Get all uploads for this session & term
+            $uploads = $assignment->subjectTeacherTermlyUploads()->where('academic_session_id', $sessionId)
+                ->where('term_id', $termId)
+                ->with([
+                    'sectionClassSubjectTeacher',
+                    'studentResults'
+                ])
+                ->get();
+
+            foreach ($uploads as $upload) {
+
+                $results = $upload->studentResults;
+
+                // Skip empty uploads
+                if ($results->isEmpty()) {
+                    continue;
+                }
+
+                // 2️⃣ Extract raw scores
+                $scores = $results->pluck('total')->sort()->values();
+
+                $studentsCount = $scores->count();
+
+                // Safety check
+                if ($studentsCount === 0) {
+                    continue;
+                }
+
+                // 3️⃣ Central Tendency
+                $mean = round($scores->avg(), 2);
+                $median = round($this->calculateMedian($scores), 2);
+                $mode = $this->calculateMode($scores);
+
+                // 4️⃣ Dispersion
+                $min = $scores->min();
+                $max = $scores->max();
+                $range = $max - $min;
+
+                $variance = $this->calculateVariance($scores, $mean);
+                $stdDev = $variance !== null ? sqrt($variance) : null;
+
+                // 5️⃣ Persist (safe re-run)
+                CentralAndDisperseResultMeasure::updateOrCreate(
+                    [
+                        'subject_teacher_termly_upload_id' => $upload->id,
+                    ],
+                    [
+                        'academic_session_id' => $sessionId,
+                        'term_id' => $termId,
+                        'section_id' => $upload->sectionClassSubjectTeacher->sectionClassSubject->sectionClass->section_id,
+                        'section_class_id' => $upload->sectionClassSubjectTeacher->sectionClassSubject->section_class_id,
+                        'students_count' => $studentsCount,
+
+                        // Central tendency
+                        'mean' => $mean,
+                        'median' => $median,
+                        'mode' => $mode,
+
+                        // Dispersion
+                        'min_score' => $min,
+                        'max_score' => $max,
+                        'range' => $range,
+                        'variance' => $variance,
+                        'standard_deviation' => $stdDev,
+                    ]
+                );
+            }
+        }
+    }
+    
+
+    private function calculateMedian(Collection $values): float
+    {
+        $count = $values->count();
+        $middle = intdiv($count, 2);
+
+        if ($count % 2) {
+            return $values[$middle];
+        }
+
+        return ($values[$middle - 1] + $values[$middle]) / 2;
+    }
+
+    private function calculateMode(Collection $values): ?float
+    {
+        $frequency = $values->countBy();
+        $maxCount = $frequency->max();
+
+        // No mode if all values appear once
+        if ($maxCount <= 1) {
+            return null;
+        }
+
+        return (float) $frequency
+            ->filter(fn ($count) => $count === $maxCount)
+            ->keys()
+            ->first();
+    }
+
+    private function calculateVariance(Collection $values, float $mean): ?float
+    {
+        $count = $values->count();
+
+        if ($count === 0) {
+            return null;
+        }
+
+        $sumSquaredDiffs = $values->reduce(
+            fn ($carry, $value) => $carry + pow($value - $mean, 2),
+            0
+        );
+
+        return round($sumSquaredDiffs / $count, 4);
+    }
+
 
 }
