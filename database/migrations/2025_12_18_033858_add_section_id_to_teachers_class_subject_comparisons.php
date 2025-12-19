@@ -13,9 +13,9 @@ class AddSectionIdToTeachersClassSubjectComparisons extends Migration
      */
     public function up()
     {
-        Schema::table('teachers_class_subject_comparisons', function (Blueprint $table) {
-            $table->foreignId('section_id')->constrained()->cascadeOnDelete()->nullab1le()->after('id');
-        });
+        // Schema::table('teachers_class_subject_comparisons', function (Blueprint $table) {
+        //     $table->foreignId('section_id')->constrained()->cascadeOnDelete()->nullab1le()->after('id');
+        // });
     }
 
     /**
