@@ -26,6 +26,8 @@ class SubjectDistributionChart extends Chart
         $this->classId = $classId;
     }
 
+    
+
     public function build(): void
     {
         $records = CentralAndDisperseResultMeasure::where([
@@ -34,7 +36,7 @@ class SubjectDistributionChart extends Chart
                 'section_id' => $this->sectionId,
                 'section_class_id' => $this->classId,
             ])
-            ->with('subjectTeacherTermlyUpload.sectionClassSubject.subject')
+            ->with('subjectTeacherTermlyUpload.sectionClassSubjectTeacher.sectionClassSubject.subject')
             ->get();
 
         if ($records->isEmpty()) {
@@ -45,6 +47,7 @@ class SubjectDistributionChart extends Chart
         $labels = $records->map(
             fn ($r) =>
                 $r->subjectTeacherTermlyUpload
+                  ->sectionClassSubjectTeacher
                   ->sectionClassSubject
                   ->subject
                   ->name
@@ -54,6 +57,18 @@ class SubjectDistributionChart extends Chart
 
         // 2️⃣ Mean scores
         $means = $records->pluck('mean')->toArray();
+
+        // 2️⃣ Min scores
+        $mins = $records->pluck('min_score')->toArray();
+
+        //Max scores
+        $maxs = $records->pluck('max_score')->toArray();
+
+        // Range scores
+        $ranges = $records->pluck('range')->toArray();
+
+        // Variance scores
+        $variances = $records->pluck('variance')->toArray();
 
         // 3️⃣ Standard deviation
         $stdDevs = $records->pluck('standard_deviation')->toArray();
@@ -72,5 +87,28 @@ class SubjectDistributionChart extends Chart
                 'tension' => 0.3,
                 'pointRadius' => 4,
             ]);
+
+        // 6️⃣ Min dataset
+        $this->dataset('Min Score', 'bar', $mins)
+            ->backgroundcolor('rgba(46, 204, 113, 0.7)')
+            ->color('#2ECC71');
+
+        // 7️⃣ Max dataset
+        $this->dataset('Max Score', 'bar', $maxs)
+            ->backgroundcolor('rgba(155, 89, 182, 0.7)')
+            ->color('#9B59B6');
+
+        // 8️⃣ Range dataset
+        $this->dataset('Range', 'bar', $ranges)
+            ->backgroundcolor('rgba(241, 196, 15, 0.7)')
+            ->color('#F1C40F'); 
+
+        // 9️⃣ Variance dataset
+        $this->dataset('Variance', 'bar', $variances)
+            ->backgroundcolor('rgba(230, 126, 34, 0.7)')
+            ->color('#E67E22'); 
+            
+            
+        
     }
 }

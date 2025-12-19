@@ -12,6 +12,8 @@ use App\Models\TermlyClassAveraging;
 use App\Models\TermlySubjectEvaluation;
 use App\Models\TermlyTeacherEffectiveIndex;
 use App\Models\TeachersClassSubjectComparison;
+use App\Charts\SubjectDistributionChart;
+use App\Models\CentralAndDisperseResultMeasure;
 
 class AnalysisController extends Controller
 {
@@ -21,12 +23,18 @@ class AnalysisController extends Controller
     }
 
     function search(Request $request) {
-        $request->validate([
+        $valid = [
             "session" => "required",
             "term" => "required",
             "section" => "required",
             "analysis" => "required"
-        ]);
+        ];
+
+        if($request->analysis == '5'){
+            $valid['class'] = 'required';
+        }
+        
+        $request->validate($valid);
 
         $session = $request->session;
         $term = $request->term;
@@ -69,7 +77,16 @@ class AnalysisController extends Controller
                     ->get();
                     $dataTable = 'patron.analysis.includes.subjectClassCompare';
                 break;
-            
+            case '5':
+                $chart = new SubjectDistributionChart($request->section, $request->class, $request->session, $request->term);
+                $data = CentralAndDisperseResultMeasure::query()
+                    ->when($session, fn($q) => $q->where('academic_session_id', $session))
+                    ->when($term, fn($q) => $q->where('term_id', $term))
+                    ->when($section, fn($q) => $q->where('section_id', $section))
+                    ->get();
+                    $dataTable = 'patron.analysis.includes.subjectDistribution';
+                break;
+
             default:
                 abort(404, 'Invalid analysis type');
                 break;

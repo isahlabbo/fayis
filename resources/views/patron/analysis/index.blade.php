@@ -43,6 +43,13 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="class">Class</label>
+                    <select name="class" id="" class="form-control">
+                        <option value="">Select Class</option>
+                        
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="analysis">Analysis</label>
                     <select name="analysis" id="" class="form-control">
                         <option value="">Select Analysis</option>
@@ -50,6 +57,7 @@
                         <option value="2">Subject vs Class Performance (Identify strong and weak subjects per class)</option>
                         <option value="3">Term vs Class Average Performance (Track class improvement or decline across terms)</option>
                         <option value="4">Teacher vs Subject–Class Performance Comparison (Compare how teachers perform across subjects and classes)</option>
+                        <option value="5">Subject Distribution Analysis (Statistical distribution of scores per subject)</option>
                     </select>
                 </div>
                 <div class="form-group">
