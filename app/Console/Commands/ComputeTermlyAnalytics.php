@@ -233,8 +233,8 @@ class ComputeTermlyAnalytics extends Command
 
             $studentsCount = $class->sectionClassStudents->where('status', 'Active')->count();
             $subjectsCount = $class->sectionClassSubjects->where('status', 'Active')->count();
-            $totalObtained = $results->sum('total');
-            $totalPossible = $studentsCount * $subjectsCount * 100;
+            $totalObtained = round(($results->sum('total') / $subjectsCount), 2);
+            $totalPossible = $subjectsCount * 100;
 
             TermlyClassAveraging::create([
                 'section_id' => $sectionId,

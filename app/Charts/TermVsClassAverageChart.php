@@ -45,6 +45,7 @@ class TermVsClassAverageChart extends Chart
 
             foreach ($classes as $class) {
                 $record = TermlyClassAveraging::where([
+                    'section_id' => $this->sectionId,
                     'academic_session_id' => $this->academicSessionId,
                     'term_id' => $term->id,
                     'section_class_id' => $class->id,
