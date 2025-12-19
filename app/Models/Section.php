@@ -24,6 +24,31 @@ class Section extends BaseModel
     }
 
     
+    public function teacherAllocations($teacherId)
+    {
+        $allocations = [];
+        foreach($this->sectionClasses as $sectionClass){
+            foreach($sectionClass->sectionClassSubjects->where('status','Active') as $sectionClassSubject){
+                foreach($sectionClassSubject->sectionClassSubjectTeachers->where('teacher_id',$teacherId)->where('status','Active') as $assignment){
+                    $allocations[] = $assignment;
+                }
+            }
+        }
+        return $allocations;
+    }
+
+    public function allTeachersAllocationInSection()
+    {
+        $allocations = [];
+        foreach($this->sectionClasses as $sectionClass){
+            foreach($sectionClass->sectionClassSubjects->where('status','Active') as $sectionClassSubject){
+                foreach($sectionClassSubject->sectionClassSubjectTeachers->where('status','Active') as $assignment){
+                    $allocations[] = $assignment;
+                }
+            }
+        }
+        return $allocations;
+    }
 
     public function sectionStudentGraduations ()
     {

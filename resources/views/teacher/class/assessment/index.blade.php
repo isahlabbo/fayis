@@ -16,6 +16,8 @@
             <th>S/N</th>
             <th>STUDENT NAME</th>
             <th>ADMISSION NO</th>
+            <th>MARKS OBTAINED</th>
+            <th>AVERAGE SCORE</th>
             <th>TEACHERS COMMENT</th>
             <th>HEAD OF SCHOOL COMMENT</th>
             <th></th>
@@ -27,6 +29,8 @@
             <td>{{$loop->iteration}}</td>
             <td>{{$sectionClassStudent->student->name}}</td>
             <td>{{$sectionClassStudent->student->admission_no}}</td>
+            <td>{{$sectionClassStudent->currentStudentTerm()->studentTotalScore() ?? ''}}</td>
+            <td>{{$sectionClassStudent->currentStudentTerm()->studentAverage() ?? ''}}</td>
             <td>{{$sectionClassStudent->currentStudentTerm()->sectionClassStudentTermAccessment->teacherComment->name ?? ''}}</td>
             <td>{{$sectionClassStudent->currentStudentTerm()->sectionClassStudentTermAccessment->headTeacherComment->name ?? ''}}</td>
             <td><a href="{{route('teacher.class.assessment.edit',$sectionClassStudent->currentStudentTerm()->id)}}" class="btn btn-sm btn-outline-warning"><i class="fas fa-pen"></i></button></td>
