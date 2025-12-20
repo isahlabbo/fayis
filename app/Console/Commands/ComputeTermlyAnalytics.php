@@ -326,81 +326,84 @@ class ComputeTermlyAnalytics extends Command
     {
         $section = Section::find($sectionId);
 
-        $assignments = $section->allTeachersAllocationInSection();
+        
 
         $sessionTermId = DB::table('academic_session_terms')
             ->where('academic_session_id', $sessionId)
             ->where('term_id', $termId)
             ->value('id');
-
-        foreach ($assignments as $assignment) {
+        foreach ($section->sectionClasses as $sectionClass) {
+            $assignments = $sectionClass->allTeachersAllocationInSection();
             
-            // 1️⃣ Get all uploads for this session & term
-            $uploads = $assignment->subjectTeacherTermlyUploads()->where('academic_session_id', $sessionId)
-                ->where('term_id', $termId)
-                ->with([
-                    'sectionClassSubjectTeacher',
-                    'studentResults'
-                ])
-                ->get();
+            foreach ($assignments as $assignment) {
+                
+                // 1️⃣ Get all uploads for this session & term
+                $uploads = $assignment->subjectTeacherTermlyUploads()->where('academic_session_id', $sessionId)
+                    ->where('term_id', $termId)
+                    ->with([
+                        'sectionClassSubjectTeacher',
+                        'studentResults'
+                    ])
+                    ->get();
 
-            foreach ($uploads as $upload) {
+                foreach ($uploads as $upload) {
 
-                $results = $upload->studentResults;
+                    $results = $upload->studentResults;
 
-                // Skip empty uploads
-                if ($results->isEmpty()) {
-                    continue;
+                    // Skip empty uploads
+                    if ($results->isEmpty()) {
+                        continue;
+                    }
+
+                    // 2️⃣ Extract raw scores
+                    $scores = $results->pluck('total')->sort()->values();
+
+                    $studentsCount = $scores->count();
+
+                    // Safety check
+                    if ($studentsCount === 0) {
+                        continue;
+                    }
+
+                    // 3️⃣ Central Tendency
+                    $mean = round($scores->avg(), 2);
+                    $median = round($this->calculateMedian($scores), 2);
+                    $mode = $this->calculateMode($scores);
+
+                    // 4️⃣ Dispersion
+                    $min = $scores->min();
+                    $max = $scores->max();
+                    $range = $max - $min;
+
+                    $variance = $this->calculateVariance($scores, $mean);
+                    $stdDev = $variance !== null ? sqrt($variance) : null;
+
+                    // 5️⃣ Persist (safe re-run)
+                    CentralAndDisperseResultMeasure::updateOrCreate(
+                        [
+                            'subject_teacher_termly_upload_id' => $upload->id,
+                            'academic_session_id' => $sessionId,
+                            'term_id' => $termId,
+                            'section_id' => $upload->sectionClassSubjectTeacher->sectionClassSubject->sectionClass->section_id,
+                            'section_class_id' => $sectionClass->id,
+                        ],
+                        [
+                            
+                            'students_count' => $studentsCount,
+                            // Central tendency
+                            'mean' => $mean,
+                            'median' => $median,
+                            'mode' => $mode,
+
+                            // Dispersion
+                            'min_score' => $min,
+                            'max_score' => $max,
+                            'range' => $range,
+                            'variance' => $variance,
+                            'standard_deviation' => $stdDev,
+                        ]
+                    );
                 }
-
-                // 2️⃣ Extract raw scores
-                $scores = $results->pluck('total')->sort()->values();
-
-                $studentsCount = $scores->count();
-
-                // Safety check
-                if ($studentsCount === 0) {
-                    continue;
-                }
-
-                // 3️⃣ Central Tendency
-                $mean = round($scores->avg(), 2);
-                $median = round($this->calculateMedian($scores), 2);
-                $mode = $this->calculateMode($scores);
-
-                // 4️⃣ Dispersion
-                $min = $scores->min();
-                $max = $scores->max();
-                $range = $max - $min;
-
-                $variance = $this->calculateVariance($scores, $mean);
-                $stdDev = $variance !== null ? sqrt($variance) : null;
-
-                // 5️⃣ Persist (safe re-run)
-                CentralAndDisperseResultMeasure::updateOrCreate(
-                    [
-                        'subject_teacher_termly_upload_id' => $upload->id,
-                    ],
-                    [
-                        'academic_session_id' => $sessionId,
-                        'term_id' => $termId,
-                        'section_id' => $upload->sectionClassSubjectTeacher->sectionClassSubject->sectionClass->section_id,
-                        'section_class_id' => $upload->sectionClassSubjectTeacher->sectionClassSubject->section_class_id,
-                        'students_count' => $studentsCount,
-
-                        // Central tendency
-                        'mean' => $mean,
-                        'median' => $median,
-                        'mode' => $mode,
-
-                        // Dispersion
-                        'min_score' => $min,
-                        'max_score' => $max,
-                        'range' => $range,
-                        'variance' => $variance,
-                        'standard_deviation' => $stdDev,
-                    ]
-                );
             }
         }
     }

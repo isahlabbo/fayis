@@ -41,11 +41,7 @@ class Section extends BaseModel
     {
         $allocations = [];
         foreach($this->sectionClasses as $sectionClass){
-            foreach($sectionClass->sectionClassSubjects->where('status','Active') as $sectionClassSubject){
-                foreach($sectionClassSubject->sectionClassSubjectTeachers->where('status','Active') as $assignment){
-                    $allocations[] = $assignment;
-                }
-            }
+            $allocations = array_merge($allocations, $sectionClass->allTeachersAllocationInSection());
         }
         return $allocations;
     }

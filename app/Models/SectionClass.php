@@ -385,6 +385,17 @@ class SectionClass extends BaseModel
         }
         return $position;
     }
+
+    public function allTeachersAllocationInSection()
+    {
+        $allocations = [];
+        foreach($this->sectionClassSubjects->where('status','Active') as $sectionClassSubject){
+            foreach($sectionClassSubject->sectionClassSubjectTeachers->where('status','Active') as $assignment){
+                $allocations[] = $assignment;
+            }
+        }
+        return $allocations;
+    }
     public function classAverage($term)
     {
         $classStudentAverages = 0;
