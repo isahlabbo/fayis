@@ -39,6 +39,7 @@ class AnalysisController extends Controller
         $session = $request->session;
         $term = $request->term;
         $section = $request->section;
+        $class = $request->class;
 
         switch ($request->analysis) {
             case '1':
