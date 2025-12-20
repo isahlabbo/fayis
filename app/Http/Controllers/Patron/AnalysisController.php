@@ -40,7 +40,7 @@ class AnalysisController extends Controller
         $term = $request->term;
         $section = $request->section;
         $class = $request->class;
-
+        
         switch ($request->analysis) {
             case '1':
                 $chart = new TeacherEffectivenessIndexChart($request->section, $request->session, $request->term);
@@ -93,7 +93,7 @@ class AnalysisController extends Controller
                 abort(404, 'Invalid analysis type');
                 break;
         }
-
+        
         if(!$data || $data->isEmpty()){
             return back()->withWarning('No data found for the selected criteria');
         }

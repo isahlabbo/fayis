@@ -82,7 +82,7 @@ class SectionClassSubject extends BaseModel
         $uploads = [];
         foreach ($this->sectionClassSubjectTeachers as $classTeacher) {
             foreach($classTeacher->subjectTeacherTermlyUploads->where('term_id',$termId) as $upload){
-                if($upload->academic_session_id == $sessionId){
+                if(count($upload->studentResults) > 0 && $upload->academic_session_id == $sessionId){
                     $uploads[] = $upload;
                 }
             }
