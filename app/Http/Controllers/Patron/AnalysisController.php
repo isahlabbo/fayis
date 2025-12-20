@@ -33,7 +33,7 @@ class AnalysisController extends Controller
         if($request->analysis == '5'){
             $valid['class'] = 'required';
         }
-        
+
         $request->validate($valid);
 
         $session = $request->session;
@@ -83,6 +83,7 @@ class AnalysisController extends Controller
                     ->when($session, fn($q) => $q->where('academic_session_id', $session))
                     ->when($term, fn($q) => $q->where('term_id', $term))
                     ->when($section, fn($q) => $q->where('section_id', $section))
+                    ->when($class, fn($q) => $q->where('class_id', $class))
                     ->get();
                     $dataTable = 'patron.analysis.includes.subjectDistribution';
                 break;
@@ -92,6 +93,9 @@ class AnalysisController extends Controller
                 break;
         }
 
+        if(!$data || $data->isEmpty()){
+            return back()->withWarning('No data found for the selected criteria');
+        }
 
         $chart->build();
         return view('patron.analysis.view',[
