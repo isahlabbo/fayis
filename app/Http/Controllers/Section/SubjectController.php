@@ -63,7 +63,7 @@ class SubjectController extends Controller
             $sectionClassSubject->delete();
             return redirect()->route('section.class.subject.index',[$sectionClassSubject->sectionClass->id])
             ->withSuccess('Class Subject Deleted');
-        }
+        
     }
 
     public function termResult ($classId, $subjectId, $termId)
