@@ -59,10 +59,7 @@ class SubjectController extends Controller
     public function delete($sectionClassSubjectId)
     {
         $sectionClassSubject = SectionClassSubject::find($sectionClassSubjectId);
-        if(count($sectionClassSubject->availableResultUploads())>0){
-            return redirect()->route('section.class.subject.index',[$sectionClassSubject->section_class_id])
-            ->withwarning('Sorry we cant delete this subject there are result uploade on it');
-        }else{
+        
             $sectionClassSubject->delete();
             return redirect()->route('section.class.subject.index',[$sectionClassSubject->sectionClass->id])
             ->withSuccess('Class Subject Deleted');
