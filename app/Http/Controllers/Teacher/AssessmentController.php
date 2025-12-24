@@ -39,17 +39,19 @@ class AssessmentController extends Controller
                 'teacher_comment_id'=>$request->teacher_comment,
                 'head_teacher_comment_id'=>$request->head_of_school_comment,
             ]);
-            
+           
             foreach($traits as $traitId => $traitRate){
                 if($traitRate){
-                    $newTrait = $assessment->sectionClassStudentTermAccessmentAffectiveTraits()->firstOrCreate([]);
-                    $newTrait->update(['value'=>$traitRate]);
+                    $newTrait = $assessment->sectionClassStudentTermAccessmentAffectiveTraits()->firstOrCreate(['affective_trait_id'=>$traitId]);
+                    $newTrait->value= $traitRate;
+                    $newTrait->save();
                 }
             }
             foreach($psychomotors as $psychomotorId => $psychomotorRate){
                 if($psychomotorRate){
-                    $newpsychomotor = $assessment->sectionClassStudentTermAccessmentPsychomotors()->firstOrCreate([]);
-                    $newpsychomotor->update(['value'=>$psychomotorRate]);
+                    $newpsychomotor = $assessment->sectionClassStudentTermAccessmentPsychomotors()->firstOrCreate(['psychomotor_id'=>$psychomotorId]);
+                    $newpsychomotor->value = $psychomotorRate;
+                    $newpsychomotor->save();
                 }
             }
             return redirect()->route('teacher.class.assessment.index',[$studentTerm->sectionClassStudent->sectionClass->activeClassTeacher()->id]);

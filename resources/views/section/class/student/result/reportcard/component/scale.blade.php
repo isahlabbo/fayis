@@ -7,7 +7,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach($remarkScales ?? [] as $remarkScale)
+        @foreach(App\Models\RemarkScale::all() as $remarkScale)
         <tr>
             <td>{{$remarkScale->scale}}</td>
             <td>{{$remarkScale->remark}}</td>

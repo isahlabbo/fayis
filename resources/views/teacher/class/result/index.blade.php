@@ -17,7 +17,7 @@
             
             $submitted = 0;
             foreach($sectionClass->subjectResultUploads()['uploaded'] as $result){
-                if($result->status == 1){
+                if($result->status > 0){
                     $submitted = $submitted + 1;
                 }
             }
@@ -31,7 +31,12 @@
              
              <div class="progress" style="height: 40px; font-size:20px;">
                 @php
-                $percentage = ($submitted / $totalSubjects) * 100;
+                if($remaining == 0){
+                    $percentage = 100;
+                }else{
+                    $percentage = ($submitted / $totalSubjects) * 100;
+                }
+                
                 @endphp
                 <div class="progress-bar" role="progressbar" style="width: {{$percentage}}%;" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
             </div>
@@ -87,7 +92,9 @@
                                     <td>{{$result->gradePercentage('Absent')}}%</td>
                                     </tr>
                                 </table>
-                                @if($result->status < 2)
+                                @if($result->status == 0)
+                                <div class="alert alert-success">This Result is with Subject Teacher Now</div>
+                                @elseif($result->status == 1)
                                 <a href="{{route('teacher.class.result.details',[$result->id])}}"><button class="btn btn-outline-primary">View Detail</button></a>
                                 <a href="{{route('teacher.class.result.return',[$result->id])}}" class="btn btn-outline-danger">Return for Correction</a>
                                 <a href="{{route('teacher.class.result.submit',[$result->id])}}" class="mb-4 btn btn-danger" onclick="return confirm('Are you sure you want to submit this result to Exam Office? Note that if you click OK you will no have access to this result again')">Submit to Exam Officer</a>

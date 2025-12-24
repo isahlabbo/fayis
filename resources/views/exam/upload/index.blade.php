@@ -12,11 +12,12 @@
     $uploaded = count($sectionClass->subjectResultUploads()['uploaded']);
     $submitted = 0;
     foreach($sectionClass->subjectResultUploads()['uploaded'] as $result){
-        if($result->status == 2){
+        if($result->status > 1){
             $submitted = $submitted + 1;
         }
+        
     }
-    $remaining = $totalSubjects - $uploaded;
+    $remaining = $totalSubjects - $submitted;
     @endphp
     <div class="col-md-3 mb-4">
             <div class="card-body shadow text-center rounded-3">

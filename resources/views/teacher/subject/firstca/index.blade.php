@@ -14,11 +14,11 @@
 <div class="progress" style="height: 40px; font-size:20px;">
     @php
     $level = $upload->level;
-    $percentage = ($level / 3) * 100;
+    $percentage = ($level / 4) * 100;
     @endphp
     <div class="progress-bar" role="progressbar" style="width: {{$percentage}}%;" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
 </div>
-<p class="mt-2">Uploaded: {{$level}} / 3</p> 
+<p class="mt-2">Uploaded: {{$level}} / 4</p> 
 
 <!-- display form use table to restructure its content of name and input  to insert the firts ca of the student of each student available in the class -->
 <div class="row">

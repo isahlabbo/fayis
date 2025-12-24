@@ -8,8 +8,9 @@
     </thead>
     <tbody>
     @if($sectionClassStudentTerm->sectionClassStudentTermAccessment)
+    
     @foreach($sectionClassStudentTerm->sectionClassStudentTermAccessment->sectionClassStudentTermAccessmentAffectiveTraits as $accessmentTrait)    
-    @if($accessmentTrait->affectiveTrait)
+    @if($accessmentTrait->affective_trait_id != null)
     <tr>
         <td>{{$accessmentTrait->affectiveTrait->name ?? 0}}</td>
         <td>{{$accessmentTrait->value ?? 0}}</td>

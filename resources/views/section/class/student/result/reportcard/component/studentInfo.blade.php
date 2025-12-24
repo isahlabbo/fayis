@@ -92,9 +92,7 @@
     </p>
 </div>
 <div class="col-md-2 text-center">
-    @if($student->picture)
-    <img src="{{$student->profileImage()}}" alt="" height="200" width="170p" class="rounded">
-    @else
-    <img src="{{asset('assets/images/user.jpg')}}" width="200" height="170p" class="rounded" alt="">
-    @endif
+    
+    <img src="{{asset('images/user.jpg')}}" width="150" height="170p" class="rounded" alt="">
+    
 </div>
