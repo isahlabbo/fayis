@@ -20,7 +20,8 @@
                             <div class="col-md-3" style="border:1px solid #ccc;">
                                 <!-- avoid page break -->
                                     <div class="card-body" style="page-break-inside: avoid; margin-bottom:10px; margin-top:10px;">
-                                    <h6><b>{{$sectionClassStudent->student->name}}</b></h6>    
+                                    <h6><b>{{$sectionClassStudent->student->name}}</b></h6> 
+                                    <p>https://fayis.ng/result/check</p>   
                                     <table>
                                         <tr>
                                             <td>Class</td>
@@ -38,10 +39,7 @@
                                             <td>Code</td>
                                             <td>{{$sectionClassStudentTerm->access_code}}</td>
                                         </tr>
-                                        <tr>
-                                            <td>link</td>
-                                            <td>https://fayis.ng/result/check</td>
-                                        </tr>
+                                        
                                     </table>
                                 </div>  
                         </div>
