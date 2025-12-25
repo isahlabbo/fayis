@@ -5,6 +5,7 @@
             <th>SUBJECT</th>
             <th>1ST CA</th>
             <th>2ND CA</th>
+            <th>ASSIGNMENT</th>
             <th>EXAM</th>
             <th>TOTAL</th>
             <th>GRADE</th>
@@ -31,6 +32,7 @@
             <td>{{$studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject->name}}</td>
             <td class="text text-center">{{$studentResult->first_ca}}</td>
             <td class="text text-center">{{$studentResult->second_ca}}</td>
+            <td class="text text-center">{{$studentResult->assignment}}</td>
             <td class="text text-center">{{$studentResult->exam}}</td>
             <td class="text text-center">{{$studentResult->total}}</td>
             <td class="text text-center">{{$studentResult->grade}}</td>

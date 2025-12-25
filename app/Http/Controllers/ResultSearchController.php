@@ -11,7 +11,12 @@ class ResultSearchController extends Controller
     public function search(Request $request) {
         $request->validate(['access_code'=>'required']);
         $studentTerm = SectionClassStudentTerm::where('access_code',strtoupper($request->access_code))->first();
+        
         $error = null;
+        // check if the result is published
+        if($studentTerm->sectionClassStudentTermResultPublish == null){
+            $error = 'Result is under processing';
+        }
 
         if(!$studentTerm){
             $error = 'Invalid Access Code';
@@ -25,7 +30,7 @@ class ResultSearchController extends Controller
             }
         }
         
-        if(empty($errors)){
+        if(!$error){
 
             if($studentTerm->sectionClassStudent->student->guardian->status == 'pending'){
                 return redirect()->route('result.guardian',[$studentTerm->id]);
