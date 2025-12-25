@@ -31,6 +31,7 @@ Route::prefix('ajax')
 });
 Route::prefix('result')->name('result.')
    ->group(function() {
+    Route::get('/check', 'ResultSearchController@check')->name('check');
     Route::post('/search', 'ResultSearchController@search')->name('search');
     Route::get('/{stutenTermId}/guardian', 'ResultSearchController@guardian')->name('guardian');
     Route::get('/{stutenTermId}/view', 'ResultSearchController@view')->name('view');

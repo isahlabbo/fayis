@@ -8,15 +8,17 @@ use App\Models\SectionClassStudentTerm;
 
 class ResultSearchController extends Controller
 {
+    public function check($error = null) {
+        return view('auth.result.check', compact('error'));
+    }
+
     public function search(Request $request) {
         $request->validate(['access_code'=>'required']);
         $studentTerm = SectionClassStudentTerm::where('access_code',strtoupper($request->access_code))->first();
         
         $error = null;
         // check if the result is published
-        if($studentTerm->sectionClassStudentTermResultPublish == null){
-            $error = 'Result is under processing';
-        }
+       
 
         if(!$studentTerm){
             $error = 'Invalid Access Code';
@@ -26,6 +28,10 @@ class ResultSearchController extends Controller
             }
 
             if(!$studentTerm->sectionClassStudentTermResultPublish){
+                $error = 'Result is under processing';
+            }
+
+            if($studentTerm->sectionClassStudentTermResultPublish == null){
                 $error = 'Result is under processing';
             }
         }
@@ -38,17 +44,18 @@ class ResultSearchController extends Controller
                 return redirect()->route('result.view',[$studentTerm->id]);
             }
         }
+        // set error message and redirect back to check page
 
-        return redirect()->route('welcome')->withWarning($error);
+        return redirect()->route('result.check')->with('error', $error);
 
     }
 
     public function guardian($studentTermId) {
-        return view('auth.guardian',['studentTerm'=>SectionClassStudentTerm::find($studentTermId)]);
+        return view('auth.result.guardian',['studentTerm'=>SectionClassStudentTerm::find($studentTermId)]);
     }
 
     public function view($studentTermId) {
-        return view('auth.result',['studentTerm'=>SectionClassStudentTerm::find($studentTermId)]);
+        return view('auth.result.view',['studentTerm'=>SectionClassStudentTerm::find($studentTermId)]);
     }
 
     public function updateGuardian(Request $request, $guardianId, $studentTermId) {

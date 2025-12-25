@@ -34,7 +34,7 @@
 
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item ml-3"><a class="dropbt" href="#result"><i class="fas fa-poll-h"></i> Result</a></li>
+          <li class="nav-item ml-3"><a class="dropbt" href="{{route('result.check')}}"><i class="fas fa-poll-h"></i> Check Result</a></li>
           <li class="nav-item ml-3"><a class="dropbt" href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
           <li class="nav-item ml-3"><a class="dropbt" href="#mission-vision"><i class="fas fa-lightbulb"></i> Mission and Vision</a></li>
           <li class="nav-item ml-3"><a class="dropbt" href="#admission"><i class="fas fa-user-plus"></i> Admission</a></li>

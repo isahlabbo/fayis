@@ -1,5 +1,5 @@
 
-<div class="card shadow" style="page-break-inside: avoid;">
+<div class="" style="page-break-inside: avoid;">
     <div class="card-body">
         <div class="row">
             @include('section.class.student.result.reportcard.component.schoolInfo')
