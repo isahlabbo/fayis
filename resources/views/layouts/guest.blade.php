@@ -18,6 +18,7 @@
   <section class="container pb-4">
     <br>
     <br>
+    @include('sweetalert::alert')
     @yield('content')
   </section>
 
