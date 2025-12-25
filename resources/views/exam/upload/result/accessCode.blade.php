@@ -38,6 +38,10 @@
                                             <td>Code</td>
                                             <td>{{$sectionClassStudentTerm->access_code}}</td>
                                         </tr>
+                                        <tr>
+                                            <td>link</td>
+                                            <td>https://fayis.ng/result/check</td>
+                                        </tr>
                                     </table>
                                 </div>  
                         </div>
