@@ -26,7 +26,12 @@ class ResultSearchController extends Controller
         }
         
         if(empty($errors)){
-            return redirect()->route('result.guardian',[$studentTerm->id])->withSuccess('Pls confirm guardian information');
+
+            if($studentTerm->sectionClassStudent->student->guardian->status == 'pending'){
+                return redirect()->route('result.guardian',[$studentTerm->id]);
+            }else{
+                return redirect()->route('result.view',[$studentTerm->id]);
+            }
         }
 
         return redirect()->route('welcome')->withWarning($error);
@@ -44,7 +49,6 @@ class ResultSearchController extends Controller
     public function updateGuardian(Request $request, $guardianId, $studentTermId) {
         $request->validate([
             'name'=>'required',
-            'email'=>'required',
             'phone'=>'required',
             'address'=>'required',
         ]);
@@ -53,7 +57,8 @@ class ResultSearchController extends Controller
             'name'=>$request->name,
             'email'=>$request->email,
             'phone'=>$request->phone,
-            'address'=>$request->address
+            'address'=>$request->address,
+            'status'=>'updated',
         ]);
 
         return redirect()->route('result.view',[$studentTermId]);
