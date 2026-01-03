@@ -1,6 +1,6 @@
 <x-guest-layout>
     @section('title')
-        login
+        Check Result
     @endsection
     @section('content')
     <div class="row">
