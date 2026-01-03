@@ -22,15 +22,14 @@ class ResultSearchController extends Controller
 
         if(!$studentTerm){
             $error = 'Invalid Access Code';
-        }else{
+        }else if($studentTerm->sectionClassStudentTermResultPublish && $studentTerm->sectionClassStudentTermResultPublish->position){
+            
             if(count($studentTerm->studentResults) == 0){
-                $error = 'No result available';
+                $error = 'No subject results found';
             }
 
-            if($studentTerm->sectionClassStudentTermResultPublish && $studentTerm->sectionClassStudentTermResultPublish->position){
-                $error = 'Result is under processing';
-            }
-
+        }else{
+            $error = 'Result is under processing';
         }
         
         if(!$error){
