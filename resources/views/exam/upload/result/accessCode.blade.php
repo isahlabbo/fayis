@@ -33,7 +33,7 @@
                                         </tr>
                                         <tr>
                                             <td>Term</td>
-                                            <td>{{$sectionClass->name}}</td>
+                                            <td>{{$sectionClassStudentTerm->academicSessionTerm->term->name}}</td>
                                         </tr>
                                         <tr>
                                             <td>Code</td>
