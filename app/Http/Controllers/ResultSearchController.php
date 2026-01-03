@@ -31,9 +31,6 @@ class ResultSearchController extends Controller
                 $error = 'Result is under processing';
             }
 
-            if($studentTerm->sectionClassStudentTermResultPublish == null){
-                $error = 'Result is under processing';
-            }
         }
         
         if(!$error){
