@@ -27,7 +27,7 @@ class ResultSearchController extends Controller
                 $error = 'No result available';
             }
 
-            if(!$studentTerm->sectionClassStudentTermResultPublish){
+            if($studentTerm->sectionClassStudentTermResultPublish && $studentTerm->sectionClassStudentTermResultPublish->position){
                 $error = 'Result is under processing';
             }
 
