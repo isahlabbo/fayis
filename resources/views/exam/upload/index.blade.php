@@ -17,7 +17,7 @@
         }
         
     }
-    $remaining = $totalSubjects - $submitted;
+    $unSubmitted = $totalSubjects - $submitted;
     @endphp
     <div class="col-md-3 mb-4">
             <div class="card-body shadow text-center rounded-3">
@@ -26,8 +26,8 @@
                 </h6>
                 <a href="" class="text-decoration-none"> <p class="">Subjects: {{count($sectionClass->sectionClassSubjects)}}</p></a>
                 <p class="">Uploaded: {{$uploaded}}</p>
-                <p class="">Remaining: {{$remaining}}</p>
                 <p class="">Submitted: {{$submitted}}</p>
+                <p class="">Unsubmitted: {{$unSubmitted}}</p>
                 @if($submitted > 0)
                 <a href="{{route('exam.upload.summary',[$sectionClass->id])}}"class="btn btn-sm btn-info">View Result</a>
                 @endif
