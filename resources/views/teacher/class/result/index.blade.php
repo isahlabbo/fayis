@@ -51,6 +51,7 @@
                 <div class="col-md-4"><br>
                         <div class="card shadow">
                             <div class="card-body">
+                            <p><b>Result ID :</b>{{$result->id}}</p>
                             <p><b>Session :</b>{{$result->currentSession()->name}}</p>
                             <p><b>Term :</b> {{$result->term->name ?? 'Not Available'}}</p>
                             <p><b>Subject :</b> {{$result->sectionClassSubjectTeacher->sectionClassSubject->name ?? 'Not Available'}}</p>
