@@ -63,8 +63,8 @@
                 <td><b>{{ $allocated-$notUploaded }}</b></td>
                 <td><b>{{ $notUploaded }}</b></td>
                 <td><b>{{ $inProgress }}</b></td>
-                <td><b>{{ $submittedToClassMaster }}</b></td>
-                <td><b>{{ $submittedToExamOffice }}</b></td>
+                <td><b>{{ $submittedToClassMaster + $submittedToExamOffice + $published }}</b></td>
+                <td><b>{{ $submittedToExamOffice + $published }}</b></td>
                 <td><b>{{ $published }}</b></td>
                 <td>
                     @if($notUploaded + $inProgress > 0)
