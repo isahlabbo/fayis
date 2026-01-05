@@ -25,6 +25,7 @@
         @php 
         $teacherUploads = $teacher->resultUploadReport();
         @endphp
+        @if(count($teacherUploads['allocated']) > 0)
             <tr class="{{ $teacherUploads['table_row_class'] }}">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $teacher->user->name ?? '' }}</td>
@@ -36,6 +37,7 @@
                 <td>{{ count($teacherUploads['published']) }}</td>
                 <td>{{ $teacherUploads['remark'] }}</td>
             </tr>
+        @endif
         @endforeach
         </tbody>
     </table>

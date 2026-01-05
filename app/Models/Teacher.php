@@ -62,7 +62,7 @@ class Teacher extends BaseModel
             $tableRowClass = 'bg-info text-white';
         }elseif(count($submittedToExamOffice) + count($submittedToClassMaster) + count($published) !== count($allocated)) {
             $remark = 'Incomplete Submission';
-            $tableRowClass = 'bg-warning text-white';
+            $tableRowClass = 'bg-warning ';
          } elseif(count($inProgress) > 0) {
             $remark = 'In Progress';
             $tableRowClass = 'bg-warning text-dark';
