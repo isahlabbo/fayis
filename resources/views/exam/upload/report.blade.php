@@ -50,8 +50,8 @@
                 <td>{{ count($teacherUploads['allocated'])-count($teacherUploads['not_uploaded']) }}</td>
                 <td>{{ count($teacherUploads['not_uploaded']) }}</td>
                 <td>{{ count($teacherUploads['in_progress']) }}</td>
-                <td>{{ count($teacherUploads['submitted_to_class_master']) }}</td>
-                <td>{{ count($teacherUploads['submitted_to_exam_office']) }}</td>
+                <td>{{ count($teacherUploads['submitted_to_class_master'])+count($teacherUploads['submitted_to_exam_office'])+  count($teacherUploads['published'])}}</td>
+                <td>{{ count($teacherUploads['submitted_to_exam_office']) + count($teacherUploads['published'])}}</td>
                 <td>{{ count($teacherUploads['published']) }}</td>
                 <td>{{ $teacherUploads['remark'] }}</td>
             </tr>
