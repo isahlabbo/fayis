@@ -53,13 +53,13 @@ class Teacher extends BaseModel
 
         if(count($notUploaded) === count($allocated)) {
             $remark = 'No Upload';
-            $tableRowClass = 'bg-danger text-white';
+            $tableRowClass = 'bg-danger text-dark';
         } elseif(count($published) === count($allocated)) {
             $remark = 'All Published';
-            $tableRowClass = 'bg-success text-white';
+            $tableRowClass = 'bg-success text-dark';
         } elseif(count($submittedToExamOffice) + count($submittedToClassMaster) + count($published) === count($allocated)) {
             $remark = 'All Submitted';
-            $tableRowClass = 'bg-info text-white';
+            $tableRowClass = 'bg-info text-dark';
         }elseif(count($submittedToExamOffice) + count($submittedToClassMaster) + count($published) !== count($allocated)) {
             $remark = 'Incomplete Submission';
             $tableRowClass = 'bg-warning ';
