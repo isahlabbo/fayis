@@ -60,7 +60,7 @@
             <tr >
                 <td colspan="3"><b>Total</b></td>
                 <td><b>{{ $allocated }}</b></td>
-                <td><b>{{ $allocated-$notUploaded }}</b></td>
+                <td><b>{{ $allocated - $notUploaded }}</b></td>
                 <td><b>{{ $inProgress }}</b></td>
                 <td><b>{{ $notUploaded - $inProgress }}</b></td>
                 <td><b>{{ $submittedToClassMaster + $submittedToExamOffice + $published }}</b></td>
@@ -68,7 +68,7 @@
                 <td><b>{{ $published }}</b></td>
                 <td>
                     @if($notUploaded + $inProgress > 0)
-                        <span class="badge bg-secondary lg">{{($notUploaded + $inProgress)}} Pending Uploads</span> 
+                        <span class="badge bg-secondary lg">{{$inProgress + ($notUploaded - $inProgress)}} Pending Uploads</span> 
                     @else
                         <span class="badge bg-success">All Results Uploaded</span>  
                     @endif
