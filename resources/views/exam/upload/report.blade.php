@@ -21,7 +21,7 @@
                 <th>Teacher Name</th>
                 <th>Teacher Phone Number</th>
                 <th>Subject Allocations</th>
-                <th>Not Uploaded</th>
+                <th>Not Attempted</th>
                 <th>In Progress</th>
                 <th>Submitted to Class Master</th>
                 <th>Submitted to Exam Office</th>
