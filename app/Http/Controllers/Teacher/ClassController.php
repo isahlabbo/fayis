@@ -17,6 +17,10 @@ class ClassController extends Controller
         return view('teacher.class.students',['sectionClass'=>SectionClass::find($sectionClassId)]);
     }
 
+    public function subjects($sectionClassId){
+        return view('teacher.class.subjects',['sectionClass'=>SectionClass::find($sectionClassId)]);
+    }
+
     public function reportCards($sectionClassId){
         return view('teacher.class.reportCards',['sectionClass'=>SectionClass::find($sectionClassId)]);
     }

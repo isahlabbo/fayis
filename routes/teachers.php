@@ -9,6 +9,7 @@ Route::middleware(['auth','verified','teacher'])
     ->group(function (){
         Route::get('{classId}/', 'ClassController@index')->name('index');
         Route::get('{classId}/students', 'ClassController@students')->name('students');
+        Route::get('{classId}/subjects', 'ClassController@subjects')->name('subjects');
         //    results routes
         Route::name('result.')
         ->prefix('/result')

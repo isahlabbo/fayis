@@ -39,6 +39,15 @@ class SectionClassSubjectTeacher extends BaseModel
         .$this->teacher->name));
     }
 
+    function currentTermUploadStatus() {
+        $upload = $this->subjectTeacherTermlyUploads()->where('academic_session_id', $this->currentSession()->id)
+        ->where('term_id', $this->currentSessionTerm()->id)->first();
+        if($upload) {
+            return $upload->status;
+        }
+        return -1;
+    }
+
     function getThisSessionUploads() {
         $uploads = $this->subjectTeacherTermlyUploads()->where('academic_session_id', $this->currentSession()->id)->get();
         // check if the uploads are 3 return the else create default uploads
