@@ -5,14 +5,22 @@
 @section('breadcrumb')  
 @endsection
 @section('content')
+@php 
+    $notUploaded = 0;
+    $submittedToClassMaster = 0;
+    $submittedToExamOffice = 0;
+    $published = 0;
+    $inProgress = 0;    
+    $allocated = 0;
+@endphp
 <div class="row mt-4">
     <table class="table table-sm table-bordered">
         <thead>
             <tr>
                 <th>S/N</th>
-        
                 <th>Teacher Name</th>
-                <th>Allocated Subjects</th>
+                <th>Teacher Phone Number</th>
+                <th>Subject Allocations</th>
                 <th>Not Uploaded</th>
                 <th>In Progress</th>
                 <th>Submitted to Class Master</th>
@@ -24,11 +32,18 @@
         @foreach(App\Models\Teacher::all() as $teacher)
         @php 
         $teacherUploads = $teacher->resultUploadReport();
+        $notUploaded += count($teacherUploads['not_uploaded']);
+        $submittedToClassMaster += count($teacherUploads['submitted_to_class_master']);
+        $submittedToExamOffice += count($teacherUploads['submitted_to_exam_office']);
+        $published += count($teacherUploads['published']);  
+        $inProgress += count($teacherUploads['in_progress']);
+        $allocated += count($teacherUploads['allocated']);
         @endphp
         @if(count($teacherUploads['allocated']) > 0)
             <tr class="{{ $teacherUploads['table_row_class'] }}">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $teacher->user->name ?? '' }}</td>
+                <td>{{ $teacher->phone ?? '' }}</td>
                 <td>{{ count($teacherUploads['allocated']) }}</td>
                 <td>{{ count($teacherUploads['not_uploaded']) }}</td>
                 <td>{{ count($teacherUploads['in_progress']) }}</td>
@@ -39,6 +54,22 @@
             </tr>
         @endif
         @endforeach
+            <tr >
+                <td colspan="3"><b>Total</b></td>
+                <td><b>{{ $allocated }}</b></td>
+                <td><b>{{ $notUploaded }}</b></td>
+                <td><b>{{ $inProgress }}</b></td>
+                <td><b>{{ $submittedToClassMaster }}</b></td>
+                <td><b>{{ $submittedToExamOffice }}</b></td>
+                <td><b>{{ $published }}</b></td>
+                <td>
+                    @if($notUploaded + $inProgress > 0)
+                        <span class="badge bg-secondary lg">{{($notUploaded + $inProgress)}} Pending Uploads</span> 
+                    @else
+                        <span class="badge bg-success">All Results Uploaded</span>  
+                    @endif
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
