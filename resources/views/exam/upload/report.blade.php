@@ -14,6 +14,7 @@
     $allocated = 0;
 @endphp
 <div class="row mt-4">
+    <h5 class="text text-center mb-4">Teachers Result Upload Report</h5>
     <table class="table table-sm table-bordered">
         <thead>
             <tr>
