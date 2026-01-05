@@ -6,7 +6,7 @@
 @endsection
 @section('content')
 <div class="row mt-4">
-    <table class="table table-bordered">
+    <table class="table table-sm table-bordered">
         <thead>
             <tr>
                 <th>S/N</th>
