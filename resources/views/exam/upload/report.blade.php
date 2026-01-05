@@ -23,8 +23,8 @@
                 <th>Teacher Phone Number</th>
                 <th>Subject Allocations</th>
                 <th>Submitted</th>
-                <th>Not Attempted</th>
                 <th>In Progress</th>
+                <th>Not Attempted</th>
                 <th>Submitted to Class Master</th>
                 <th>Submitted to Exam Office</th>
                 <th>Published</th>
@@ -48,8 +48,8 @@
                 <td>{{ $teacher->phone ?? '' }}</td>
                 <td>{{ count($teacherUploads['allocated']) }}</td>
                 <td>{{ count($teacherUploads['allocated'])-count($teacherUploads['not_uploaded']) }}</td>
-                <td>{{ count($teacherUploads['not_uploaded']) }}</td>
                 <td>{{ count($teacherUploads['in_progress']) }}</td>
+                <td>{{ count($teacherUploads['not_uploaded'])-count($teacherUploads['in_progress']) }}</td>
                 <td>{{ count($teacherUploads['submitted_to_class_master'])+count($teacherUploads['submitted_to_exam_office'])+  count($teacherUploads['published'])}}</td>
                 <td>{{ count($teacherUploads['submitted_to_exam_office']) + count($teacherUploads['published'])}}</td>
                 <td>{{ count($teacherUploads['published']) }}</td>
@@ -61,8 +61,8 @@
                 <td colspan="3"><b>Total</b></td>
                 <td><b>{{ $allocated }}</b></td>
                 <td><b>{{ $allocated-$notUploaded }}</b></td>
-                <td><b>{{ $notUploaded }}</b></td>
                 <td><b>{{ $inProgress }}</b></td>
+                <td><b>{{ $notUploaded - $inProgress }}</b></td>
                 <td><b>{{ $submittedToClassMaster + $submittedToExamOffice + $published }}</b></td>
                 <td><b>{{ $submittedToExamOffice + $published }}</b></td>
                 <td><b>{{ $published }}</b></td>
