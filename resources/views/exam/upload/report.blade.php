@@ -25,7 +25,7 @@
         @php 
         $teacherUploads = $teacher->resultUploadReport();
         @endphp
-            <tr>
+            <tr class="{{ $teacherUploads['table_row_class'] }}">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $teacher->user->name ?? '' }}</td>
                 <td>{{ count($teacherUploads['allocated']) }}</td>
@@ -34,6 +34,7 @@
                 <td>{{ count($teacherUploads['submitted_to_class_master']) }}</td>
                 <td>{{ count($teacherUploads['submitted_to_exam_office']) }}</td>
                 <td>{{ count($teacherUploads['published']) }}</td>
+                <td>{{ $teacherUploads['remark'] }}</td>
             </tr>
         @endforeach
         </tbody>

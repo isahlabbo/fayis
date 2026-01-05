@@ -30,6 +30,8 @@ class Teacher extends BaseModel
         $submittedToClassMaster = [];
         $submittedToExamOffice = [];
         $published = [];
+        $remark = null;
+        $tableRowClass = '';
 
         foreach ($this->sectionClassSubjectTeachers->where('status','Active') as $sectionClassSubjectTeacher) {
             $allocated[] = $sectionClassSubjectTeacher;
@@ -45,6 +47,25 @@ class Teacher extends BaseModel
             }elseif($status === 3){
                 $published[] = $sectionClassSubjectTeacher;
             }
+
+
+        }
+
+        if(count($notUploaded) === count($allocated)) {
+            $remark = 'No Upload';
+            $tableRowClass = 'bg-danger text-white';
+        } elseif(count($published) === count($allocated)) {
+            $remark = 'All Published';
+            $tableRowClass = 'bg-success text-white';
+        } elseif(count($submittedToExamOffice) + count($submittedToClassMaster) + count($published) === count($allocated)) {
+            $remark = 'All Submitted';
+            $tableRowClass = 'bg-info text-white';
+        }elseif(count($submittedToExamOffice) + count($submittedToClassMaster) + count($published) !== count($allocated)) {
+            $remark = 'Incomplete Submission';
+            $tableRowClass = 'bg-warning text-white';
+         } elseif(count($inProgress) > 0) {
+            $remark = 'In Progress';
+            $tableRowClass = 'bg-warning text-dark';
         }
 
         return [
@@ -54,6 +75,8 @@ class Teacher extends BaseModel
             'submitted_to_exam_office' => $submittedToExamOffice,
             'published' => $published,
             'allocated' => $allocated,
+            'remark'    => $remark,
+            'table_row_class' => $tableRowClass
         ];
     }
 }   
