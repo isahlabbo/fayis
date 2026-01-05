@@ -1,17 +1,18 @@
 <div class="row">
     <!-- Results -->
     <div class="col-md-3 mb-4">
-        <a href="" class="text-decoration-none">
-            <div class="card-body shadow text-center rounded-3">
-                <h5 class="text-primary">
-                    <i class="fas fa-clipboard-check"></i> Results
-                </h5>
-                <h6 class="text-primary">
-                    <!-- Add count or data here -->
-                    {{ count(App\Models\SectionClassSubjectUploads::all()) }}
-                </h6>
-            </div>
-        </a>
+        
+        <div class="card-body shadow text-center rounded-3">
+            <a href="{{ route('exam.upload.report') }}" class="text-decoration-none">
+            <h5 class="text-primary">
+                <i class="fas fa-clipboard-check"></i> Result Uploads
+            </h5>
+                </a>
+            <h6 >
+                View the progress of result uploads by all subject teachers
+            </h6>
+        </div>
+       
     </div>
 
     <!-- Psychomotor -->

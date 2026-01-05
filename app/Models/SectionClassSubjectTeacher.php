@@ -39,7 +39,7 @@ class SectionClassSubjectTeacher extends BaseModel
         .$this->teacher->name));
     }
 
-    function currentTermUploadStatus() {
+    public function currentTermUploadStatus() {
         $upload = $this->subjectTeacherTermlyUploads()->where('academic_session_id', $this->currentSession()->id)
         ->where('term_id', $this->currentSessionTerm()->id)->first();
         if($upload) {
