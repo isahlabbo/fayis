@@ -94,13 +94,13 @@
                                     </tr>
                                 </table>
                                 @if($result->status == 0)
-                                <div class="alert alert-success">This Result is with Subject Teacher Now</div>
+                                <div class="alert alert-warning">This Result is with Subject Teacher Now</div>
                                 @elseif($result->status == 1)
                                 <a href="{{route('teacher.class.result.details',[$result->id])}}"><button class="btn btn-outline-primary">View Detail</button></a>
                                 <a href="{{route('teacher.class.result.return',[$result->id])}}" class="btn btn-outline-danger">Return for Correction</a>
                                 <a href="{{route('teacher.class.result.submit',[$result->id])}}" class="mb-4 btn btn-danger" onclick="return confirm('Are you sure you want to submit this result to Exam Office? Note that if you click OK you will no have access to this result again')">Submit to Exam Officer</a>
                                 @elseif($result->status == 2)
-                                <div class="alert alert-info">This Result has been Submitted to Exam Office</div>
+                                <div class="alert alert-primary">This Result has been Submitted to Exam Office</div>
                                 @elseif($result->status == 3)
                                 <div class="alert alert-success">This Result has been Published</div>
                                 @endif
