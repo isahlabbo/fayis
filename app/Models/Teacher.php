@@ -40,6 +40,7 @@ class Teacher extends BaseModel
                 $notUploaded[] = $sectionClassSubjectTeacher;
             } elseif ($status === 0) {
                 $inProgress[] = $sectionClassSubjectTeacher;
+                $notUploaded[] = $sectionClassSubjectTeacher;
             } elseif ($status === 1) {
                 $submittedToClassMaster[] = $sectionClassSubjectTeacher;
             }elseif ($status === 2) {
