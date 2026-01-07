@@ -5,7 +5,7 @@
         <div class="card-body shadow text-center rounded-3">
             <a href="{{ route('exam.upload.report') }}" class="text-decoration-none">
             <h5 class="text-primary">
-                <i class="fas fa-clipboard-check"></i> Result Uploads
+                <i class="fas fa-clipboard-check"></i> Teachers Upload
             </h5>
                 </a>
             <h6 >
@@ -13,6 +13,21 @@
             </h6>
         </div>
        
+    </div>
+
+    <!-- class upload   -->
+    <div class="col-md-3 mb-4">
+        
+        <div class="card-body shadow text-center rounded-3">
+            <a href="{{ route('exam.upload.class.report') }}" class="text-decoration-none">
+            <h5 class="text-primary">
+                <i class="fas fa-school"></i> Class Upload
+            </h5>
+                </a>
+            <h6 >
+                View the progress of result uploads by class    
+            </h6>
+        </div>
     </div>
 
     <!-- Psychomotor -->

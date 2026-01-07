@@ -283,6 +283,69 @@ class SectionClass extends BaseModel
         }
     }
 
+    public function resultUploadReport()
+    {
+        
+        $notUploaded = [];
+        $subjects = [];
+        $inProgress = [];
+        $submittedToClassMaster = [];
+        $submittedToExamOffice = [];
+        $published = [];
+        $remark = null;
+        
+        foreach($this->sectionClassSubjects->where('status','Active') as $sectionClassSubject){
+            $subjects[] = $sectionClassSubject;
+            foreach($sectionClassSubject->sectionClassSubjectTeachers->where('status','Active') as $sectionClassSubjectTeacher){
+                $subjects[] = $sectionClassSubjectTeacher;
+                $status = $sectionClassSubjectTeacher->currentTermUploadStatus();
+                if ($status === -1) {
+                    $notUploaded[] = $sectionClassSubjectTeacher;
+                } elseif ($status === 0) {
+                    $notUploaded[] = $sectionClassSubjectTeacher;
+                    $inProgress[] = $sectionClassSubjectTeacher;
+                } elseif ($status === 1) {
+                    $submittedToClassMaster[] = $sectionClassSubjectTeacher;
+                }elseif ($status === 2) {
+                    $submittedToClassMaster[] = $sectionClassSubjectTeacher;
+                    $submittedToExamOffice[] = $sectionClassSubjectTeacher;
+                }elseif($status === 3){
+                    $submittedToClassMaster[] = $sectionClassSubjectTeacher;
+                    $submittedToExamOffice[] = $sectionClassSubjectTeacher;
+                    $published[] = $sectionClassSubjectTeacher;
+                }
+            }
+        }
+        
+        if(count($notUploaded) === count($subjects)) {
+            $remark = 'No Upload';
+            $tableRowClass = 'bg-success text-dark';
+        } elseif(count($published) === count($subjects)) {
+            $remark = 'All Published';
+            $tableRowClass = 'bg-success text-dark';
+        } elseif(count($submittedToClassMaster) === count($subjects)) {
+            $remark = 'All Submitted';
+            $tableRowClass = 'bg-info text-dark';
+        }elseif(count($submittedToClassMaster) < count($subjects)) {
+            $remark = 'Incomplete Submission';
+            $tableRowClass = 'bg-warning ';
+         } elseif(count($inProgress) > 0) {
+            $remark = 'In Progress';
+            $tableRowClass = 'bg-warning text-dark';
+        }
+
+        return [
+            'not_uploaded' => $notUploaded,
+            'in_progress' => $inProgress,
+            'submitted_to_class_master' => $submittedToClassMaster,
+            'submitted_to_exam_office' => $submittedToExamOffice,
+            'published' => $published,
+            'subjects' => $subjects,
+            'remark'    => $remark,
+            'table_row_class' => $tableRowClass
+        ];
+    }
+
     function getThisSubjectAverageScore($subjectName) {
         $average = 0;
         $subject = Subject::where('name', $subjectName)->first();

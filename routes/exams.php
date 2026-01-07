@@ -7,6 +7,7 @@ Route::middleware(['auth','verified','exam'])
     ->prefix('/upload')
     ->group(function (){
         Route::get('/report', 'UploadController@report')->name('report');
+        Route::get('/classes', 'UploadController@classReport')->name('class.report');
         
         Route::get('/{sectionId}', 'UploadController@index')->name('index');
         Route::get('/{sectionId}/summary', 'UploadController@summary')->name('summary');

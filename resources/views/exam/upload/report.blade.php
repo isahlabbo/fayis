@@ -47,9 +47,9 @@
                 <td>{{ $teacher->user->name ?? '' }}</td>
                 <td>{{ $teacher->phone ?? '' }}</td>
                 <td>{{ count($teacherUploads['allocated']) }}</td>
-                <td>{{ count($teacherUploads['allocated']) - count($teacherUploads['not_uploaded']) }}</td>
+                <td>{{ count($teacherUploads['submitted_to_class_master']) }}</td>
                 <td>{{ count($teacherUploads['in_progress']) }}</td>
-                <td>{{ count($teacherUploads['not_uploaded']) - count($teacherUploads['in_progress']) }}</td>
+                <td>{{ count($teacherUploads['not_attempted']) }}</td>
                 <td>{{ count($teacherUploads['submitted_to_class_master'])+count($teacherUploads['submitted_to_exam_office'])+  count($teacherUploads['published'])}}</td>
                 <td>{{ count($teacherUploads['submitted_to_exam_office']) + count($teacherUploads['published'])}}</td>
                 <td>{{ count($teacherUploads['published']) }}</td>
@@ -62,15 +62,15 @@
             <tr >
                 <td colspan="3"><b>Total</b></td>
                 <td><b>{{ $allocated }}</b></td>
-                <td><b>{{ $allocated - $notUploaded }}</b></td>
+                <td><b>{{ $submittedToClassMaster }}</b></td>
                 <td><b>{{ $inProgress }}</b></td>
-                <td><b>{{ $notUploaded - $inProgress }}</b></td>
+                <td><b>{{ $not_attempted }}</b></td>
                 <td><b>{{ $submittedToClassMaster + $submittedToExamOffice + $published }}</b></td>
                 <td><b>{{ $submittedToExamOffice + $published }}</b></td>
                 <td><b>{{ $published }}</b></td>
                 <td>
-                    @if($notUploaded + $inProgress > 0)
-                        <span class="badge bg-secondary lg">{{$inProgress + ($notUploaded - $inProgress)}} Pending Uploads</span> 
+                    @if($not_attempted + $inProgress > 0)
+                        <span class="badge bg-secondary lg">{{$inProgress + $not_attempted}} Pending Uploads</span> 
                     @else
                         <span class="badge bg-success">All Results Uploaded</span>  
                     @endif

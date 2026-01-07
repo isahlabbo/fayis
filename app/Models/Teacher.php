@@ -25,7 +25,7 @@ class Teacher extends BaseModel
     public function resultUploadReport()
     {
         $allocated = [];
-        $notUploaded = [];
+        $notAttempted = [];
         $inProgress = [];
         $submittedToClassMaster = [];
         $submittedToExamOffice = [];
@@ -37,31 +37,31 @@ class Teacher extends BaseModel
             $allocated[] = $sectionClassSubjectTeacher;
             $status = $sectionClassSubjectTeacher->currentTermUploadStatus();
             if ($status === -1) {
-                $notUploaded[] = $sectionClassSubjectTeacher;
+                $notAttempted[] = $sectionClassSubjectTeacher;
             } elseif ($status === 0) {
                 $inProgress[] = $sectionClassSubjectTeacher;
-                $notUploaded[] = $sectionClassSubjectTeacher;
             } elseif ($status === 1) {
                 $submittedToClassMaster[] = $sectionClassSubjectTeacher;
             }elseif ($status === 2) {
                 $submittedToExamOffice[] = $sectionClassSubjectTeacher;
+                $submittedToClassMaster[] = $sectionClassSubjectTeacher;
             }elseif($status === 3){
                 $published[] = $sectionClassSubjectTeacher;
+                $submittedToClassMaster[] = $sectionClassSubjectTeacher;
+                $submittedToExamOffice[] = $sectionClassSubjectTeacher;
             }
-
-
         }
 
-        if(count($notUploaded) === count($allocated)) {
+        if(count($notAttempted) === count($allocated)) {
             $remark = 'No Upload';
             $tableRowClass = 'bg-danger text-dark';
         } elseif(count($published) === count($allocated)) {
             $remark = 'All Published';
             $tableRowClass = 'bg-success text-dark';
-        } elseif(count($submittedToExamOffice) + count($submittedToClassMaster) + count($published) === count($allocated)) {
+        } elseif( count($submittedToClassMaster) === count($allocated)) {
             $remark = 'All Submitted';
             $tableRowClass = 'bg-info text-dark';
-        }elseif(count($submittedToExamOffice) + count($submittedToClassMaster) + count($published) !== count($allocated)) {
+        }elseif(count($submittedToClassMaster) !== count($allocated)) {
             $remark = 'Incomplete Submission';
             $tableRowClass = 'bg-warning ';
          } elseif(count($inProgress) > 0) {
@@ -70,7 +70,7 @@ class Teacher extends BaseModel
         }
 
         return [
-            'not_uploaded' => $notUploaded,
+            'not_attempted' => $notAttempted,
             'in_progress' => $inProgress,
             'submitted_to_class_master' => $submittedToClassMaster,
             'submitted_to_exam_office' => $submittedToExamOffice,

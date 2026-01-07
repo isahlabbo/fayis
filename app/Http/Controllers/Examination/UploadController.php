@@ -17,6 +17,10 @@ class UploadController extends Controller
     public function report() {
         return view('exam.upload.report');
     }
+
+    public function classReport() {
+        return view('exam.upload.class');
+    }
     
     public function teacherReport($teacherId) {
         return view('exam.upload.teacher_report',['teacher'=>Teacher::find($teacherId)]);
