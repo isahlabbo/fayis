@@ -56,6 +56,10 @@ class SectionClass extends BaseModel
         return $this->hasMany(SectionClassReservedAdmissionNo::class);
     }
 
+    public function currentClassMaster() {
+        return $this->sectionClassTeachers->where('status','Active')->first();
+    }
+
     public function numberofUnpublishedResults() {
         $count = 0;
         foreach($this->sectionClassStudents->where('status', 'Active') as $studentInClass){

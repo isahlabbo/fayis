@@ -19,6 +19,8 @@
             <tr>
                 <th>S/N</th>
                 <th>Class Name</th>
+                <th>Class Master Name</th>
+                <th>Class Master Phone</th>
                 <th>Number of Student</th>
                 <th>Number of Subject</th>
                 <th>Submitted</th>
@@ -34,6 +36,8 @@
             <tr class="">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $sectionClass->name ?? '' }}</td>
+                <td>{{ $sectionClass->currentClassMaster()->teacher->user->name ?? '' }}</td>
+                <td>{{ $sectionClass->currentClassMaster()->teacher->phone ?? '' }}</td>
                 <td>{{ $sectionClass->studentCounts() }}</td>
                 <td>{{ $sectionClass->subjects() }}</td>
                 <td>{{ $sectionClass->submitted() }}</td>
