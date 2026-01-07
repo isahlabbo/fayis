@@ -29,19 +29,19 @@
         </thead>
         <tbody> 
             @foreach($teacherUploads['allocated'] as $allocation) 
-            @if(!$allocation->sectionClassSubject)
-                @continue
-            @endif         
             @php 
             $upload = $allocation->currentTermUpload();
             @endphp
+         
+            
             <tr class="">
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $allocation->sectionClassSubject->sectionClass->name }}</td>
-                <td>{{ $allocation->sectionClassSubject->subject->name }}</td>
-                <td>{{ $upload->studentResults()->count() }}</td>
+                <td>{{ $allocation->sectionClassSubject->sectionClass->name ?? ''}}</td>
+                <td>{{ $allocation->sectionClassSubject->subject->name ?? ''}}</td>
+                <td>{{ $upload ? $upload->studentResults()->count() : 0 }}</td>
                 <td>
-                    @switch($upload->status ?? -1)
+                    
+                    @switch($allocation->currentTermUploadStatus())
                         @case('-1')
                             The Result has not been attempted
                             @break
@@ -62,11 +62,16 @@
                     @endswitch
                     
                 </td>
+                @if(!$upload)
+                <td></td>
+                @else
                 <td>
                     <a href="#" data-toggle="modal" data-target="#edit_{{ $upload->id }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i> Edit</a>
                 </td>  
-                @include('exam.upload.teacher.edit', ['upload' => $upload])             
+                @include('exam.upload.teacher.edit', ['upload' => $upload]) 
+                @endif            
             </tr>  
+           
             @endforeach         
         </tbody>
     </table>    
