@@ -11,18 +11,9 @@
 <div class="row mt-4">
 
     <h5 class="text text-center mb-4">Classes Result Upload Report</h5>
-    @foreach(App\Models\Section::all() as $ection)
-    @php 
-        $sectionNotUploaded = 0;
-        $sectionSubmittedToClassMaster = 0;
-        $sectionSubmittedToExamOffice = 0;
-        $sectionPublished = 0;  
-        $sectionInProgress = 0;
-        $sectionSubjects = 0;
-        $sectionStudents = 0;
-    @endphp
+    @foreach(App\Models\Section::all() as $section)
 
-    <h6 class="text text-center mb-4">{{ $ection->name }}</h6>
+    <h6 class="text text-center mb-4">{{ $section->name }}</h6>
     <table class="table table-sm table-bordered">
         <thead>
             <tr>
@@ -39,54 +30,35 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($ection->sectionClasses as $sectionClass)
-        
-            @php 
-                $classUploads = $sectionClass->resultUploadReport();
-                $notUploaded = count($classUploads['not_uploaded']);
-                $submittedToClassMaster = count($classUploads['submitted_to_class_master']);
-                $submittedToExamOffice = count($classUploads['submitted_to_exam_office']);
-                $published = count($classUploads['published']);  
-                $inProgress = count($classUploads['in_progress']);
-                $subjects = count($classUploads['subjects']);
-            @endphp
+        @foreach($section->sectionClasses as $sectionClass)
             <tr class="">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $sectionClass->name ?? '' }}</td>
-                <td>{{ count($sectionClass->sectionClassStudents->where('status','Active')) }}</td>
-                <td>{{ count($classUploads['subjects']) }}</td>
-                <td>{{ count($classUploads['subjects']) - count($classUploads['not_uploaded']) }}</td>
-                <td>{{ count($classUploads['in_progress']) }}</td>
-                <td>{{ count($classUploads['not_uploaded']) - count($classUploads['in_progress']) }}</td>
-                <td>{{ count($classUploads['submitted_to_class_master'])+count($classUploads['submitted_to_exam_office'])+  count($classUploads['published'])}}</td>
-                <td>{{ count($classUploads['submitted_to_exam_office']) + count($classUploads['published'])}}</td>
-                <td>{{ count($classUploads['published']) }}</td>
-                <td>{{ $classUploads['remark'] }}</td>
+                <td>{{ $sectionClass->studentCounts() }}</td>
+                <td>{{ $sectionClass->subjects() }}</td>
+                <td>{{ $sectionClass->submitted() }}</td>
+                <td>{{ $sectionClass->inProgress()}}</td>
+                <td>{{ $sectionClass->notAttempted() }}</td>
+                <td>{{ $sectionClass->submittedToClassMaster()}}</td>
+                <td>{{ $sectionClass->submittedToExamOffice()}}</td>
+                <td>{{ $sectionClass->published() }}</td>
+                <td>{{ $sectionClass->uploadRemark() }}</td>
             </tr>
-            @php 
-                $sectionNotUploaded += count($classUploads['not_uploaded']);
-                $sectionSubmittedToClassMaster += count($classUploads['submitted_to_class_master']);
-                $sectionSubmittedToExamOffice += count($classUploads['submitted_to_exam_office']);
-                $sectionPublished += count($classUploads['published']);  
-                $sectionInProgress += count($classUploads['in_progress']);
-                $sectionSubjects += count($classUploads['subjects']);
-                $sectionStudents += count($sectionClass->sectionClassStudents->where('status','Active'));
-            @endphp
         @endforeach
 
             <tr >
                 <td colspan="2"><b>Total</b></td>
-                <td><b>{{ $sectionStudents }}</b></td>
-                <td><b>{{ $sectionSubjects }}</b></td>
-                <td><b>{{ $sectionSubjects - $sectionNotUploaded }}</b></td>
-                <td><b>{{ $sectionInProgress }}</b></td>
-                <td><b>{{ $sectionNotUploaded }}</b></td>
-                <td><b>{{ $sectionSubmittedToClassMaster }}</b></td>
-                <td><b>{{ $sectionSubmittedToExamOffice }}</b></td>
-                <td><b>{{ $sectionPublished }}</b></td>
+                <td>{{ $section->studentCounts() }}</td>
+                <td>{{ $section->subjects() }}</td>
+                <td>{{ $section->submitted() }}</td>
+                <td>{{ $section->inProgress()}}</td>
+                <td>{{ $section->notAttempted() }}</td>
+                <td>{{ $section->submittedToClassMaster()}}</td>
+                <td>{{ $section->submittedToExamOffice()}}</td>
+                <td>{{ $section->published() }}</td>
                 <td>
-                    @if($sectionNotUploaded + $sectionInProgress > 0)
-                        <span class="badge bg-secondary lg">{{$sectionInProgress + $sectionNotUploaded}} Pending Uploads</span> 
+                    @if($section->notAttempted() + $section->InProgress() > 0)
+                        <span class="badge bg-secondary lg">{{$section->inProgress() + $section->notAttempted()}} Pending Uploads</span> 
                     @else
                         <span class="badge bg-success">All Results Uploaded</span>  
                     @endif

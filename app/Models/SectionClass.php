@@ -283,11 +283,57 @@ class SectionClass extends BaseModel
         }
     }
 
+    public function subjects(){
+        $report = $this->resultUploadReport();
+        return count($report['subjects']);
+    }
+
+    public function studentCounts(){
+        $report = $this->resultUploadReport();
+        return count($report['students']);
+    }
+
+    public function submitted(){
+        $report = $this->resultUploadReport();
+        return count($report['submitted_to_exam_office']) + count($report['published']) + count($report['submitted_to_class_master']);
+    }
+
+    public function inProgress(){
+        $report = $this->resultUploadReport();  
+        return count($report['in_progress']);
+    }
+
+    public function notAttempted(){
+        $report = $this->resultUploadReport();
+        return count($report['not_attempted']);
+    }
+
+    public function submittedToClassMaster(){
+        $report = $this->resultUploadReport();
+        return count($report['submitted_to_class_master']) + count($report['submitted_to_exam_office']) + count($report['published']);
+    }
+
+    public function submittedToExamOffice(){
+        $report = $this->resultUploadReport();
+        return count($report['submitted_to_exam_office']) + count($report['published']);
+    }
+
+    public function published(){
+        $report = $this->resultUploadReport();
+        return count($report['published']);
+    }
+
+    public function uploadRemark(){
+        $report = $this->resultUploadReport();
+        return $report['remark'];
+    }
+
     public function resultUploadReport()
     {
-        
-        $notUploaded = [];
+        $students = $this->sectionClassStudents->where('status', 'Active');
         $subjects = [];
+        $submitted = [];
+        $notAttempted = [];
         $inProgress = [];
         $submittedToClassMaster = [];
         $submittedToExamOffice = [];
@@ -297,36 +343,33 @@ class SectionClass extends BaseModel
         foreach($this->sectionClassSubjects->where('status','Active') as $sectionClassSubject){
             $subjects[] = $sectionClassSubject;
             foreach($sectionClassSubject->sectionClassSubjectTeachers->where('status','Active') as $sectionClassSubjectTeacher){
-                $subjects[] = $sectionClassSubjectTeacher;
                 $status = $sectionClassSubjectTeacher->currentTermUploadStatus();
                 if ($status === -1) {
-                    $notUploaded[] = $sectionClassSubjectTeacher;
+                    $notAttempted[] = $sectionClassSubjectTeacher;
                 } elseif ($status === 0) {
-                    $notUploaded[] = $sectionClassSubjectTeacher;
                     $inProgress[] = $sectionClassSubjectTeacher;
                 } elseif ($status === 1) {
                     $submittedToClassMaster[] = $sectionClassSubjectTeacher;
                 }elseif ($status === 2) {
-                    $submittedToClassMaster[] = $sectionClassSubjectTeacher;
                     $submittedToExamOffice[] = $sectionClassSubjectTeacher;
                 }elseif($status === 3){
-                    $submittedToClassMaster[] = $sectionClassSubjectTeacher;
-                    $submittedToExamOffice[] = $sectionClassSubjectTeacher;
                     $published[] = $sectionClassSubjectTeacher;
+                }elseif($status > 0){
+                    $submitted[] = $sectionClassSubjectTeacher;
                 }
             }
         }
         
-        if(count($notUploaded) === count($subjects)) {
+        if(count($notAttempted) === count($subjects)) {
             $remark = 'No Upload';
             $tableRowClass = 'bg-success text-dark';
         } elseif(count($published) === count($subjects)) {
             $remark = 'All Published';
             $tableRowClass = 'bg-success text-dark';
-        } elseif(count($submittedToClassMaster) === count($subjects)) {
+        } elseif(count($submitted) === count($subjects)) {
             $remark = 'All Submitted';
             $tableRowClass = 'bg-info text-dark';
-        }elseif(count($submittedToClassMaster) < count($subjects)) {
+        }elseif(count($submitted) < count($subjects)) {
             $remark = 'Incomplete Submission';
             $tableRowClass = 'bg-warning ';
          } elseif(count($inProgress) > 0) {
@@ -335,13 +378,15 @@ class SectionClass extends BaseModel
         }
 
         return [
-            'not_uploaded' => $notUploaded,
+            'not_attempted' => $notAttempted,
             'in_progress' => $inProgress,
             'submitted_to_class_master' => $submittedToClassMaster,
             'submitted_to_exam_office' => $submittedToExamOffice,
             'published' => $published,
             'subjects' => $subjects,
+            'students' => $students,
             'remark'    => $remark,
+            'submitted' =>$submitted,
             'table_row_class' => $tableRowClass
         ];
     }

@@ -42,7 +42,7 @@
             @endphp
         @foreach(App\Models\Teacher::all() as $teacher)
         
-        
+        @if($teacher->allocated() >0)
             <tr class="">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $teacher->user->name ?? '' }}</td>
@@ -66,6 +66,7 @@
                 $published += $teacher->published();
                 $inProgress += $teacher->inProgress();
             @endphp
+        @endif
         @endforeach
             <tr >
                 <td colspan="3"><b>Total</b></td>

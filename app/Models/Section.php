@@ -23,6 +23,69 @@ class Section extends BaseModel
         return $this->hasMany(AffectiveTrait::class);
     }
 
+    public function studentCounts(){
+        $studentCounts = 0;
+        foreach($this->sectionClasses as $sectionClass){
+            $studentCounts += $sectionClass->studentCounts();
+        }
+        return $studentCounts;
+    }
+
+    public function submitted(){
+        $submitted = 0;
+        foreach($this->sectionClasses as $sectionClass){
+            $submitted += $sectionClass->submitted();
+        }
+        return $submitted;
+    }
+
+    public function subjects(){
+        $subjects = 0;
+        foreach($this->sectionClasses as $sectionClass){
+            $subjects += $sectionClass->subjects();
+        }
+        return $subjects;
+    }
+
+    public function inProgress(){
+        $inProgress = 0;
+        foreach($this->sectionClasses as $sectionClass){
+            $inProgress += $sectionClass->inProgress();
+        }
+        return $inProgress;
+    }
+
+    public function notAttempted(){
+        $notAttempted = 0;
+        foreach($this->sectionClasses as $sectionClass){
+            $notAttempted += $sectionClass->notAttempted();
+        }
+        return $notAttempted;
+    }
+
+    public function submittedToClassMaster(){
+        $submittedToClassMaster = 0;
+        foreach($this->sectionClasses as $sectionClass){
+            $submittedToClassMaster += $sectionClass->submittedToClassMaster();
+        }
+        return $submittedToClassMaster;
+    }
+
+    public function submittedToExamOffice(){
+        $submittedToExamOffice = 0;
+        foreach($this->sectionClasses as $sectionClass){
+            $submittedToExamOffice += $sectionClass->submittedToExamOffice();
+        }
+        return $submittedToExamOffice;
+    }
+
+    public function published(){
+        $published = 0;
+        foreach($this->sectionClasses as $sectionClass){
+            $published += $sectionClass->published();
+        }
+        return $published;
+    }
     
     public function teacherAllocations($teacherId)
     {
