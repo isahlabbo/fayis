@@ -64,13 +64,13 @@
                 <td><b>{{ $allocated }}</b></td>
                 <td><b>{{ $submittedToClassMaster }}</b></td>
                 <td><b>{{ $inProgress }}</b></td>
-                <td><b>{{ $not_attempted }}</b></td>
+                <td><b>{{ $notAttempted }}</b></td>
                 <td><b>{{ $submittedToClassMaster  }}</b></td>
                 <td><b>{{ $submittedToExamOffice}}</b></td>
                 <td><b>{{ $published }}</b></td>
                 <td>
-                    @if($not_attempted + $inProgress > 0)
-                        <span class="badge bg-secondary lg">{{$inProgress + $not_attempted}} Pending Uploads</span> 
+                    @if($notAttempted + $inProgress > 0)
+                        <span class="badge bg-secondary lg">{{$inProgress + $notAttempted}} Pending Uploads</span> 
                     @else
                         <span class="badge bg-success">All Results Uploaded</span>  
                     @endif
