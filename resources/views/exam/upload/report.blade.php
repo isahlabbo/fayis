@@ -6,7 +6,7 @@
 @endsection
 @section('content')
 @php 
-    $notUploaded = 0;
+    $notAttempted = 0;
     $submittedToClassMaster = 0;
     $submittedToExamOffice = 0;
     $published = 0;
@@ -34,7 +34,7 @@
         @foreach(App\Models\Teacher::all() as $teacher)
         @php 
         $teacherUploads = $teacher->resultUploadReport();
-        $notUploaded += count($teacherUploads['not_uploaded']);
+        $notAttempted += count($teacherUploads['not_attempted']);
         $submittedToClassMaster += count($teacherUploads['submitted_to_class_master']);
         $submittedToExamOffice += count($teacherUploads['submitted_to_exam_office']);
         $published += count($teacherUploads['published']);  
@@ -65,8 +65,8 @@
                 <td><b>{{ $submittedToClassMaster }}</b></td>
                 <td><b>{{ $inProgress }}</b></td>
                 <td><b>{{ $not_attempted }}</b></td>
-                <td><b>{{ $submittedToClassMaster + $submittedToExamOffice + $published }}</b></td>
-                <td><b>{{ $submittedToExamOffice + $published }}</b></td>
+                <td><b>{{ $submittedToClassMaster  }}</b></td>
+                <td><b>{{ $submittedToExamOffice}}</b></td>
                 <td><b>{{ $published }}</b></td>
                 <td>
                     @if($not_attempted + $inProgress > 0)
