@@ -42,7 +42,7 @@
         $allocated += count($teacherUploads['allocated']);
         @endphp
         @if(count($teacherUploads['allocated']) > 0)
-            <tr class="{{ $teacherUploads['table_row_class'] }}">
+            <tr class="">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $teacher->user->name ?? '' }}</td>
                 <td>{{ $teacher->phone ?? '' }}</td>
@@ -53,7 +53,9 @@
                 <td>{{ count($teacherUploads['submitted_to_class_master'])+count($teacherUploads['submitted_to_exam_office'])+  count($teacherUploads['published'])}}</td>
                 <td>{{ count($teacherUploads['submitted_to_exam_office']) + count($teacherUploads['published'])}}</td>
                 <td>{{ count($teacherUploads['published']) }}</td>
-                <td>{{ $teacherUploads['remark'] }}</td>
+                <td>{{ $teacherUploads['remark'] }}
+                    <a href="{{ route('exam.upload.teacher.index', $teacher->id) }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></a>
+                </td>
             </tr>
         @endif
         @endforeach

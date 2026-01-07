@@ -40,12 +40,20 @@ class SectionClassSubjectTeacher extends BaseModel
     }
 
     public function currentTermUploadStatus() {
-        $upload = $this->subjectTeacherTermlyUploads()->where('academic_session_id', $this->currentSession()->id)
-        ->where('term_id', $this->currentSessionTerm()->id)->first();
+        $upload = $this->currentTermUpload();
         if($upload) {
             return $upload->status;
         }
         return -1;
+    }
+
+    public function currentTermUpload() {
+        $upload = $this->subjectTeacherTermlyUploads()->where('academic_session_id', $this->currentSession()->id)
+        ->where('term_id', $this->currentSessionTerm()->id)->first();
+        if($upload) {
+            return $upload;
+        }
+        return null;
     }
 
     function getThisSessionUploads() {

@@ -7,11 +7,20 @@ Route::middleware(['auth','verified','exam'])
     ->prefix('/upload')
     ->group(function (){
         Route::get('/report', 'UploadController@report')->name('report');
+        
         Route::get('/{sectionId}', 'UploadController@index')->name('index');
         Route::get('/{sectionId}/summary', 'UploadController@summary')->name('summary');
         Route::get('/{uploadId}/details', 'UploadController@details')->name('details');
         Route::get('/{uploadId}/return-for-correction', 'UploadController@ReturnForCorrection')->name('edit');
         
+        Route::name('teacher.')
+        ->prefix('/teacher')
+        ->group(function (){
+            Route::get('/{teacher}', 'TeacherUploadController@index')->name('index');
+            Route::post('/{uploadId}', 'TeacherUploadController@update')->name('update');
+            
+        });
+
         Route::name('result.')
         ->prefix('/result')
         ->group(function (){
