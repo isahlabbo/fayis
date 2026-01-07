@@ -31,33 +31,41 @@
             </tr>
         </thead>
         <tbody>
+            @php 
+                $allocated = 0;
+                $notAttempted = 0;
+                $submittedToClassMaster = 0;
+                $submittedToExamOffice = 0;
+                $published = 0;
+                $inProgress = 0;
+                $remark = '';
+            @endphp
         @foreach(App\Models\Teacher::all() as $teacher)
-        @php 
-        $teacherUploads = $teacher->resultUploadReport();
-        $notAttempted += count($teacherUploads['not_attempted']);
-        $submittedToClassMaster += count($teacherUploads['submitted_to_class_master']);
-        $submittedToExamOffice += count($teacherUploads['submitted_to_exam_office']);
-        $published += count($teacherUploads['published']);  
-        $inProgress += count($teacherUploads['in_progress']);
-        $allocated += count($teacherUploads['allocated']);
-        @endphp
-        @if(count($teacherUploads['allocated']) > 0)
+        
+        
             <tr class="">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $teacher->user->name ?? '' }}</td>
                 <td>{{ $teacher->phone ?? '' }}</td>
-                <td>{{ count($teacherUploads['allocated']) }}</td>
-                <td>{{ count($teacherUploads['submitted_to_class_master']) }}</td>
-                <td>{{ count($teacherUploads['in_progress']) }}</td>
-                <td>{{ count($teacherUploads['not_attempted']) }}</td>
-                <td>{{ count($teacherUploads['submitted_to_class_master'])+count($teacherUploads['submitted_to_exam_office'])+  count($teacherUploads['published'])}}</td>
-                <td>{{ count($teacherUploads['submitted_to_exam_office']) + count($teacherUploads['published'])}}</td>
-                <td>{{ count($teacherUploads['published']) }}</td>
-                <td>{{ $teacherUploads['remark'] }}
+                <td>{{ $teacher->allocated() }}</td>
+                <td>{{ $teacher->submitted() }}</td>
+                <td>{{ $teacher->inProgress() }}</td>
+                <td>{{ $teacher->notAttempted() }}</td>
+                <td>{{ $teacher->submittedToClassMaster() }}</td>
+                <td>{{ $teacher->submittedToExamOffice() }}</td>
+                <td>{{ $teacher->published() }}</td>
+                <td>{{ $teacher->uploadRemark() }}
                     <a href="{{ route('exam.upload.teacher.index', $teacher->id) }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
-        @endif
+            @php 
+                $allocated += $teacher->allocated();
+                $notAttempted += $teacher->notAttempted();
+                $submittedToClassMaster += $teacher->submittedToClassMaster();
+                $submittedToExamOffice += $teacher->submittedToExamOffice();
+                $published += $teacher->published();
+                $inProgress += $teacher->inProgress();
+            @endphp
         @endforeach
             <tr >
                 <td colspan="3"><b>Total</b></td>

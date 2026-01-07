@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Teacher extends BaseModel
 {
+    
+
     public function sectionClassTeachers()
     {
         return $this->hasMany(SectionClassTeacher::class);
@@ -20,6 +22,46 @@ class Teacher extends BaseModel
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function allocated(){
+        $report = $this->resultUploadReport();
+        return count($report['allocated']);
+    }
+
+    public function submitted(){
+        $report = $this->resultUploadReport();
+        return count($report['submitted_to_exam_office']) + count($report['published']) + count($report['submitted_to_class_master']);
+    }
+
+    public function inProgress(){
+        $report = $this->resultUploadReport();  
+        return count($report['in_progress']);
+    }
+
+    public function notAttempted(){
+        $report = $this->resultUploadReport();
+        return count($report['not_attempted']);
+    }
+
+    public function submittedToClassMaster(){
+        $report = $this->resultUploadReport();
+        return count($report['submitted_to_class_master']) + count($report['submitted_to_exam_office']) + count($report['published']);
+    }
+
+    public function submittedToExamOffice(){
+        $report = $this->resultUploadReport();
+        return count($report['submitted_to_exam_office']) + count($report['published']);
+    }
+
+    public function published(){
+        $report = $this->resultUploadReport();
+        return count($report['published']);
+    }
+
+    public function uploadRemark(){
+        $report = $this->resultUploadReport();
+        return $report['remark'];
     }
 
     public function resultUploadReport()
@@ -44,11 +86,8 @@ class Teacher extends BaseModel
                 $submittedToClassMaster[] = $sectionClassSubjectTeacher;
             }elseif ($status === 2) {
                 $submittedToExamOffice[] = $sectionClassSubjectTeacher;
-                $submittedToClassMaster[] = $sectionClassSubjectTeacher;
             }elseif($status === 3){
                 $published[] = $sectionClassSubjectTeacher;
-                $submittedToClassMaster[] = $sectionClassSubjectTeacher;
-                $submittedToExamOffice[] = $sectionClassSubjectTeacher;
             }
         }
 
