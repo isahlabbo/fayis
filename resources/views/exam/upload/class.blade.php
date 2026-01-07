@@ -51,15 +51,15 @@
         @endforeach
 
             <tr >
-                <td colspan="2"><b>Total</b></td>
-                <td>{{ $section->studentCounts() }}</td>
-                <td>{{ $section->subjects() }}</td>
-                <td>{{ $section->submitted() }}</td>
-                <td>{{ $section->inProgress()}}</td>
-                <td>{{ $section->notAttempted() }}</td>
-                <td>{{ $section->submittedToClassMaster()}}</td>
-                <td>{{ $section->submittedToExamOffice()}}</td>
-                <td>{{ $section->published() }}</td>
+                <td colspan="4"><b>Total</b></td>
+                <td><b>{{ $section->studentCounts() }}</b></td>
+                <td><b>{{ $section->subjects() }}</b></td>
+                <td><b>{{ $section->submitted() }}</b></td>
+                <td><b>{{ $section->inProgress()}}</b></td>
+                <td><b>{{ $section->notAttempted() }}</b></td>
+                <td><b>{{ $section->submittedToClassMaster()}}</b></td>
+                <td><b>{{ $section->submittedToExamOffice()}}</b></td>
+                <td><b>{{ $section->published() }}</b></td>
                 <td>
                     @if($section->notAttempted() + $section->InProgress() > 0)
                         <span class="badge bg-secondary lg">{{$section->inProgress() + $section->notAttempted()}} Pending Uploads</span> 
