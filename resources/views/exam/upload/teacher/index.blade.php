@@ -27,12 +27,11 @@
             $upload = $allocation->currentTermUpload();
             @endphp
          
-            
             <tr class="">
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $allocation->sectionClassSubject->sectionClass->name ?? ''}}</td>
                 <td>{{ $allocation->sectionClassSubject->subject->name ?? ''}}</td>
-                <td>{{ $upload ? $upload->studentResults()->count() : 0 }}</td>
+                <td>{{ $upload ? $upload->studentCounts() : 0 }}</td>
                 <td>
                     
                     @switch($allocation->currentTermUploadStatus())
