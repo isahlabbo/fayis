@@ -33,7 +33,7 @@
                         {{$teacher->address}}
                     </td>
                     <td>{{count($teacher->sectionClassTeachers)}}</td>
-                    <td>{{count($teacher->sectionClassSubjectTeachers->where('status', 'Active'))}} <a href="{{route('administration.teacher.subject.index',[$teacher->id])}}">View</a></td>
+                    <td>{{$teacher->allocated()}} <a href="{{route('administration.teacher.subject.index',[$teacher->id])}}">View</a></td>
                     
                     <td><button data-toggle="modal" data-target="#teacher_{{$teacher->id}}" class="btn btn-secondary">Edit</button>
                     <a href="{{route('administration.teacher.delete',[$teacher->id])}}" onclick="return confirm('Are you sure you want delete this teacher from teachers records')"><button class="btn btn-danger">Delete</button></a></td>
