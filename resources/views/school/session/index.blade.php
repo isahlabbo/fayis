@@ -44,14 +44,14 @@
                     </td>
                     <td>
                     @if($academicSession->status != 'Active')
-                        <a href="{{route('dashboard.session.activate',[$academicSession->id])}}"><button class="btn btn-success"> <i class="fas fa-check"></i> Mark as Current Session</button></a>
+                        <a href="{{route('administration.session.activate',[$academicSession->id])}}"><button class="btn btn-success"> <i class="fas fa-check"></i> Mark as Current Session</button></a>
                     @endif
                     </td>   
                     <td>   
-                        <a href="{{route('dashboard.session.configure',[$academicSession->id])}}"><button class="btn btn-primary"><i class="fas fa-cog"></i>Configure Termely Calendar</button></a>
+                        <a href="{{route('administration.session.configure',[$academicSession->id])}}"><button class="btn btn-primary"><i class="fas fa-cog"></i>Configure Termely Calendar</button></a>
                     </td>
                     <td>   
-                        <a href="{{route('dashboard.session.configure',[$academicSession->id])}}"><button class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button></a>
+                        <a href="{{route('administration.session.configure',[$academicSession->id])}}"><button class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button></a>
                     </td>
                 </tr>
                 @include('school.session.edit')
