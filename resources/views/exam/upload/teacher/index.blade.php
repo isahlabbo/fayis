@@ -7,12 +7,6 @@
 @section('content')
 @php 
     $teacherUploads = $teacher->resultUploadReport();   
-    $notUploaded = count($teacherUploads['not_uploaded']);
-    $submittedToClassMaster = count($teacherUploads['submitted_to_class_master']);  
-    $submittedToExamOffice = count($teacherUploads['submitted_to_exam_office']);  
-    $published = count($teacherUploads['published']);
-    $inProgress = count($teacherUploads['in_progress']);    
-    $allocated = count($teacherUploads['allocated']);
 @endphp
 <div class="row mt-4">
     <h5 class="text text-center mb-4">Result Upload Report for {{ $teacher->user->name ?? '' }}</h5>
