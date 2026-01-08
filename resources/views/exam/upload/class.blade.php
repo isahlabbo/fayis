@@ -10,11 +10,14 @@
 @endphp
 <div class="row mt-4">
 
-    <h5 class="text text-center mb-4">Classes Result Upload Report</h5>
+    <h3 class="text mb-4">Classes Result Upload Report</h3>
     @foreach(App\Models\Section::all() as $section)
-
-    <h6 class="text text-center mb-4">{{ $section->name }}</h6>
+<div class="col-md-12">
+<h4>{{ $section->name }} Reports</h4>
+</div>
+    
     <table class="table table-sm table-bordered">
+        
         <thead>
             <tr>
                 <th>S/N</th>
@@ -29,6 +32,7 @@
                 <th>Submitted to Class Master</th>
                 <th>Submitted to Exam Office</th>
                 <th>Published</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +50,8 @@
                 <td>{{ $sectionClass->submittedToClassMaster()}}</td>
                 <td>{{ $sectionClass->submittedToExamOffice()}}</td>
                 <td>{{ $sectionClass->published() }}</td>
-                <td>{{ $sectionClass->uploadRemark() }}</td>
+                <td>{{ $sectionClass->uploadRemark() }} </td>
+                <td><a href="{{route('exam.upload.class.report.show',[$sectionClass->id])}}" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a></td>
             </tr>
         @endforeach
 

@@ -8,6 +8,7 @@ Route::middleware(['auth','verified','exam'])
     ->group(function (){
         Route::get('/report', 'UploadController@report')->name('report');
         Route::get('/classes', 'UploadController@classReport')->name('class.report');
+        Route::get('/{sectionClassId}/shows', 'UploadController@classReportShow')->name('class.report.show');
         
         Route::get('/{sectionId}', 'UploadController@index')->name('index');
         Route::get('/{sectionId}/summary', 'UploadController@summary')->name('summary');

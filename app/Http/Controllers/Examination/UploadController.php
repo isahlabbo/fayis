@@ -18,6 +18,10 @@ class UploadController extends Controller
         return view('exam.upload.report');
     }
 
+    public function classReportShow($sectionClassId) {
+        return view('exam.upload.class_report',['sectionClass'=>SectionClass::find($sectionClassId)]);
+    }
+
     public function classReport() {
         return view('exam.upload.class');
     }
