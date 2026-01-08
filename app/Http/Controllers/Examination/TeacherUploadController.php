@@ -19,13 +19,5 @@ class TeacherUploadController extends Controller
         return redirect()->route('exam.upload.teacher.index',[$upload->sectionClassSubjectTeacher->teacher->id])->withSuccess('Upload Status Updated');
     }
 
-    public function delete($uploadId){
-        $upload = SubjectTeacherTermlyUpload::find($uploadId);
-        foreach($upload->studentResults as $result){
-            $result->delete();
-        }
-        $upload->delete();
-
-        return redirect()->route('exam.upload.teacher.index',[$upload->sectionClassSubjectTeacher->teacher->id])->withSuccess('Upload Deleted');
-    }
+    
 }

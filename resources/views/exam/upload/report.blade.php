@@ -36,6 +36,7 @@
                 $notAttempted = 0;
                 $submittedToClassMaster = 0;
                 $submittedToExamOffice = 0;
+                $submitted = 0;
                 $published = 0;
                 $inProgress = 0;
                 $remark = '';
@@ -61,6 +62,7 @@
             @php 
                 $allocated += $teacher->allocated();
                 $notAttempted += $teacher->notAttempted();
+                $submitted += $teacher->submitted();
                 $submittedToClassMaster += $teacher->submittedToClassMaster();
                 $submittedToExamOffice += $teacher->submittedToExamOffice();
                 $published += $teacher->published();
@@ -71,7 +73,7 @@
             <tr >
                 <td colspan="3"><b>Total</b></td>
                 <td><b>{{ $allocated }}</b></td>
-                <td><b>{{ $submittedToClassMaster }}</b></td>
+                <td><b>{{ $submitted }}</b></td>
                 <td><b>{{ $inProgress }}</b></td>
                 <td><b>{{ $notAttempted }}</b></td>
                 <td><b>{{ $submittedToClassMaster  }}</b></td>

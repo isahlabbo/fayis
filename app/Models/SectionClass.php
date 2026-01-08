@@ -299,7 +299,7 @@ class SectionClass extends BaseModel
 
     public function submitted(){
         $report = $this->resultUploadReport();
-        return count($report['submitted_to_exam_office']) + count($report['published']) + count($report['submitted_to_class_master']);
+        return count($report['submitted']);
     }
 
     public function inProgress(){
@@ -358,7 +358,9 @@ class SectionClass extends BaseModel
                     $submittedToExamOffice[] = $sectionClassSubjectTeacher;
                 }elseif($status === 3){
                     $published[] = $sectionClassSubjectTeacher;
-                }elseif($status > 0){
+                }
+                
+                if($status > 0){
                     $submitted[] = $sectionClassSubjectTeacher;
                 }
             }

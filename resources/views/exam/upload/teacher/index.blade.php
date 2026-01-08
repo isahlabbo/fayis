@@ -31,7 +31,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $allocation->sectionClassSubject->sectionClass->name ?? ''}}</td>
                 <td>{{ $allocation->sectionClassSubject->subject->name ?? ''}}</td>
-                <td>{{ $upload ? $upload->studentResults()->count()/3 : 0 }}</td>
+                <td>{{ $upload ? $allocation->sectionClassSubject->sectionClass->studentCounts() : 0 }}</td>
                 <td>
                     
                     @switch($allocation->currentTermUploadStatus())
@@ -56,7 +56,7 @@
                     
                 </td>
                 @if(!$upload)
-                <td><a href="" class="btn btn-outline-warning"> <i class="fas fa-trash"></i> Delete</a></td>
+                <td>Pls ask head of school to delete this subject for this teacher, if he is not taken it</td>
                 @else
                 <td>
                     <a href="#" data-toggle="modal" data-target="#edit_{{ $upload->id }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i> Edit</a>
