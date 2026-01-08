@@ -31,7 +31,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $allocation->sectionClassSubject->sectionClass->name ?? ''}}</td>
                 <td>{{ $allocation->sectionClassSubject->subject->name ?? ''}}</td>
-                <td>{{ $upload ? $upload->studentCounts() : 0 }}</td>
+                <td>{{ $upload ? $upload->studentCounts()->count()/3 : 0 }}</td>
                 <td>
                     
                     @switch($allocation->currentTermUploadStatus())
