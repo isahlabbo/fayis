@@ -77,7 +77,7 @@ class Teacher extends BaseModel
 
         foreach ($this->sectionClassSubjectTeachers->where('status','Active') as $sectionClassSubjectTeacher) {
             
-            if($sectionClassSubjectTeacher->sectionClassSubject)
+            if($sectionClassSubjectTeacher->sectionClassSubject){
                 $allocated[] = $sectionClassSubjectTeacher;
                 $status = $sectionClassSubjectTeacher->currentTermUploadStatus();
                 if ($status === -1) {
