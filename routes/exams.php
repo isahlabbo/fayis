@@ -19,6 +19,7 @@ Route::middleware(['auth','verified','exam'])
         ->group(function (){
             Route::get('/{teacher}', 'TeacherUploadController@index')->name('index');
             Route::post('/{uploadId}', 'TeacherUploadController@update')->name('update');
+            Route::get('/{uploadId}/delete', 'TeacherUploadController@delete')->name('delete');
             
         });
 

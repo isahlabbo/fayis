@@ -56,7 +56,7 @@
                     
                 </td>
                 @if(!$upload)
-                <td></td>
+                <td><a href="" class="btn btn-outline-warning"> <i class="fas fa-trash"></i> Delete</a></td>
                 @else
                 <td>
                     <a href="#" data-toggle="modal" data-target="#edit_{{ $upload->id }}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-edit"></i> Edit</a>

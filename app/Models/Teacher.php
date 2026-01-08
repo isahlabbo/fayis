@@ -76,19 +76,23 @@ class Teacher extends BaseModel
         $tableRowClass = '';
 
         foreach ($this->sectionClassSubjectTeachers->where('status','Active') as $sectionClassSubjectTeacher) {
-            $allocated[] = $sectionClassSubjectTeacher;
-            $status = $sectionClassSubjectTeacher->currentTermUploadStatus();
-            if ($status === -1) {
-                $notAttempted[] = $sectionClassSubjectTeacher;
-            } elseif ($status === 0) {
-                $inProgress[] = $sectionClassSubjectTeacher;
-            } elseif ($status === 1) {
-                $submittedToClassMaster[] = $sectionClassSubjectTeacher;
-            }elseif ($status === 2) {
-                $submittedToExamOffice[] = $sectionClassSubjectTeacher;
-            }elseif($status === 3){
-                $published[] = $sectionClassSubjectTeacher;
+            
+            if($sectionClassSubjectTeacher->sectionClassSubject)
+                $allocated[] = $sectionClassSubjectTeacher;
+                $status = $sectionClassSubjectTeacher->currentTermUploadStatus();
+                if ($status === -1) {
+                    $notAttempted[] = $sectionClassSubjectTeacher;
+                } elseif ($status === 0) {
+                    $inProgress[] = $sectionClassSubjectTeacher;
+                } elseif ($status === 1) {
+                    $submittedToClassMaster[] = $sectionClassSubjectTeacher;
+                }elseif ($status === 2) {
+                    $submittedToExamOffice[] = $sectionClassSubjectTeacher;
+                }elseif($status === 3){
+                    $published[] = $sectionClassSubjectTeacher;
+                }
             }
+
         }
 
         if(count($notAttempted) === count($allocated)) {
