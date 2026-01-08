@@ -28,6 +28,7 @@
             $subjects++;
             $obtainedMarks = $obtainedMarks + $studentResult->total;
         @endphp
+        @if($studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher)
         <tr >
             <td>{{$studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject->name}}</td>
             <td class="text text-center">{{$studentResult->first_ca}}</td>
@@ -43,6 +44,7 @@
             <td class="text text-center">{{$studentResult->teacher()->user->name ?? 'Not Available'}}</td>
             @endif            
         </tr>
+        @endif
     @endforeach
     <table class="table-bordered">
     <tr>

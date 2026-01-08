@@ -22,9 +22,9 @@
             }
             $remaining = $totalSubjects - $uploaded;
            @endphp
-            @if($remaining == 0)
-            <a href="{{route('exam.upload.result.publish',[$sectionClass->id])}}" onclick="confirm('Are you sure you want to publish this result? Please note that publishing indicates you have reviewed and verified the result and consider it accurate and ready to be viewed by the public, including parents and guardians.')" class="btn btn-primary">Publish Result</a>
-            @endif    
+            
+            <a href="{{route('exam.upload.result.publish',[$sectionClass->id])}}" onclick="confirm('Are you sure you want to publish this result? Please note that publishing indicates you have reviewed and verified the result and consider it accurate and ready to be viewed by the public, including parents and guardians.')" class="btn btn-primary">Publish the Result</a>
+               
         </div>
             <!-- display progress bar showing the upload in % -->
              <div class="progress" style="height: 40px; font-size:20px;">
