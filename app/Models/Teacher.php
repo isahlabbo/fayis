@@ -31,7 +31,7 @@ class Teacher extends BaseModel
 
     public function submitted(){
         $report = $this->resultUploadReport();
-        return count($report['submitted'])
+        return count($report['submitted']);
     }
 
     public function inProgress(){
