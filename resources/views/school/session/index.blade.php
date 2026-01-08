@@ -3,7 +3,7 @@
         {{config('app.name')}} academic session
     @endsection
     @section('breadcrumb')
-       {{Breadcrumbs::render('dashboard.session')}}
+       
     @endsection
     @section('content')
         <table class="table">
