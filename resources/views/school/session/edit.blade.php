@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{route('dashboard.session.update',[$academicSession->id])}}" method="post">
+        <form action="{{route('administration.session.update',[$academicSession->id])}}" method="post">
             @csrf
             <div class="form-group">
                 <label for="start_at">Session Start At</label>

@@ -3,7 +3,7 @@
         {{$academicSession->name}} academic session configuration
     @endsection
     @section('breadcrumb')
-       {{Breadcrumbs::render('dashboard.session.configure',$academicSession)}}
+       
     @endsection
     @section('content')
     <div class="row">
@@ -12,7 +12,7 @@
     <div class="card shadow">
         <div class="card-body">
         <div class="card-header text text-bold"><b>{{config('app.name')}} <i>{{$academicSession->name}}</i> Academic Session Configuration</b></div><br>
-            <form action="{{route('dashboard.session.configuration.term.update')}}" method="post">
+            <form action="{{route('administration.session.configuration.term.update')}}" method="post">
                 @csrf
                 <div class="row">
                 <div class="col-md-6">
