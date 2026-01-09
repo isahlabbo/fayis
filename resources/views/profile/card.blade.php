@@ -38,7 +38,7 @@
 
                 <div class="photo">
                     <img id="staff-photo"
-                        src="{{asset('images/user.jpg')}}"
+                        src="{{asset('images/cards/security.jpg')}}"
                         alt="Staff Photo" width="100" height="100">
                 </div>
 
@@ -46,7 +46,7 @@
                     <table>
                         <tr>
                             <td width="30%"><b>Name: </b></td>
-                            <td>{{ $user->name }}</td>
+                            <td>SANI SHEHU</td>
                         </tr>
                         <tr>
                             <td><b>ID No: </b></td>
@@ -54,11 +54,11 @@
                         </tr>
                         <tr>
                             <td><b>Section: </b></td>
-                            <td>{{ $user->pendingCardRequest()->section->name ?? 'N/A' }}</td>
+                            <td>General</td>
                         </tr>
                         <tr>
                             <td><b>Role: </b></td>
-                            <td>{{ $user->pendingCardRequest()->position ?? 'Staff' }}</td>
+                            <td>Cleaner</td>
                         </tr>
                     </table>
                 </div>
