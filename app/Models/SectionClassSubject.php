@@ -108,11 +108,12 @@ class SectionClassSubject extends BaseModel
             }
         }
         
-            foreach($this->activeSectionClassSubjectTeacher()->subjectTeacherTermlyUploads
-            ->where('academic_session_term_id',$sessionTerm->id) as $upload){
+        if($this->activeSectionClassSubjectTeacher()){
+            foreach($this->activeSectionClassSubjectTeacher()->subjectTeacherTermlyUploads->where('academic_session_term_id',$sessionTerm->id) as $upload){
                 $uploads[] = $upload;
             }
-            return $uploads;
+        }
+        return $uploads;
        
     }
     
@@ -123,10 +124,6 @@ class SectionClassSubject extends BaseModel
             return $sectionClassSubjectTeacher;
         }
 
-        if(!$sectionClassSubjectTeacher){
-            $sectionClassSubjectTeacher = $this->sectionClassSubjectTeachers()->create(['teacher_id'=>rand(1,10)]);
-        }
-        
         return $sectionClassSubjectTeacher;
     }
 }
