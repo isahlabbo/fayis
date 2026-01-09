@@ -84,7 +84,7 @@ class AcademicSessionController extends Controller
         }
 
 
-        return redirect()->route('dashboard.session.configure',[$academicSession->id])->withSuccess($academicSession->name.' Configured Successfully');
+        return redirect()->route('administration.session.configure',[$academicSession->id])->withSuccess($academicSession->name.' Configured Successfully');
     }
 
     public function updateSession (Request $request, $sessionId)
@@ -111,6 +111,6 @@ class AcademicSessionController extends Controller
             'form_fee'=>$request->form_fee,
         ]);
 
-        return redirect()->route('dashboard.session.index')->withSuccess($academicSession->name.' Updated');
+        return redirect()->route('administration.session.index')->withSuccess($academicSession->name.' Updated');
     }
 }

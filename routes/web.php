@@ -20,7 +20,7 @@ use App\Charts\TermVsClassAverageChart;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+use Illuminate\Support\Facades\Hash;
 Route::prefix('ajax')
    ->group(function() {
     Route::get('/section/{sectionId}/get-classes', 'AjaxController@getSectionClasses');
