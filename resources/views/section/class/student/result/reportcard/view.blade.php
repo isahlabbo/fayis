@@ -6,8 +6,8 @@
         </div>
         <div class="row">
             <div class="col-md-12 text text-center">
-                <hr style="background-color: gray; height: 2px;">
-                <b>REPORT SHEET FOR {{strtoupper($sectionClassStudentTerm->currentSessionTerm()->term->name)}} {{$sectionClassStudentTerm->currentSession()->name}} ACADEMIC SESSION</b><hr style="background-color: orange; height: 3px;">
+                <hr style="background-color: green; height: 2px;">
+                <b>REPORT SHEET FOR {{strtoupper($sectionClassStudentTerm->academicSessionTerm->term->name)}} {{$sectionClassStudentTerm->academicSessionTerm->academicSession->name}} ACADEMIC SESSION</b><hr style="background-color: red; height: 3px;">
             </div>
             
             <div class="col-md-1"></div>
