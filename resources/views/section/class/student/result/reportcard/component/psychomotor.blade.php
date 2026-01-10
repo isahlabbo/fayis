@@ -11,7 +11,9 @@
             @if($sectionClassStudentTerm->sectionClassStudentTermAccessment)
             
                 @foreach($sectionClassStudentTerm->sectionClassStudentTermAccessment->sectionClassStudentTermAccessmentPsychomotors as $accessmentPsychomotor)    
-                    
+                    @if(!$accessmentPsychomotor->getPsychomotor())
+                        @continue
+                    @endif
                     <tr>
                         <td>{{$accessmentPsychomotor->getPsychomotor()->name}}</td>
                         <td>{{$accessmentPsychomotor->value ?? 0}}</td>

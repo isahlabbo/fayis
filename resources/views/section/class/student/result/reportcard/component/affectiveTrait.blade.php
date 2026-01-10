@@ -11,6 +11,9 @@
     
     @foreach($sectionClassStudentTerm->sectionClassStudentTermAccessment->sectionClassStudentTermAccessmentAffectiveTraits as $accessmentTrait)    
     @if($accessmentTrait)
+        @if(!$accessmentTrait->getAffectiveTrait())
+            @continue   
+        @endif
     <tr>
         <td>{{$accessmentTrait->getAffectiveTrait()->name}}</td>
         <td>{{$accessmentTrait->value ?? 0}}</td>
