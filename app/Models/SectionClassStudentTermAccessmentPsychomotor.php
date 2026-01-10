@@ -23,7 +23,7 @@ class SectionClassStudentTermAccessmentPsychomotor extends BaseModel
             // get random psychomotor id from the student's section psychomotors
             $sectionClassStudentTermAccessment = $this->sectionClassStudentTermAccessment;
             $sectionClassStudentTerm = $sectionClassStudentTermAccessment->sectionClassStudentTerm;
-            $sectionClass = $sectionClassStudentTerm->sectionClass;
+            $sectionClass = $sectionClassStudentTerm->sectionClassStudent->sectionClass;
             $sectionPsychomotors = $sectionClass->psychomotors;
             
             $randomPsychomotor = $sectionPsychomotors->random();
