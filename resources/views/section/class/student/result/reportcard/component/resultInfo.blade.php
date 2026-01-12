@@ -30,7 +30,7 @@
         @endphp
         @if($studentResult && $studentResult->subjectTeacherTermlyUpload && $studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher)
         <tr >
-            <td>{{$studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject->name}}</td>
+            <td>{{$studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject->name ?? 'Not Available'}}</td>
             <td class="text text-center">{{$studentResult->first_ca ?? 'Abs'}}</td>
             <td class="text text-center">{{$studentResult->second_ca ?? 'Abs'}}</td>
             <td class="text text-center">{{$studentResult->assignment ?? 'Abs'}}</td>
