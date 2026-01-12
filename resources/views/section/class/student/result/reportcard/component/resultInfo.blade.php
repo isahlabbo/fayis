@@ -31,12 +31,12 @@
         @if($studentResult && $studentResult->subjectTeacherTermlyUpload && $studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher)
         <tr >
             <td>{{$studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject->name}}</td>
-            <td class="text text-center">{{$studentResult->first_ca}}</td>
-            <td class="text text-center">{{$studentResult->second_ca}}</td>
-            <td class="text text-center">{{$studentResult->assignment}}</td>
-            <td class="text text-center">{{$studentResult->exam}}</td>
-            <td class="text text-center">{{$studentResult->total}}</td>
-            <td class="text text-center">{{$studentResult->grade}}</td>
+            <td class="text text-center">{{$studentResult->first_ca ?? 'Abs'}}</td>
+            <td class="text text-center">{{$studentResult->second_ca ?? 'Abs'}}</td>
+            <td class="text text-center">{{$studentResult->assignment ?? 'Abs'}}</td>
+            <td class="text text-center">{{$studentResult->exam ?? 'Abs'}}</td>
+            <td class="text text-center">{{$studentResult->total ?? 'Abs'}}</td>
+            <td class="text text-center">{{$studentResult->grade ?? 'Abs'}}</td>
             <td class="text text-center">{{$studentResult->subjectTeacherTermlyUpload->position($studentResult->total)}}</td>
             <td class="text text-center">{{$studentResult->effort()}}</td>
             <td class="text text-center">{{$studentResult->remark()}}</td>
