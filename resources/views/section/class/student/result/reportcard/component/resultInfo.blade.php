@@ -28,7 +28,7 @@
             $subjects++;
             $obtainedMarks = $obtainedMarks + $studentResult->total;
         @endphp
-        @if($studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher)
+        @if($studentResult && $studentResult->subjectTeacherTermlyUpload && $studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher)
         <tr >
             <td>{{$studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject->name}}</td>
             <td class="text text-center">{{$studentResult->first_ca}}</td>
