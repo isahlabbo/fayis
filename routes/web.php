@@ -10,6 +10,10 @@ use App\Models\AcademicSession;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Notifications\SchoolFeesPaymentCollectedSMS;
 use App\Charts\TermVsClassAverageChart;
+
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DataExport;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -61,6 +65,13 @@ Route::prefix('payment')->name('payment.')
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
+
+Route::get('/download/data', function () {
+    $fileName = 'data.xlsx';
+    return Excel::download(new DataExport, $fileName); // stores in storage/app/public/
+
+
+})->name('download.data');
 
 Route::get('/access/restricted', function () {
     return view('access.restrict');
