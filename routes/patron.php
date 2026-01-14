@@ -1,5 +1,5 @@
 <?php
-Route::middleware(['auth','verified'])
+Route::middleware(['auth','verified', 'password'])
 ->namespace('Patron')
 ->name('patron.')->prefix('patron/')->group(function () {
 

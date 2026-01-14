@@ -1,5 +1,5 @@
 <?php
-Route::middleware(['auth','verified','exam'])
+Route::middleware(['auth','verified','exam', 'password'])
 ->namespace('Examination')
 ->name('exam.')->prefix('exam/')->group(function () {
     

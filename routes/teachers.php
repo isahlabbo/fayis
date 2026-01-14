@@ -1,6 +1,6 @@
 <?php
 
-Route::middleware(['auth','verified','teacher'])
+Route::middleware(['auth','verified','teacher', 'password'])
 ->namespace('Teacher')
 ->name('teacher.')->prefix('teacher/')->group(function () {
     

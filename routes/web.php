@@ -84,12 +84,21 @@ Route::get('/sms', function () {
 });
 
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+Route::middleware(['auth:sanctum', 'verified','password'])->get('/dashboard', function () {
     return view('dashboard');
 })->name('dashboard');
 
+Route::middleware(['auth:sanctum', 'verified', 'password'])
+->group(function (){
+    Route::name('password.')
+    ->prefix('/password')
+    ->group(function (){
+        Route::get('/update', 'PasswordController@showUpdateForm')->name('update.form');
+        Route::post('/update', 'PasswordController@updatePassword')->name('update');
+    });
+});
 
-Route::middleware(['auth:sanctum', 'verified'])
+Route::middleware(['auth:sanctum', 'verified', 'password'])
 ->group(function (){
     // configuration
     Route::name('profile.')

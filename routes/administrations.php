@@ -1,6 +1,6 @@
 <?php
 
-Route::middleware(['auth','verified'])->name('administration.')->group(function () {
+Route::middleware(['auth','verified', 'password'])->name('administration.')->group(function () {
     Route::namespace('School')
     ->name('session.')
     ->prefix('/session')

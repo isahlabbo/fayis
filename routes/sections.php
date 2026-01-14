@@ -1,7 +1,7 @@
 <?php
 use App\Http\Controllers\School\StudentController;
 
-Route::middleware(['auth','verified'])
+Route::middleware(['auth','verified', 'password'])
 ->namespace('Section')
 ->name('section.')->prefix('section/')->group(function () {
     // section

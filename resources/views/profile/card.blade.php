@@ -37,16 +37,22 @@
                 <img src="{{ asset('images/logo.jpg') }}" alt="Watermark" class="watermark">
 
                 <div class="photo">
+                    @if($user->profile_photo_path)
                     <img id="staff-photo"
-                        src="{{asset('images/cards/security.jpg')}}"
+                        src="{{ Storage::url($user->profile_photo_path) }}"
                         alt="Staff Photo" width="100" height="100">
+                    @else
+                    <img id="staff-photo"
+                        src="{{ asset('images/user.jpg') }}"
+                        alt="Staff Photo" width="100" height="100">
+                    @endif
                 </div>
 
                 <div class="details">
                     <table>
                         <tr>
                             <td width="30%"><b>Name: </b></td>
-                            <td>SANI SHEHU</td>
+                            <td>{{ $user->name }}</td>
                         </tr>
                         <tr>
                             <td><b>ID No: </b></td>
@@ -54,11 +60,11 @@
                         </tr>
                         <tr>
                             <td><b>Section: </b></td>
-                            <td>General</td>
+                            <td>{{ $user->pendingCardRequest()->section->name }}</td>
                         </tr>
                         <tr>
                             <td><b>Role: </b></td>
-                            <td>Cleaner</td>
+                            <td>{{ $user->pendingCardRequest()->position }}</td>
                         </tr>
                     </table>
                 </div>
@@ -79,7 +85,7 @@
                 </p>
 
                 <div class="qr">
-                    {!! $user->pendingCardRequest()->generateQRCode('date', 70) !!}
+                    {!! $user->pendingCardRequest()->generateQRCode('This card belongs to ' . $user->name. ' who is a staff member of FAYIS', 70) !!}
                 </div>
 
                 <div class="signature">

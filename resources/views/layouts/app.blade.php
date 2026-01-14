@@ -63,8 +63,12 @@
           @endif
           <li class="dropdown ml-3">
               <a href="#academics" class="dropbtn fw-bold">
+              @if(Auth::user()->profile_photo_path)
+                <img src="{{Auth::user()->profileImage()}}" alt="" width="50" height="50" style="border-radius: 50%;">
+              @else
                   <img src="{{asset('images/user.jpg')}}" width="50" height="50" alt="" style="border-radius: 50%;">
-              </a>    
+              @endif
+                </a>    
               <div class="dropdown-content" >
                   <a  href="{{route('profile.show')}}"><i class="fas fa-user-cog"></i> Profile</a>
                   <a  href="#"><i class="fas fa-key"></i> Change Password</a> 

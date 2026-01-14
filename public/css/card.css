@@ -36,7 +36,7 @@
 .id-card .photo img {
   width: 1.1in;
   height: 1.1in;
-  border-radius: 50%;
+  border-radius: 5%;
   border: 2px solid #008000;
   object-fit: cover;
 }
