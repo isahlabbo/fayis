@@ -8,7 +8,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{route('profile.cardRequest',[Auth::user()->id])}}" method="post">
+        <form action="{{route('profile.cardRequest',[Auth::user()->id])}}" method="post" enctype="multipart/form-data">
           @csrf
             <div class="form-group">
                 <label for="">Select Section</label>
@@ -35,13 +35,13 @@
             </div>
             <!-- staff ID -->
             <div class="form-group">
-                <label for="">Staff ID (if applicable)</label>
-                <input type="text" name="staffID" class="form-control" placeholder="Enter your staff ID if applicable"> 
+                <label for="">Upload your signature</label>
+                <input type="file" name="signature" class="form-control"> 
             </div>
             
             <div class="form-group">
                 <label for="">Reason for Applying</label>
-                <textarea name="reason" id="" cols="30" rows="5" class="form-control" placeholder="Enter reason for applying ID card"></textarea>
+                <textarea name="reason" id="" cols="30" rows="3" class="form-control" placeholder="Enter reason for applying ID card"></textarea>
             </div>
 
             <div class="form-group">

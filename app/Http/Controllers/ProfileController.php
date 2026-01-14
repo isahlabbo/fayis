@@ -24,7 +24,7 @@ class ProfileController extends Controller
         $request->validate([
             'name'=>'required|string|max:255',
             'email'=>'required|email|max:255',
-            'picture'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'picture'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
         ]);
         $user = User::findOrFail($userId);
         $user->update([
@@ -59,17 +59,24 @@ class ProfileController extends Controller
             'section'=>'required',
             'position'=>'required',
             'reason'=>'required|string|max:1000',
+            'signature'=>'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
             
         ]);
 
         $user = User::findOrFail($userId);
 
-        $user->cardRequests()->create([
+        $cardRequest = $user->cardRequests()->create([
             'section_id'=>$request->section,
             'position'=>$request->position,
             'reason'=>$request->reason,
             'staffID'=>'FAYIS/TS/'.str_pad($user->id, 3, '0', STR_PAD_LEFT),
         ]);
+
+        if($request->hasFile('signature')){
+            $file = $request->file('signature');
+            $location = 'profile/signatures/';
+            $this->storeFile($cardRequest, 'signature', $file, $location);
+        }
 
 
         return redirect()->back()->with('success', 'ID Card request submitted successfully.');
