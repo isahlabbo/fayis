@@ -60,7 +60,7 @@
                         </tr>
                         <tr>
                             <td><b>Section: </b></td>
-                            <td>{{ $user->pendingCardRequest()->section->name }}</td>
+                            <td>{{ $user->pendingCardRequest()->section->name ?? 'General' }}</td>
                         </tr>
                         <tr>
                             <td><b>Role: </b></td>

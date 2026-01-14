@@ -17,6 +17,7 @@
                     @foreach(App\Models\Section::all() as $section)
                     <option value="{{$section->id}}">{{$section->name}}</option>    
                     @endforeach
+                    <option value="{{count(App\Models\Section::all())+1}}">General</option>
                 </select>
             </div>
             <div class="form-group">
