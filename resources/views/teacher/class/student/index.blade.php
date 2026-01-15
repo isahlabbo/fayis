@@ -25,7 +25,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($sectionClass->sectionClassStudents->where('status','Active') as $sectionClassStudent)
+            @foreach($sectionClass->sectionClassStudents->where('status','Active')->sortBy('student.name') as $sectionClassStudent)
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>
@@ -47,7 +47,7 @@
                         <button class="btn btn-outline-primary" data-toggle="modal" data-target="#edit_{{$sectionClassStudent->student->id}}"><i class="fas fa-redo"></i> Upload picture</button>
                         @endif
                     </td>
-                    
+
                 </tr>
                 @include('teacher.class.student.edit')
             @endforeach
