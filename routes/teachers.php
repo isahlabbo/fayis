@@ -21,6 +21,14 @@ Route::middleware(['auth','verified','teacher', 'password'])
             Route::get('{resultId}/submit', 'ResultController@submit')->name('submit');
             
         });
+
+        Route::name('student.')
+        ->prefix('/student')
+        ->group(function (){
+            Route::get('{classId}/', 'StudentController@index')->name('index');
+            Route::put('{studentId}/update', 'StudentController@update')->name('update');
+        });
+
         //    assessment routes
         Route::name('assessment.')
         ->prefix('/assessment')

@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="signature">
-                    <img src="{{Storage::url($user->pendingCardRequest()->signature)}}" alt="" width="100"><br>
+                    <img src="{{Storage::url($user->pendingCardRequest()->signature)}}" alt="" width="80"><br>
                     ______________________<br>
                     Authorized Signature
                 </div>
