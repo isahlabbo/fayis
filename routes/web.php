@@ -88,7 +88,7 @@ Route::middleware(['auth:sanctum', 'verified','password'])->get('/dashboard', fu
     return view('dashboard');
 })->name('dashboard');
 
-Route::middleware(['auth:sanctum', 'verified', 'password'])
+Route::middleware(['auth:sanctum', 'verified'])
 ->group(function (){
     Route::name('password.')
     ->prefix('/password')

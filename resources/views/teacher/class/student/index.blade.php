@@ -44,9 +44,10 @@
                         @if($sectionClassStudent->student->picture)
                         <button class="btn btn-outline-danger" data-toggle="modal" data-target="#edit_{{$sectionClassStudent->student->id}}"><i class="fas fa-undo"></i>Change Picture</button>
                         @else
-                       <button class="btn btn-outline-primary" data-toggle="modal" data-target="#edit_{{$sectionClassStudent->student->id}}"><i class="fas fa-redo"></i> Upload picture</button>
+                        <button class="btn btn-outline-primary" data-toggle="modal" data-target="#edit_{{$sectionClassStudent->student->id}}"><i class="fas fa-redo"></i> Upload picture</button>
                         @endif
                     </td>
+                    
                 </tr>
                 @include('teacher.class.student.edit')
             @endforeach

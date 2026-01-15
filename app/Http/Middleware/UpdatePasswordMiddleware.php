@@ -21,10 +21,11 @@ class UpdatePasswordMiddleware
         // check if the authenticated user = 'password' 
 
         $user = Auth::user();
-
-        if($user->password == Hash::make('password')){
+        
+        if($user && $user->password === '$2y$10$9KcyNRQYylJh29x9K52B1Oh3OEdIOxT6OxnU53dkwXc1VENlT46ia'){
             return redirect()->route('password.update.form')->with('warning', 'Please update your password for security reasons.');
         }
+
         return $next($request);
     }
 }
