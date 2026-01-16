@@ -71,7 +71,7 @@
                 </a>    
               <div class="dropdown-content" >
                   <a  href="{{route('profile.show')}}"><i class="fas fa-user-cog"></i> Profile</a>
-                  <a  href="#"><i class="fas fa-key"></i> Change Password</a> 
+                  <a  href="{{route('password.update')}}"><i class="fas fa-key"></i> Change Password</a> 
                   <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                       <i class="fas fa-sign-out-alt"></i> Logout
                   </a>

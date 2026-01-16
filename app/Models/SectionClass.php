@@ -115,7 +115,7 @@ class SectionClass extends BaseModel
     function ensureStudentHasAllTerms($uploadId = null) {
         $results = [];
        
-        foreach($this->sectionClassStudents->where('status','Active') as $sectionClassStudent){
+        foreach($this->sectionClassStudents->where('status','Active')->sortBy('student.name') as $sectionClassStudent){
             $results[] = $sectionClassStudent->ensureHasAllAcademicSessionTerm( $uploadId);
         }
 
