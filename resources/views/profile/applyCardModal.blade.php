@@ -25,12 +25,22 @@
                 <select name="position" id="" class="form-control">
                     <option value="">Select Position</option>
                     <option value="Head of School">Head of School</option>
-                    <option value="Head of School">Academic Officer</option>
-                    <option value="Head of School">Admission Ofiicer</option>
-                    <option value="Head of School">Exam Officer</option>
-                    <option value="Head of School">Class Teacher</option>
-                    <option value="Head of School">Subject Teacher</option>
-                    <option value="Head of School">None Teaching Staff</option>
+                    <option value="Asst. Head of School Admin">Asst. Head of School Admin</option>
+                    <option value="Asst. Head of School Academics">Asst. Head of School Academics</option>
+                    <option value="Head of Nursery Section">Head of Nursery Section</option>
+                    <option value="Head of Lower Basic Section">Head of Lower Basic Section</option>
+                    <option value="Head of Middle Basic Section">Head of Middle Basic Section</option>
+                    <option value="Head of Middle Upper Section">Head of Middle Upper Section</option>
+                    <option value="Admission Officer">Admission Officer</option>
+                    <option value="Asst. Admission Officer">Asst. Admission Officer</option>
+                    <option value="Cashier">Cashier</option>
+                    <option value="Exam Officer">Exam Officer</option>
+                    <option value="Class Teacher">Class Teacher</option>
+                    <option value="Sisco Staff">Sisco Staff</option>
+                    <option value="Subject Teacher">Subject Teacher</option>
+                    <option value="Cleaner">Cleaner</option>
+                    <option value="Nany">Nany</option>
+                    <option value="Security">Security</option>
                 </select>
             </div>
             <!-- staff ID -->

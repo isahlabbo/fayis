@@ -122,7 +122,6 @@ class SectionClass extends BaseModel
         return $results;
     }
 
-
     public function schoolFees($termId, $genderId) {
         $fees = 0;
         foreach($this->sectionClassFees->where('fee_id', 1) as $sectionClassFee){
