@@ -19,7 +19,7 @@ class UserTableSeeder extends Seeder
         $users = [
             [
                 'name'=>'Admin',
-                'email'=>'admin@smmiqgs.ng',
+                'email'=>'admin@fayis.ng',
                 'password'=>Hash::make('admin'),
                 'role'=>'admin',
             ],

@@ -72,6 +72,7 @@ class Kernel extends HttpKernel
         'exam' => \App\Http\Middleware\ExamOfficerMiddleware::class,
         'head' => \App\Http\Middleware\HeadMiddleware::class,
         'teacher' => \App\Http\Middleware\TeacherMiddleware::class,
+        'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'password' => \App\Http\Middleware\UpdatePasswordMiddleware::class,
         //'doNotCacheResponse' => \Spatie\ResponseCache\Middlewares\DoNotCacheResponse::class,
     ];

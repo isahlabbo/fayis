@@ -330,3 +330,4 @@ require __DIR__.'/finances.php';
 require __DIR__.'/teachers.php';
 require __DIR__.'/exams.php';
 require __DIR__.'/patron.php';
+require __DIR__.'/admin.php';
