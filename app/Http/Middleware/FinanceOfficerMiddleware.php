@@ -19,7 +19,7 @@ class FinanceOfficerMiddleware
     {
         $user = Auth::user();
 
-        if($user->role == 'finance_officer'){
+        if($user->status == 'Active' && $user->role == 'finance_officer'){
             return $next($request);
         }
 

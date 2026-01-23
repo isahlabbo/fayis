@@ -19,7 +19,7 @@ class AdmissionOfficerMiddleware
     {
         $user = Auth::user();
 
-        if($user->role == 'admission_officer'){
+        if($user->status == 'Active' && $user->role == 'admission_officer'){
             return $next($request);
         }
 

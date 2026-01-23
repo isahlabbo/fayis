@@ -19,7 +19,7 @@ class HeadMiddleware
     {
        $user = Auth::user();
 
-        if($user->role == 'head'){
+        if($user->status == 'Active' && $user->role == 'head'){
             return $next($request);
         }
 

@@ -19,7 +19,7 @@ class AdminMiddleware
     {
         $user = Auth::user();
 
-        if($user->role == 'admin'){
+        if($user->status == 'Active' && $user->role == 'admin'){
             return $next($request);
         }
 
