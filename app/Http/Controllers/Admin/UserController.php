@@ -17,12 +17,32 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
-            'status' => 'required|string',
-            'role' => 'required|string',
         ]);
 
         $user = \App\Models\User::findOrFail($userId);
-        $user->update($request->all());
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        if ($request->has('password') && !empty($request->password)) {
+            $request->validate([
+                'password' => 'required|string|min:8|confirmed',
+            ]);
+            $user->update([
+                'password' => bcrypt($request->password),
+            ]);
+        }
+        if ($request->has('status')) {
+            $user->update([
+                'status' => $request->status,
+            ]);
+        }
+        if ($request->has('role')) {
+            $user->update([
+                'role' => $request->role,
+            ]);
+        }
         return redirect()->back();
     }
 }

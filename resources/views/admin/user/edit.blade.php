@@ -31,19 +31,29 @@
                     <option value="admission_officer" {{$user->role == 'admission_officer' ? 'selected' : ''}}>Admission Officer</option>
                 </select>  
             </div>
+
             <div class="form-group">
-                <label for="status">Status</label>
-                <select name="status" id="status" class="form-control">
-                    <option value="">Select Status</option>
-                    <option value="active" {{$user->status == 'active' ? 'selected' : ''}}>Active</option>
-                    <option value="inactive" {{$user->status == 'inactive' ? 'selected' : ''}}>Inactive</option>
-                </select>  
+              <label for="status">Status</label>
+              <select name="status" id="status" class="form-control">
+                  <option value="">Select Status</option>
+                  <option value="Active" {{$user->status == 'Active' ? 'selected' : ''}}>Active</option>
+                  <option value="Inactive" {{$user->status == 'Inactive' ? 'selected' : ''}}>Inactive</option>
+              </select>  
             </div>
-      </div>
-        <div class="modal-footer">
-            <button class="btn btn-primary">Update</button>
+
+            <div class="form-group">
+              <label for="password">Password (Leave blank to keep current password)</label>
+              <input type="password" name="password" id="password" class="form-control">  
+            </div>
+
+            <div class="form-group">
+              <label for="password_confirmation">Confirm Password</label>
+              <input type="password" name="password_confirmation" id="password_confirmation" class="form-control">  
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary">Update</button>
+            </div>
         </form>
-        </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
       </div>
