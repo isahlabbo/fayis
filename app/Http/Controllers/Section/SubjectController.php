@@ -65,6 +65,7 @@ class SubjectController extends Controller
             $sectionClassSubject->sectionClassSubjectTeachers->each(function($teacher){
                 $teacher->update(['status'=>'Inactive']);
             });
+            $sectionClassSubject->update(['status'=>'Inactive']);
         }else{
             $sectionClassSubject->delete();
         }
