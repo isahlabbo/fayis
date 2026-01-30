@@ -60,8 +60,16 @@ class SubjectController extends Controller
     {
         $sectionClassSubject = SectionClassSubject::find($sectionClassSubjectId);
         
+        
+        if($sectionClassSubject->sectionClassSubjectTeachers->count() > 0){
+            $sectionClassSubject->sectionClassSubjectTeachers->each(function($teacher){
+                $teacher->update(['status'=>'Inactive']);
+            });
+        }else{
             $sectionClassSubject->delete();
-            return redirect()->route('section.class.subject.index',[$sectionClassSubject->sectionClass->id])
+        }
+        
+        return redirect()->route('section.class.subject.index',[$sectionClassSubject->sectionClass->id])
             ->withSuccess('Class Subject Deleted');
         
     }
