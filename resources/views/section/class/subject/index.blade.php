@@ -19,7 +19,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($sectionClass->sectionClassSubjects as $sectionClassSubject)
+            @foreach($sectionClass->sectionClassSubjects->where('status','Active') as $sectionClassSubject)
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$sectionClassSubject->subject->name}}</td>
