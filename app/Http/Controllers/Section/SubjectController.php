@@ -75,6 +75,21 @@ class SubjectController extends Controller
         
     }
 
+    public function activate($sectionClassSubjectId)
+    {
+        $sectionClassSubject = SectionClassSubject::find($sectionClassSubjectId);
+        $sectionClassSubject->update(['status'=>'Active']);
+
+        $teacher = $sectionClassSubject->sectionClassSubjectTeachers->last();
+        if($teacher){
+            $teacher->update(['status'=>'Active']);
+        };
+        
+        return redirect()->route('section.class.subject.index',[$sectionClassSubject->sectionClass->id])
+            ->withSuccess('Class Subject Activated');
+        
+    }
+
     public function termResult ($classId, $subjectId, $termId)
     {
         return view('section.class.subject.upload',['termId'=>$termId, 'sectionClassSubject'=>SectionClassSubject::find($subjectId)]);

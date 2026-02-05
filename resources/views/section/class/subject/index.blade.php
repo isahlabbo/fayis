@@ -11,6 +11,7 @@
             <tr>
                 <th>S/N</th>
                 <th>SUBJECTS</th>
+                <th>STATUS</th>
                 <th>TEACHER</th>
                 
                 <th></th>
@@ -19,18 +20,23 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($sectionClass->sectionClassSubjects->where('status','Active') as $sectionClassSubject)
+            @foreach($sectionClass->sectionClassSubjects as $sectionClassSubject)
                 <tr>
                     <td>{{$loop->iteration}}</td>
                     <td>{{$sectionClassSubject->subject->name}}</td>
+                    <td>{{$sectionClassSubject->status}}</td>
                     <td>{{$sectionClassSubject->activeSectionClassSubjectTeacher()->teacher->user->name ?? 'Not Available'}}</td>
                     <td>
-                    
-                    <a href="{{route('section.class.subject.allocation.edit',[$sectionClassSubject->id])}}"><button class="btn btn-outline-secondary">Edit Teacher Allocation</button></a>
-                    
+                    @if($sectionClassSubject->status != 'Active')
+                        <a href="{{route('section.class.subject.activate',[$sectionClassSubject->id])}}" onclick="return confirm('are sure, you want to activate this subject')"><button class="btn btn-outline-warning">Activate</button></a>    
+                    @else
+                        <a href="{{route('section.class.subject.allocation.edit',[$sectionClassSubject->id])}}"><button class="btn btn-outline-secondary">Edit Teacher Allocation</button></a>
+                    @endif
                     </td>
                     <td>
-                    <a href="{{route('section.class.subject.delete',[$sectionClassSubject->id])}}" onclick="return confirm('are sure, you want to delete this subject')"><button  class="btn btn-outline-danger">Delete</button></a></td>
+                    <a href="{{route('section.class.subject.delete',[$sectionClassSubject->id])}}" onclick="return confirm('are sure, you want to delete this subject')"><button  class="btn btn-outline-danger">Delete</button></a>
+
+                    </td>
                 </tr>
                 
             @endforeach

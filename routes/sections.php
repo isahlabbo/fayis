@@ -53,6 +53,7 @@ Route::middleware(['auth','verified', 'password'])
             Route::get('/{classId}', 'SubjectController@index')->name('index');
             Route::put('/{classId}/register', 'SubjectController@register')->name('register');
             Route::get('/{classSubjectId}/delete', 'SubjectController@delete')->name('delete');
+            Route::get('/{classSubjectId}/activate', 'SubjectController@activate')->name('activate');
             Route::get('/{subjectId}/term/{termId}', 'SubjectController@termResult')->name('termResult');
             Route::post('/{subjectId}/term/{termId}/upload/{uploadId}/save', 'SubjectController@updateUpload')->name('update.upload');
             Route::get('/{subjectId}/term/{termId}/upload/{uploadId}/result', 'SubjectController@updateResult')->name('upload.result');
