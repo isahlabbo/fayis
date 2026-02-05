@@ -89,6 +89,11 @@ class SubjectController extends Controller
             ->withSuccess('Class Subject Activated');
         
     }
+    
+    public function deleted($sectionClassId)
+    {
+        return view('section.class.subject.deleted',['sectionClass'=>SectionClass::find($sectionClassId)]);
+    }
 
     public function termResult ($classId, $subjectId, $termId)
     {
