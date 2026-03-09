@@ -1,6 +1,6 @@
 .id-card {
-  width: 2.13in;       /* portrait width */
-  height: 3.37in;      /* portrait height */
+  width: 2.4425in;       /* increased by 30px */
+  height: 3.6825in;      /* increased by 30px */
   border: 1px solid #000;
   border-radius: 10px;
   background: #fff;
@@ -9,10 +9,26 @@
   overflow: hidden;
   padding: 10px;
   box-sizing: border-box;
-  
-  /* Rotate entire card upright for Canon TS705 */
+
   transform: rotate(0deg);
   transform-origin: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Back Card */
+.back {
+  width: 2.4425in;       /* increased by 30px */
+  height: 3.6825in;      /* increased by 30px */
+  border: 1px solid #000;
+  border-radius: 10px;
+  position: relative;
+  background: #fff;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 10pt;
+  line-height: 1.5;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -69,22 +85,7 @@
   transform: translate(-50%, -50%);
 }
 
-/* Back Card */
-.back {
-  width: 2.13in;
-  height: 3.37in;
-  border: 1px solid #000;
-  border-radius: 10px;
-  position: relative;
-  background: #fff;
-  padding: 15px;
-  box-sizing: border-box;
-  font-size: 10pt;
-  line-height: 1.5;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
+
 
 /* QR and Signature for Back */
 .back .qr {

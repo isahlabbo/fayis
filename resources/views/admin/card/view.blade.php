@@ -27,7 +27,7 @@
      <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-3" style="padding-left: 70px;">
-            <div class="id-card front">
+            <div class="id-card front" style="height:400px; width:250px; margin-right: 20px;">
                 <div class="header">
                     <div class="row">
                         <div class="col-md-2"><img src="{{ asset('images/logo.jpg') }}" alt="Watermark" class="logo" width="50"></div>
@@ -75,7 +75,7 @@
             </div>
         </div>
         <div class="col-md-3" style="padding-right: 70px;">
-            <div class="id-card back text-center">
+            <div class="id-card back text-center" style="height:400px; width:250px; margin-right: 20px; left:50px;">
                 <div class="header" style="color: red;">Staff Identity Card</div>
                 <img src="{{ asset('images/logo.jpg') }}" alt="Watermark" class="watermark">
                 <p>
@@ -89,7 +89,7 @@
                 </div>
 
                 <div class="signature">
-                    <img src="{{Storage::url($user->pendingCardRequest()->signature)}}" alt="" width="80" height="40"><br>
+                    <img src="{{Storage::url($user->pendingCardRequest()->signature)}}" alt="" width="120" height="40"><br>
                     ______________________<br>
                     Authorized Signature
                 </div>

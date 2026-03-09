@@ -15,7 +15,7 @@ class BaseModel extends Model
         return AcademicSession::where('status','Active')->first();
     }
 
-    public function generateQRCode($data, $size = 150)
+    public function generateQRCode($data, $size = 250)
     {
         return QrCode::size($size)->generate($data);
     }
