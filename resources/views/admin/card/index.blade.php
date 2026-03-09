@@ -18,6 +18,9 @@
         <td>{{$request->status}}</td>
         <td>
             <a href="{{route('admin.card.view', $request->user)}}" class="btn btn-outline-primary btn-sm">View Card</a>
+            
+            <a href="#" data-toggle="modal" data-target="#edit_{{$request->id}}" class="btn btn-outline-seconadry btn-sm">Edit Card</a>
+            
             <form action="{{route('admin.card.markAsPrinted',$request)}}" method="post">
                 @csrf
                 @method('PUT')
@@ -25,6 +28,7 @@
             </form>
         </td>  
     </tr>
+    @include('admin.card.edit')
     @endforeach
 </table>
 @endsection

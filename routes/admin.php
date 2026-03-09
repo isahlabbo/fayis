@@ -17,6 +17,7 @@ Route::middleware(['auth','verified','admin', 'password'])
         Route::get('/', 'CardRequestController@index')->name('index');
         Route::get('/{user}', 'CardRequestController@view')->name('view');
         Route::put('/{cardRequest}', 'CardRequestController@markAsPrinted')->name('markAsPrinted');
+        Route::post('/{cardRequest}/update', 'CardRequestController@update')->name('update');
 
     });
 });
