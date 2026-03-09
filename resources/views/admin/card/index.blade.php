@@ -14,7 +14,7 @@
     <tr>
         <td>{{$request->user->name}}</td>
         <td>{{$request->position}}</td>
-        <td>{{$request->section->name ?? 'Nill'}}</td>
+        <td>{{$request->section->name ?? 'General'}}</td>
         <td>{{$request->status}}</td>
         <td>
             <a href="{{route('admin.card.view', $request->user)}}" class="btn btn-outline-primary btn-sm">View Card</a>

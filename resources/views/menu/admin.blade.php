@@ -2,7 +2,7 @@
 
 
 
-<li class="nav-item ml-3"><a class="dropbt" href="{{route('admin.card.index')}}"><i class="fas fa-sent"></i> Card Request </a></li>
+<li class="nav-item ml-3"><a class="dropbt" href="{{route('admin.card.index')}}"><i class="fas fa-send"></i> Card Request </a></li>
 
 
 <li class="dropdown ml-3">
