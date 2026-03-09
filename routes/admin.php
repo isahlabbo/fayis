@@ -10,4 +10,13 @@ Route::middleware(['auth','verified','admin', 'password'])
         Route::put('/{userId}', 'UserController@update')->name('update');
 
     });
+
+    Route::name('card.')
+    ->prefix('/card-request')
+    ->group(function (){
+        Route::get('/', 'CardRequestController@index')->name('index');
+        Route::get('/{user}', 'CardRequestController@view')->name('view');
+        Route::put('/{cardRequest}', 'CardRequestController@markAsPrinted')->name('markAsPrinted');
+
+    });
 });
