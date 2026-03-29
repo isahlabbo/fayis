@@ -108,6 +108,8 @@ Route::middleware(['auth:sanctum', 'verified', 'password'])
         Route::get('/{userId}/card', 'ProfileController@card')->name('card');
         Route::put('/{userId}/update', 'ProfileController@update')->name('update');
         Route::post('/{userId}/card-request', 'ProfileController@cardRequest')->name('cardRequest');
+        Route::post('/qualification/{user}/add', 'ProfileController@addQualification')->name('addQualification');
+        Route::get('/qualification/{qualification}/delete', 'ProfileController@deleteQualification')->name('qualification.delete');
     });
 
     Route::name('configuration.')

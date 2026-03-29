@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Teacher extends BaseModel
 {
-    
 
     public function sectionClassTeachers()
     {
         return $this->hasMany(SectionClassTeacher::class);
+    }
+
+    public function qualifications()
+    {
+        return $this->hasMany(Qualification::class);
     }
 
     public function sectionClassSubjectTeachers()
@@ -22,6 +26,11 @@ class Teacher extends BaseModel
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function lga()
+    {
+        return $this->belongsTo(Lga::class);
     }
 
     public function allocated(){

@@ -123,13 +123,15 @@
   </script>
 
   <script>
-    function printContent(el) {
-      var restorepage = $('body').html();
-      var printcontent = $('#' + el).clone();
-      $('body').empty().html(printcontent);
-      window.print();
-      $('body').html(restorepage);
-    }
+      function printDiv(divId) {
+          const divContent = document.getElementById(divId).innerHTML;
+          const originalContent = document.body.innerHTML;
+
+          document.body.innerHTML = divContent;
+          window.print();
+          document.body.innerHTML = originalContent;
+          location.reload();
+      }
   </script>
 
   @yield('scripts')

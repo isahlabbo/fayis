@@ -29,9 +29,9 @@ trait FileUpload
         return app()->environment('production') ? 's3' : 'public';
     }
 
-    public function deleteFile()
+    public function deleteFile($model, $field)
     {
-        if($this->image)
-            Storage::disk($this->fileSystem())->delete($this->image);
+        if($model->field)
+            Storage::disk($this->fileSystem())->delete($model->field);
     }
 }
