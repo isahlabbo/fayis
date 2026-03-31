@@ -49,7 +49,7 @@
                                         <div class="mb-3">
                                             <label for="email" class="form-label">State of Origin</label>
                                             <select name="state" class="form-control" id="state" >
-                                                <option value="{{Auth::user()->teacher->lga->state->name}}">{{Auth::user()->teacher->lga->state->name}}</option>
+                                                <option value="{{Auth::user()->teacher->lga->state->id ?? ''}}">{{Auth::user()->teacher->lga->state->name ?? 'Select State'}}</option>
                                                 @foreach(App\Models\State::all() as $state)
                                                 <option value="{{$state->id}}">{{$state->name}}</option>
                                                 @endforeach
@@ -58,7 +58,7 @@
                                         <div class="mb-3">
                                             <label for="lga" class="form-label">LGA of Origin</label>
                                             <select name="lga" class="form-control" id="lga" >
-                                                <option value="{{Auth::user()->teacher->lga->id}}">{{Auth::user()->teacher->lga->name}}</option>
+                                                <option value="{{Auth::user()->teacher->lga->id ?? ''}}">{{Auth::user()->teacher->lga->name ?? 'Select LGA'}}</option>
                                             </select>
                                         </div>
                                         <div class="mb-3">
