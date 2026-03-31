@@ -21,7 +21,7 @@
             
             <a href="#" data-toggle="modal" data-target="#edit_{{$request->id}}" class="btn btn-outline-seconadry btn-sm">Edit Card</a>
             
-            <form action="{{route('admin.card.markAsPrinted',$request)}}" method="post">
+            <form action="{{route('admin.card.markAsPrinted',$request)}}" method="post" class="d-inline">
                 @csrf
                 @method('PUT')
                 <button onclick="return confirm('Are you sure you have printed this card?')" class="btn btn-outline-danger btn-sm">Mark as Printed</button>
