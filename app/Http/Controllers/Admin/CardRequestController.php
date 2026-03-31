@@ -51,4 +51,9 @@ class CardRequestController extends Controller
         return redirect()->back()->withSuccess('ID Card Updated');
         
     }
+
+    public function delete(CardRequest $cardRequest){
+        $cardRequest->delete();
+        return redirect()->route('admin.card.index')->withSuccess('Card request deleted successfully');
+    }
 }

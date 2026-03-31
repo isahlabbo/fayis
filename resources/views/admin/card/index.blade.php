@@ -26,6 +26,7 @@
                 @method('PUT')
                 <button onclick="return confirm('Are you sure you have printed this card?')" class="btn btn-outline-danger btn-sm">Mark as Printed</button>
             </form>
+            <a href="{{route('admin.card.delete', $request)}}" onclick="return confirm('Are you sure you want to delete this card request?')" class="btn btn-outline-danger btn-sm">Delete</a>
         </td>  
     </tr>
     @include('admin.card.edit')
