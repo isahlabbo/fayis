@@ -45,4 +45,15 @@ class UserController extends Controller
         }
         return redirect()->back();
     }
+
+    public function loginAs($userId)
+    {
+        // logout current user
+        auth()->logout();
+        
+        $user = \App\Models\User::findOrFail($userId);
+        auth()->login($user);
+
+        return redirect()->route('dashboard');
+    }
 }

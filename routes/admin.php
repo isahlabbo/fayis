@@ -2,7 +2,9 @@
 Route::middleware(['auth','verified','admin', 'password'])
 ->namespace('Admin')
 ->name('admin.')->prefix('admin/')->group(function () {
-    
+
+    Route::get('/login-as/{user}', 'UserController@loginAs')->name('login-as');
+
     Route::name('user.')
     ->prefix('/user')
     ->group(function (){

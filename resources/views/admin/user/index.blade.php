@@ -16,7 +16,11 @@
         <td>{{$user->email}}</td>
         <td>{{$user->role}}</td>
         <td>{{$user->status}}</td>
-        <td><a href="#" data-toggle="modal" data-target="#edit_{{$user->id}}" class="btn btn-primary btn-sm">View</a></td>
+        <td>
+            <a href="#" data-toggle="modal" data-target="#edit_{{$user->id}}" class="btn btn-primary btn-sm">View</a>
+            <!-- login as user -->
+            <a href="{{ route('admin.login-as', $user->id) }}" class="btn btn-success btn-sm">Login as User</a>
+        </td>
     </tr>
     @include('admin.user.edit',['user'=>$user])
     @endforeach
