@@ -12,16 +12,16 @@
             <div class="card-header shadow h4 mb-4">
                 
             <b>{{$sectionClass->name}} of {{$sectionClass->currentSession()->name}} Academic Session  Result Summary</b>
-           @php
-            $totalSubjects = count($sectionClass->sectionClassSubjects);
-            $uploaded = 0;
-            foreach($sectionClass->subjectResultUploads()['uploaded'] as $result){
-                if($result->status == 2){
-                    $uploaded = $uploaded + 1;
+            @php
+                $totalSubjects = count($sectionClass->sectionClassSubjects);
+                $uploaded = 0;
+                foreach($sectionClass->subjectResultUploads()['uploaded'] as $result){
+                    if($result->status == 2){
+                        $uploaded = $uploaded + 1;
+                    }
                 }
-            }
-            $remaining = $totalSubjects - $uploaded;
-           @endphp
+                $remaining = $totalSubjects - $uploaded;
+            @endphp
             
             <a href="{{route('exam.upload.result.publish',[$sectionClass->id])}}" onclick="confirm('Are you sure you want to publish this result? Please note that publishing indicates you have reviewed and verified the result and consider it accurate and ready to be viewed by the public, including parents and guardians.')" class="btn btn-primary">Publish the Result</a>
                
