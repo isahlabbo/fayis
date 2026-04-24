@@ -60,6 +60,71 @@ class SectionClass extends BaseModel
         return $this->sectionClassTeachers->where('status','Active')->first();
     }
 
+    public function activeMaleStudents()
+    {
+        return $this->sectionClassStudents->where('status', 'Active')->where('student.gender_id', 1)->count();
+        
+    }
+
+    public function activeFemaleStudents()
+    {
+        return $this->sectionClassStudents->where('status', 'Active')->where('student.gender_id', 2)->count();
+        
+    }
+
+    public function termlyAverageScore(AcademicSessionTerm $academicSessionTerm)
+    {
+        $totalScore = 0;
+        $count = 0;
+        foreach($this->sectionClassStudents->where('status','Active') as $sectionClassStudent){
+            foreach($sectionClassStudent->sectionClassStudentTerms as $studentTerm){
+                if($studentTerm->academicSessionTerm->id == $academicSessionTerm->id){
+                    $totalScore += $studentTerm->studentAverage();
+                    $count++;
+                }
+            }
+        }
+        if($count == 0){
+            return 0;
+        }
+        return number_format($totalScore/$count,2);
+        
+    }
+
+    public function termlyHighestScore(AcademicSessionTerm $academicSessionTerm) {
+        $highestScore = 0;
+        foreach($this->sectionClassStudents->where('status','Active') as $sectionClassStudent){
+            foreach($sectionClassStudent->sectionClassStudentTerms as $studentTerm){
+                if($studentTerm->academicSessionTerm->id == $this->currentSessionTerm()->id){
+                    if($studentTerm->studentTotalScore() > $highestScore){
+                        $highestScore = $studentTerm->studentTotalScore();
+                    }
+                }
+            }
+        }
+        return $highestScore;
+    }
+
+    public function termlyLowestScore(AcademicSessionTerm $academicSessionTerm) {
+        $lowestScore = 1000000;
+        foreach($this->sectionClassStudents->where('status','Active') as $sectionClassStudent){
+            foreach($sectionClassStudent->sectionClassStudentTerms as $studentTerm){
+                if($studentTerm->academicSessionTerm->id == $this->currentSessionTerm()->id){
+                    if($studentTerm->studentTotalScore() < $lowestScore){
+                        $lowestScore = $studentTerm->studentTotalScore();
+                    }
+                }
+            }
+        }
+        if($lowestScore == 1000000){
+            return 0;
+        }
+        return $lowestScore;
+        
+    }
+
+
+
     public function numberofUnpublishedResults() {
         $count = 0;
         foreach($this->sectionClassStudents->where('status', 'Active') as $studentInClass){

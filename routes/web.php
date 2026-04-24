@@ -13,6 +13,7 @@ use App\Charts\TermVsClassAverageChart;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\DataExport;
+use App\Exports\StatisticsExport;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,9 +70,13 @@ Route::get('/', function () {
 Route::get('/download/data', function () {
     $fileName = 'data.xlsx';
     return Excel::download(new DataExport, $fileName); // stores in storage/app/public/
+});
 
+Route::get('/statistics/session/{session}/term/{term}', function ($session, $term) {
+    $fileName = $session . '_' . $term . '_statistics.xlsx';
 
-})->name('download.data');
+    return Excel::download(new StatisticsExport($session, $term), $fileName);
+})->name('download.statistics');
 
 Route::get('/access/restricted', function () {
     return view('access.restrict');
@@ -79,7 +84,7 @@ Route::get('/access/restricted', function () {
 
 
 Route::get('/sms', function () {
-     $response = Admin::find(1)->notify(new SchoolFeesPaymentCollectedSMS(Invoice::find(1)));
+    $response = Admin::find(1)->notify(new SchoolFeesPaymentCollectedSMS(Invoice::find(1)));
      
 });
 
