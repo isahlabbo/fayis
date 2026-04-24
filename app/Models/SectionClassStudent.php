@@ -205,7 +205,7 @@ class SectionClassStudent extends BaseModel
     {
         $term = null;
         foreach($this->sectionClassStudentTerms as $sectionClassStudentTerm){
-            if(strtotime($sectionClassStudentTerm->academicSessionTerm->start_at) > now()){
+            if($sectionClassStudentTerm->academicSessionTerm->start_at > now()){
                 $term = $sectionClassStudentTerm->academicSessionTerm;
             }else if($sectionClassStudentTerm->academicSessionTerm->term_id == $this->currentSessionTerm()->term_id + 1){
                 $term = $sectionClassStudentTerm->academicSessionTerm;
