@@ -93,7 +93,7 @@ class SectionClass extends BaseModel
 
     public function termlyHighestScore(AcademicSessionTerm $academicSessionTerm)
     {
-        $highestScore = 0;
+        $scores = [];
 
         foreach ($this->sectionClassStudents->where('status', 'Active') as $student) {
             foreach ($student->sectionClassStudentTerms as $term) {
@@ -102,19 +102,32 @@ class SectionClass extends BaseModel
 
                     $score = $term->studentTotalScore();
 
-                    if ($score > $highestScore) {
-                        $highestScore = $score;
+                    if ($score > 0) {
+                        $scores[] = $score;
                     }
                 }
             }
         }
 
-        return $highestScore;
+        // If class is empty
+        if ($this->sectionClassStudents->where('status', 'Active')->count() == 0) {
+            return 0;
+        }
+
+        // If no valid scores (all were zero)
+        if (empty($scores)) {
+            return 0;
+        }
+
+        $highest = max($scores);
+
+        // Convert to percentage (assuming total is 100)
+        return $highest/$this->sectionClassSubjects->where('status','Active')->count();
     }
 
     public function termlyLowestScore(AcademicSessionTerm $academicSessionTerm)
     {
-        $lowestScore = null;
+        $scores = [];
 
         foreach ($this->sectionClassStudents->where('status', 'Active') as $student) {
             foreach ($student->sectionClassStudentTerms as $term) {
@@ -123,14 +136,26 @@ class SectionClass extends BaseModel
 
                     $score = $term->studentTotalScore();
 
-                    if ($lowestScore === null || $score < $lowestScore) {
-                        $lowestScore = $score;
+                    if ($score > 0) {
+                        $scores[] = $score;
                     }
                 }
             }
         }
 
-        return $lowestScore ?? 0;
+        // If class is empty
+        if ($this->sectionClassStudents->where('status', 'Active')->count() == 0) {
+            return 0;
+        }
+
+        // If no valid scores
+        if (empty($scores)) {
+            return 0;
+        }
+
+        $lowest = min($scores);
+
+        return $lowest/$this->sectionClassSubjects->where('status', 'Active')->count();
     }
 
 
