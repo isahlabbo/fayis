@@ -122,7 +122,7 @@ class SectionClass extends BaseModel
         $highest = max($scores);
 
         // Convert to percentage (assuming total is 100)
-        return $highest/$this->sectionClassSubjects->where('status','Active')->count();
+        return number_format($highest/$this->sectionClassSubjects->where('status','Active')->count(),2);
     }
 
     public function termlyLowestScore(AcademicSessionTerm $academicSessionTerm)
@@ -155,7 +155,7 @@ class SectionClass extends BaseModel
 
         $lowest = min($scores);
 
-        return $lowest/$this->sectionClassSubjects->where('status', 'Active')->count();
+        return number_format($lowest/$this->sectionClassSubjects->where('status', 'Active')->count(),2);
     }
 
 
