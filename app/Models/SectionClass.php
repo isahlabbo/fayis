@@ -91,36 +91,46 @@ class SectionClass extends BaseModel
         
     }
 
-    public function termlyHighestScore(AcademicSessionTerm $academicSessionTerm) {
+    public function termlyHighestScore(AcademicSessionTerm $academicSessionTerm)
+    {
         $highestScore = 0;
-        foreach($this->sectionClassStudents->where('status','Active') as $sectionClassStudent){
-            foreach($sectionClassStudent->sectionClassStudentTerms as $studentTerm){
-                if($studentTerm->academicSessionTerm->id == $this->currentSessionTerm()->id){
-                    if($studentTerm->studentTotalScore() > $highestScore){
-                        $highestScore = $studentTerm->studentTotalScore();
+
+        foreach ($this->sectionClassStudents->where('status', 'Active') as $student) {
+            foreach ($student->sectionClassStudentTerms as $term) {
+
+                if (optional($term->academicSessionTerm)->id == $academicSessionTerm->id) {
+
+                    $score = $term->studentTotalScore();
+
+                    if ($score > $highestScore) {
+                        $highestScore = $score;
                     }
                 }
             }
         }
+
         return $highestScore;
     }
 
-    public function termlyLowestScore(AcademicSessionTerm $academicSessionTerm) {
-        $lowestScore = 1000000;
-        foreach($this->sectionClassStudents->where('status','Active') as $sectionClassStudent){
-            foreach($sectionClassStudent->sectionClassStudentTerms as $studentTerm){
-                if($studentTerm->academicSessionTerm->id == $this->currentSessionTerm()->id){
-                    if($studentTerm->studentTotalScore() < $lowestScore){
-                        $lowestScore = $studentTerm->studentTotalScore();
+    public function termlyLowestScore(AcademicSessionTerm $academicSessionTerm)
+    {
+        $lowestScore = null;
+
+        foreach ($this->sectionClassStudents->where('status', 'Active') as $student) {
+            foreach ($student->sectionClassStudentTerms as $term) {
+
+                if (optional($term->academicSessionTerm)->id == $academicSessionTerm->id) {
+
+                    $score = $term->studentTotalScore();
+
+                    if ($lowestScore === null || $score < $lowestScore) {
+                        $lowestScore = $score;
                     }
                 }
             }
         }
-        if($lowestScore == 1000000){
-            return 0;
-        }
-        return $lowestScore;
-        
+
+        return $lowestScore ?? 0;
     }
 
 
