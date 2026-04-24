@@ -29,7 +29,7 @@
                 <td>{{$sectionClass->termlyAverageScore($academicSessionTerm) ?? 0}}</td>
                 <td>{{$sectionClass->termlyHighestScore($academicSessionTerm) ?? 0}}</td>
                 <td>{{$sectionClass->termlyLowestScore($academicSessionTerm) ?? 0}}</td>
-                <td>{{$sectionClass->sectionClassSubjects->where('status', 'Active') ?? 0}}</td>
+                <td>{{$sectionClass->sectionClassSubjects->where('status', 'Active')->count() ?? 0}}</td>
             </tr>
         @endforeach
     </tbody>
