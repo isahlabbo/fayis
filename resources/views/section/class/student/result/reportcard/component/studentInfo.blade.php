@@ -66,7 +66,7 @@
 
 <div class="col-md-4" style="color: black;">
     <p class="mb-0" style="color: black;">
-    <tr><td>Next Term Begins:</td> <td class="text text-left"><b>{{strtoupper(date('d-M-Y',strtotime($sectionClassStudent->nextSectionClassStudentTerm()->start_at))) ?? 'Not available'}}</b></td></tr></p>
+    <tr><td>Next Term Begins:</td> <td class="text text-left"><b>{{strtoupper(date('d-M-Y',strtotime($sectionClassStudent->nextSectionClassStudentTerm()->start_at ?? ''))) ?? 'Not available'}}</b></td></tr></p>
     <p class="mb-0" style="color: black;">Term: <b>{{strtoupper($sectionClassStudentTerm->academicSessionTerm->term->name ?? '')}}</b></p>
     <p class="mb-0" style="color: black;">Class: <b>{{$sectionClassStudent->sectionClass->name ?? ''}} {{$sectionClassStudent->sectionClass->sectionClassGroup->name ?? ''}}</b></p>
     <p class="mb-0" style="color: black;">Session: <b>{{$sectionClassStudentTerm->academicSessionTerm->academicSession->name ?? ''}}</b></p>
