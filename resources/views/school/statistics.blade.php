@@ -9,9 +9,10 @@
         <th>Total Students</th>
         <th>Number of Boys</th>
         <th>Number of Girls</th>
-        <th>Average Score</th>
-        <th>Highest Score</th>
-        <th>Lowest Score</th>
+        <th>Average Score (%)</th>
+        <th>Highest Score (%)</th>
+        <th>Lowest Score (%)</th>
+        <th>Number of Subjects (%)</th>
     </tr>
     </thead>
     <tbody>
@@ -28,6 +29,7 @@
                 <td>{{$sectionClass->termlyAverageScore($academicSessionTerm) ?? 0}}</td>
                 <td>{{$sectionClass->termlyHighestScore($academicSessionTerm) ?? 0}}</td>
                 <td>{{$sectionClass->termlyLowestScore($academicSessionTerm) ?? 0}}</td>
+                <td>{{$sectionClass->sectionClassSubjects->where('status', 'Active') ?? 0}}</td>
             </tr>
         @endforeach
     </tbody>
