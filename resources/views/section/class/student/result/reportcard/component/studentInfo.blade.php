@@ -45,7 +45,7 @@
 
     <tr style="color: black;">
         <td class="mb-0">No of subjects:</td>
-        <td class="mb-0 text-right"><b>{{count($sectionClassStudent->sectionClass->sectionClassSubjects)}}</b></td>
+        <td class="mb-0 text-right"><b>{{count($sectionClassStudent->sectionClass->sectionClassSubjects->where('status', 'Active'))}}</b></td>
     </tr>
 
     @if($sectionClassStudentTerm->academicSessionTerm->term->id == 3)
