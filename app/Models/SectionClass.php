@@ -91,20 +91,15 @@ class SectionClass extends BaseModel
         
     }
 
-    public function termlyHighestScore(AcademicSessionTerm $academicSessionTerm)
+    public function termlyHighestStudentAverage(AcademicSessionTerm $academicSessionTerm)
     {
         $scores = [];
 
-        foreach ($this->sectionClassStudents->where('status', 'Active') as $student) {
-            foreach ($student->sectionClassStudentTerms as $term) {
-
-                if (optional($term->academicSessionTerm)->id == $academicSessionTerm->id) {
-
-                    $score = $term->studentTotalScore();
-
-                    if ($score > 0) {
-                        $scores[] = $score;
-                    }
+        foreach($this->sectionClassStudents->where('status','Active') as $sectionClassStudent){
+            foreach($sectionClassStudent->sectionClassStudentTerms as $studentTerm){
+                if($studentTerm->academicSessionTerm->id == $academicSessionTerm->id){
+                    $scores[] = $studentTerm->studentAverage();
+                    
                 }
             }
         }
@@ -122,23 +117,17 @@ class SectionClass extends BaseModel
         $highest = max($scores);
 
         // Convert to percentage (assuming total is 100)
-        return number_format($highest/$this->sectionClassSubjects->where('status','Active')->count(),2);
+        return number_format($highest,2);
     }
 
-    public function termlyLowestScore(AcademicSessionTerm $academicSessionTerm)
+    public function termlyLowestStudentAverage(AcademicSessionTerm $academicSessionTerm)
     {
         $scores = [];
 
-        foreach ($this->sectionClassStudents->where('status', 'Active') as $student) {
-            foreach ($student->sectionClassStudentTerms as $term) {
-
-                if (optional($term->academicSessionTerm)->id == $academicSessionTerm->id) {
-
-                    $score = $term->studentTotalScore();
-
-                    if ($score > 0) {
-                        $scores[] = $score;
-                    }
+        foreach($this->sectionClassStudents->where('status','Active') as $sectionClassStudent){
+            foreach($sectionClassStudent->sectionClassStudentTerms as $studentTerm){
+                if($studentTerm->academicSessionTerm->id == $academicSessionTerm->id){
+                    $scores[] = $studentTerm->studentAverage();
                 }
             }
         }
@@ -155,7 +144,7 @@ class SectionClass extends BaseModel
 
         $lowest = min($scores);
 
-        return number_format($lowest/$this->sectionClassSubjects->where('status', 'Active')->count(),2);
+        return number_format($lowest,2);
     }
 
 

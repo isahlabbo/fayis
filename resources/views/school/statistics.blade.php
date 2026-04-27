@@ -27,8 +27,8 @@
                 <td>{{$sectionClass->activeMaleStudents() ?? 0}}</td>
                 <td>{{$sectionClass->activeFemaleStudents() ?? 0}}</td>
                 <td>{{$sectionClass->termlyAverageScore($academicSessionTerm) ?? 0}}</td>
-                <td>{{$sectionClass->termlyHighestScore($academicSessionTerm) ?? 0}}</td>
-                <td>{{$sectionClass->termlyLowestScore($academicSessionTerm) ?? 0}}</td>
+                <td>{{$sectionClass->termlyHighestStudentAverage($academicSessionTerm) ?? 0}}</td>
+                <td>{{$sectionClass->termlyLowestStudentAverage($academicSessionTerm) ?? 0}}</td>
                 <td>{{$sectionClass->sectionClassSubjects->where('status', 'Active')->count() ?? 0}}</td>
             </tr>
         @endforeach

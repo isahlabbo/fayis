@@ -121,6 +121,10 @@ class SectionClassStudentTerm extends BaseModel
     {
         return $this->studentResults->sum('total');
     }
+
+    public function subjectCounts() {
+        return $this->studentResults->count();
+    }
     
     public function publishThisTermResult()
     {
