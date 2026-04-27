@@ -84,7 +84,6 @@ class SectionClass extends BaseModel
                     if($studentAverage > 0){
                         $count++;
                     }
-                    $count++;
                 }
             }
         }
