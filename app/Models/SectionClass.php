@@ -98,7 +98,11 @@ class SectionClass extends BaseModel
         foreach($this->sectionClassStudents->where('status','Active') as $sectionClassStudent){
             foreach($sectionClassStudent->sectionClassStudentTerms as $studentTerm){
                 if($studentTerm->academicSessionTerm->id == $academicSessionTerm->id){
-                    $scores[] = $studentTerm->studentAverage();
+                    $studentAverage = $studentTerm->studentAverage();
+                    // Only consider valid scores (greater than zero)
+                    if ($studentAverage > 0) {
+                        $scores[] = $studentAverage;    
+                    }
                     
                 }
             }
@@ -127,7 +131,10 @@ class SectionClass extends BaseModel
         foreach($this->sectionClassStudents->where('status','Active') as $sectionClassStudent){
             foreach($sectionClassStudent->sectionClassStudentTerms as $studentTerm){
                 if($studentTerm->academicSessionTerm->id == $academicSessionTerm->id){
-                    $scores[] = $studentTerm->studentAverage();
+                $studentAverage = $studentTerm->studentAverage();
+                // Only consider valid scores (greater than zero)
+                if ($studentAverage > 0) {
+                    $scores[] = $studentAverage;    
                 }
             }
         }
