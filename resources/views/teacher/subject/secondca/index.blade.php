@@ -56,9 +56,7 @@
                     </tbody>
                 </table>
                 <div class="form-group">
-                    
                     <a class="btn btn-outline-warning" href="{{route('teacher.subject.firstca.index',[$upload->id])}}">Goto First CA</a> 
-                    <a class="btn btn-outline-warning" href="{{route('teacher.subject.assignment.index',[$upload->id])}}">Goto Assignment</a> 
                     <a class="btn btn-outline-danger" href="{{route('teacher.subject.exam.index',[$upload->id])}}">Goto Exam</a> 
                     @if($upload->status == 0)
                     <button class="btn btn-primary">Save Second CA</button>

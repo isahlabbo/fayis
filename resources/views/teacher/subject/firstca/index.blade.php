@@ -61,7 +61,6 @@
                     <button class="btn btn-primary">Submit First CA</button> 
                     @endif
                     <a class="btn btn-outline-warning" href="{{route('teacher.subject.secondca.index',[$upload->id])}}">Goto Second CA</a> 
-                    <a class="btn btn-outline-info" href="{{route('teacher.subject.assignment.index',[$upload->id])}}">Goto Assignment CA</a> 
                     <a class="btn btn-outline-danger" href="{{route('teacher.subject.exam.index',[$upload->id])}}">Goto Exam</a> 
                 
                 </div>
