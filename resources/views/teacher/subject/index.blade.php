@@ -15,7 +15,7 @@
         <div class="progress" style="height: 35px; font-size:20px;">
             @php
             $level = $upload->getLevel();
-            $percentage = ($level / 4) * 100;
+            $percentage = ($level / 3) * 100;
             @endphp
             <div class="progress-bar" role="progressbar" style="width: {{$percentage}}%;" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
         </div>
@@ -47,18 +47,7 @@
                 </div>
             </a>
         </div>
-        <div class="col-md-3 mb-4">
-            <a href="{{route('teacher.subject.assignment.index',[$upload->id])}}" class="text-decoration-none">
-                <div class="card-body shadow text-center rounded-3">
-                    <h5 class="text-primary">
-                        <i class="fas fa-pen"></i> Assignment
-                    </h5>
-                    <h6 class="text-primary">
-                        
-                    </h6>
-                </div>
-            </a>
-        </div>
+        
         <div class="col-md-3 mb-4">
             <a href="{{route('teacher.subject.exam.index',[$upload->id])}}" class="text-decoration-none">
                 <div class="card-body shadow text-center rounded-3">

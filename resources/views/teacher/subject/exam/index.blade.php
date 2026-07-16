@@ -12,11 +12,11 @@
 <div class="progress" style="height: 40px; font-size:20px;">
     @php
     $level = $upload->level;
-    $percentage = ($level / 4) * 100;
+    $percentage = ($level / 3) * 100;
     @endphp
     <div class="progress-bar" role="progressbar" style="width: {{$percentage}}%;" aria-valuenow="{{$percentage}}" aria-valuemin="0" aria-valuemax="100">{{$percentage}}%</div>
 </div>
-<p class="mt-2">Uploaded: {{$level}} / 4</p> 
+<p class="mt-2">Uploaded: {{$level}} / 3</p> 
 <!-- display form use table to restructure its content of name and input  to insert the firts ca of the student of each student available in the class -->
 <div class="row">
     <div class="col-md-1"></div>
@@ -32,7 +32,6 @@
                             <th>ADMISSION NO</th>
                             <th>FIRST CA</th>
                             <th>SECOND CA</th>
-                            <th>ASSIGNMENT</th>
                             <th>EXAM</th>
                             <th>TOTAL</th>
                             <th>GRADE</th>
@@ -50,9 +49,7 @@
                             <td>{{$sectionClassStudent->student->admission_no}}</td>
                             <td>{{$studentResult[0]->first_ca}}</td>
                             <td>{{$studentResult[0]->second_ca}}</td>
-                            <td>{{$studentResult[0]->assignment}}</td>
                             <td>
-                                
                                 @if($upload->status == 0)
                                 <input type="number" name="scores[{{$studentResult[0]->id}}]" class="form-control" max="60" value="{{$studentResult[0]->exam}}">
                                 @else
@@ -70,8 +67,7 @@
                     
                     <a class="mb-4 btn btn-outline-warning" href="{{route('teacher.subject.firstca.index',[$upload->id])}}">Goto First CA</a> 
                     <a class="mb-4 btn btn-outline-danger" href="{{route('teacher.subject.secondca.index',[$upload->id])}}"> Goto Second CA</a> 
-                    <a class="mb-4 btn btn-outline-info" href="{{route('teacher.subject.assignment.index',[$upload->id])}}"> Goto Assignment</a> 
-                     @if($upload->status == 0)
+                    @if($upload->status == 0)
                     <button class=" mb-4 btn btn-primary">Save Exam Score</button> 
                     <a class="mb-4 btn btn-outline-info" href="{{route('teacher.subject.exam.submit',[$upload->id])}}"> Submit Result to Class Master</a> 
                     @endif

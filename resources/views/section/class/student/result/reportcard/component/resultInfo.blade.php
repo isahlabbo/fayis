@@ -5,7 +5,6 @@
             <th>SUBJECT</th>
             <th>1ST CA</th>
             <th>2ND CA</th>
-            <th>ASSIGNMENT</th>
             <th>EXAM</th>
             <th>TOTAL</th>
             <th>GRADE</th>
@@ -33,7 +32,6 @@
             <td>{{$studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject->name ?? 'Not Available'}}</td>
             <td class="text text-center">{{$studentResult->first_ca ?? 'Abs'}}</td>
             <td class="text text-center">{{$studentResult->second_ca ?? 'Abs'}}</td>
-            <td class="text text-center">{{$studentResult->assignment ?? 'Abs'}}</td>
             <td class="text text-center">{{$studentResult->exam ?? 'Abs'}}</td>
             <td class="text text-center">{{$studentResult->total ?? 'Abs'}}</td>
             <td class="text text-center">{{$studentResult->grade ?? 'Abs'}}</td>
