@@ -51,7 +51,7 @@
                             <td>{{$studentResult[0]->second_ca}}</td>
                             <td>
                                 @if($upload->status == 0)
-                                <input type="number" name="scores[{{$studentResult[0]->id}}]" class="form-control" max="60" value="{{$studentResult[0]->exam}}">
+                                <input type="number" step="any" name="scores[{{$studentResult[0]->id}}]" class="form-control" max="60" value="{{$studentResult[0]->exam}}">
                                 @else
                                 {{$studentResult[0]->exam}}
                                 @endif

@@ -47,7 +47,7 @@
                             <td>{{$sectionClassStudent->student->admission_no}}</td>
                             <td>
                                 @if($upload->status == 0)
-                                <input type="number" name="scores[{{$studentResult[0]->id}}]" class="form-control" max="20" value="{{$studentResult[0]->first_ca}}">
+                                <input type="number" step="any" name="scores[{{$studentResult[0]->id}}]" class="form-control" max="20" value="{{$studentResult[0]->first_ca}}">
                                 @else
                                 {{$studentResult[0]->first_ca}}
                                 @endif
