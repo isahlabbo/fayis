@@ -19,15 +19,6 @@
                 <input type="number" name="amount"  value="{{$sectionClassFeeItem->amount}}" class="form-control">
             </div>
             <div class="from-group mb-2">
-                <label for="">Gender</label>
-                <select name="gender" class="form-control" id="">
-                    <option value="{{$sectionClassFeeItem->gender->id}}">{{$sectionClassFeeItem->gender->name}}</option>
-                    @foreach(App\Models\Gender::all() as $gender)
-                        <option value="{{$gender->id}}">{{$gender->name}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="from-group mb-2">
                 <label for="">Term</label>
                 <select name="term" class="form-control" id="">
                     <option value="{{$sectionClassFeeItem->term->id}}">{{$sectionClassFeeItem->term->name}}</option>

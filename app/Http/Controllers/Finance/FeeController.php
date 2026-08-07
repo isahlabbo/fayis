@@ -32,7 +32,7 @@ class FeeController extends Controller
             'description'=>$request->description,
             'amount'=>$request->amount,
             'term_id'=>$request->term,
-            'gender_id'=>$request->gender
+            'gender_id'=>$request->gender ?: null
         ]);
 
         return redirect()->route('finance.fees.index',[$sectionClassFee->sectionClass->id])->withSuccess('Fees item Registered');
@@ -49,7 +49,7 @@ class FeeController extends Controller
             'description'=>$request->description,
             'amount'=>$request->amount,
             'term_id'=>$request->term,
-            'gender_id'=>$request->gender
+            'gender_id'=>$request->gender ?: null
         ]);
 
         return redirect()->route('finance.fees.index',[$sectionClassFeeItem->sectionClassFee->sectionClass->id])->withSuccess('Fees item Updated');

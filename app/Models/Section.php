@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Payment;
+use App\Models\InventorySale;
 
 class Section extends BaseModel
 {
@@ -77,6 +79,34 @@ class Section extends BaseModel
             $submittedToExamOffice += $sectionClass->submittedToExamOffice();
         }
         return $submittedToExamOffice;
+    }
+
+    public function paymentCount()
+    {
+        return Payment::whereHas('sectionClassStudent.sectionClass', function ($query) {
+            $query->where('section_id', $this->id);
+        })->count();
+    }
+
+    public function paymentTotal()
+    {
+        return Payment::whereHas('sectionClassStudent.sectionClass', function ($query) {
+            $query->where('section_id', $this->id);
+        })->sum('amount');
+    }
+
+    public function salesCount()
+    {
+        return InventorySale::whereHas('student.sectionClass', function ($query) {
+            $query->where('section_id', $this->id);
+        })->count();
+    }
+
+    public function salesTotal()
+    {
+        return InventorySale::whereHas('student.sectionClass', function ($query) {
+            $query->where('section_id', $this->id);
+        })->sum('total_cost');
     }
 
     public function published(){

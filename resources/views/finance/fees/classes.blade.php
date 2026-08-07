@@ -12,23 +12,16 @@
                     @foreach($sectionClass->sectionClassFees as $sectionClassFee)
                         <p class="text text-secondary">{{$sectionClassFee->fee->name}}</p>
                         @if($sectionClassFee->fee->id == 1)
-                        <ul>
-                            @foreach(App\Models\Gender::all() as $gender)
-                            <li class="text text-primary">{{$gender->name}}</li> 
-                                <table>
-                                    @foreach(App\Models\Term::all() as $term)
-                                        <tr>
-                                            <td>{{$term->name}} :</td>
-                                            <td>{{$sectionClass->schoolFees($term->id, $gender->id)}}</td>
-                                        </tr>
-                                    @endforeach
-                                </table>
-                            @endforeach
-                        </ul>
+                            <table>
+                                @foreach(App\Models\Term::all() as $term)
+                                    <tr>
+                                        <td>{{$term->name}} :</td>
+                                        <td>{{$sectionClass->schoolFees($term->id)}}</td>
+                                    </tr>
+                                @endforeach
+                            </table>
                         @else
-                            @foreach(App\Models\Gender::all() as $gender)
-                                <p class="text text-primary"><b>{{$gender->name}}:</b> {{$sectionClass->materialFees($gender->id)}}</p> 
-                            @endforeach
+                            <p class="text text-primary">Amount: {{$sectionClass->materialFees()}}</p>
                         @endif
                     @endforeach
                     <div class="text text-right">

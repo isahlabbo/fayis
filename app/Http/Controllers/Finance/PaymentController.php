@@ -12,9 +12,30 @@ use App\Models\SectionClassStudent;
 
 class PaymentController extends Controller
 {
-    public function index($sectionClassId) {
-        
-        return view('finance.payments.index',['sectionClass'=>SectionClass::find($sectionClassId)]);
+    public function index(Request $request, $sectionClassId) {
+        $sectionClass = SectionClass::find($sectionClassId);
+        $feeType = $request->query('type', 'all');
+        $sectionClassFees = $sectionClass->sectionClassFees;
+
+        if ($feeType === 'school') {
+            $sectionClassFees = $sectionClassFees->filter(function ($fee) {
+                return $fee->fee->name === config('fees.payments.school');
+            });
+        } elseif ($feeType === 'pta') {
+            $sectionClassFees = $sectionClassFees->filter(function ($fee) {
+                return $fee->fee->name === config('fees.payments.pta');
+            });
+        } elseif ($feeType === 'sisco') {
+            $sectionClassFees = $sectionClassFees->filter(function ($fee) {
+                return $fee->fee->name === config('fees.payments.sisco');
+            });
+        }
+
+        return view('finance.payments.index', [
+            'sectionClass' => $sectionClass,
+            'sectionClassFees' => $sectionClassFees,
+            'feeType' => $feeType,
+        ]);
     }
 
     public function receipt($paymentId) {
@@ -22,9 +43,14 @@ class PaymentController extends Controller
         return view('finance.payments.receipt',['payment'=>Payment::find($paymentId)]);
     }
 
-    public function classes($sectionId) {
-        
-        return view('finance.payments.classes',['section'=>Section::find($sectionId)]);
+    public function classes($sectionId, $feeType = null) {
+        $section = Section::find($sectionId);
+        $feeType = in_array($feeType, ['school', 'pta', 'sisco']) ? $feeType : 'all';
+
+        return view('finance.payments.classes', [
+            'section' => $section,
+            'feeType' => $feeType,
+        ]);
     }
 
     public function add(Request $request, $sectionClasspaymentId) {
@@ -36,6 +62,7 @@ class PaymentController extends Controller
             'class_fee' => 'required',
             'date' => 'required',
         ]);
+        $type = $request->input('type');
         $sectionClassStudent = SectionClassStudent::find($request->student);
 
         $sectionClassStudent->payments()->create([
@@ -48,7 +75,12 @@ class PaymentController extends Controller
             'date'=>$request->date,
         ]);
 
-        return redirect()->route('finance.payments.index',[$sectionClassStudent->sectionClass->section->id])->withSuccess('Payment Registered');
+        $redirectParams = [$sectionClassStudent->sectionClass->id];
+        if (in_array($type, ['school', 'pta'])) {
+            $redirectParams['type'] = $type;
+        }
+
+        return redirect()->route('finance.payments.index', $redirectParams)->withSuccess('Payment Registered');
     }
 
     public function update(Request $request, $paymentId) {
@@ -61,8 +93,10 @@ class PaymentController extends Controller
             'date' => 'required',
         ]);
         $payment = Payment::find($paymentId);
+        $type = $request->input('type');
 
         $payment->update([
+            'section_class_student_id'=>$request->student,
             'term_id'=>$request->term,
             'amount'=>$request->amount,
             'mode'=>$request->mode,
@@ -70,7 +104,12 @@ class PaymentController extends Controller
             'date'=>$request->date,
         ]);
 
-        return redirect()->route('finance.payments.index',[$payment->sectionClassStudent->sectionClass->section->id])->withSuccess('Payment Updated');
+        $redirectParams = [$payment->sectionClassStudent->sectionClass->id];
+        if (in_array($type, ['school', 'pta'])) {
+            $redirectParams['type'] = $type;
+        }
+
+        return redirect()->route('finance.payments.index', $redirectParams)->withSuccess('Payment Updated');
     }
 
     public function delete($paymentId) {

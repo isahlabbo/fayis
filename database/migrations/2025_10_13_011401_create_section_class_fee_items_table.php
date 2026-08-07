@@ -16,7 +16,7 @@ class CreateSectionClassFeeItemsTable extends Migration
         Schema::create('section_class_fee_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('section_class_fee_id');
-            $table->foreignId('gender_id');
+            $table->foreignId('gender_id')->nullable();
             $table->foreignId('term_id')->nullable();
             $table->string('amount');
             $table->string('description');

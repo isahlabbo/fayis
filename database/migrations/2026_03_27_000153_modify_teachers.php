@@ -19,7 +19,6 @@ class ModifyTeachers extends Migration
             $table->string('appointment_grade_level')->nullable();
             $table->string('present_grade_level')->nullable();
             $table->string('comment')->nullable();
-            $table->string('lga_id')->nullable();
             $table->string('trcn')->nullable();
         });
     }

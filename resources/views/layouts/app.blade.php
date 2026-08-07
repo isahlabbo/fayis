@@ -20,6 +20,7 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('css/bootstrap_modify.css') }}">
+  @livewireStyles
   @yield('styles')
 <style>
   
@@ -134,6 +135,7 @@
       }
   </script>
 
+  @livewireScripts
   @yield('scripts')
 
 </body>

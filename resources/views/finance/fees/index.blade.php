@@ -13,7 +13,6 @@
                             <tr>
                                 <th>DESCRIPTION</th>
                                 <th>AMOUNT</th>
-                                <th>GENDER</th>
                                 <th>TERM</th>
                                 <th><button data-toggle="modal" data-target="#add_{{$sectionClassFee->id}}" class="btn btn-sm btn-outline-primary">Add Fees Item</button></th>
                             </tr>
@@ -24,7 +23,6 @@
                             <tr>
                                 <td>{{$sectionClassFeeItem->description}}</td>
                                 <td>{{$sectionClassFeeItem->amount}}</td>
-                                <td>{{$sectionClassFeeItem->gender->name}}</td>
                                 <td>{{$sectionClassFeeItem->term->name}}</td>
                                 <td>
                                     <button data-toggle="modal" data-target="#edit_{{$sectionClassFeeItem->id}}" class="btn btn-sm btn-outline-secondary"><i class="fas fa-pen"></i></button>

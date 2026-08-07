@@ -5,6 +5,17 @@
     
     @section('content')
         <h6 class="text text-primary m-4">{{$sectionClass->currentSession()->name}} payments for {{$sectionClass->name}}</h6>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <span class="badge badge-primary">Type: {{ ucfirst($feeType === 'pta' ? 'PTA Fees' : ($feeType === 'sisco' ? 'SISCO Fees' : ($feeType === 'school' ? 'School Fees' : 'All'))) }}</span>
+            </div>
+            <div>
+                <a href="{{ route('finance.payments.index', ['sectionClassId' => $sectionClass->id, 'type' => 'school']) }}" class="btn btn-sm btn-outline-primary">School Fees</a>
+                <a href="{{ route('finance.payments.index', ['sectionClassId' => $sectionClass->id, 'type' => 'pta']) }}" class="btn btn-sm btn-outline-primary">PTA Fees</a>
+                <a href="{{ route('finance.payments.index', ['sectionClassId' => $sectionClass->id, 'type' => 'sisco']) }}" class="btn btn-sm btn-outline-primary">SISCO Fees</a>
+                <a href="{{ route('finance.payments.index', ['sectionClassId' => $sectionClass->id]) }}" class="btn btn-sm btn-outline-secondary">All Payments</a>
+            </div>
+        </div>
         <table class="table table-striped table-sm" id="myTable">
             <thead>
                 <tr>
@@ -20,7 +31,7 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach($sectionClass->sectionClassFees as $sectionClassFee)
+            @foreach($sectionClassFees as $sectionClassFee)
             @foreach($sectionClassFee->payments as $payment)
                 @include('finance.payments.edit')
                 <tr>

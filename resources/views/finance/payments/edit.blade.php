@@ -11,12 +11,13 @@
         <form action="{{route('finance.payments.update',[$payment->id])}}" method="post">
             @csrf
             @method('PUT')
+            <input type="hidden" name="type" value="{{ $feeType ?? '' }}">
             <div class="from-group mb-2">
                 <label for="">Student</label>
                 <select name="student" class="form-control" id="">
                     <option value="{{$payment->sectionClassStudent->id}}">{{$payment->sectionClassStudent->student->name}}</option>
                     @foreach($sectionClass->sectionClassStudents->where('status', 'Active') as $classStudent)
-                        <option value="{{$classStudent->student->id}}">{{$classStudent->student->name}}</option>
+                        <option value="{{$classStudent->id}}">{{$classStudent->student->name}}</option>
                     @endforeach
                 </select>
             </div>
@@ -24,8 +25,8 @@
             <div class="from-group mb-2">
                 <label for="">Description</label>
                 <select name="class_fee" class="form-control" id="">
-                    <option value="{{$payment->sectionClassFee->id}}">{{$sectionClassFee->fee->name}}</option>
-                    @foreach($sectionClass->sectionClassFees as $sectionClassFee)
+                    <option value="{{$payment->sectionClassFee->id}}">{{$payment->sectionClassFee->fee->name}}</option>
+                    @foreach($sectionClassFees as $sectionClassFee)
                         <option value="{{$sectionClassFee->id}}">{{$sectionClassFee->fee->name}}</option>
                     @endforeach
                 </select>

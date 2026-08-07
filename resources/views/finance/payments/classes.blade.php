@@ -4,36 +4,28 @@
     @endsection
     
     @section('content')
-    <div class="row">
-        @foreach($section->sectionClasses as $sectionClass)
-            <div class="col-md-3 mb-4" >
-                <div class="card-body shadow" style="border-radius: 10px !important;">
-                    <h5 class="text text-primary text-center mb-4"><i class="fas fa-home"></i> {{$sectionClass->name}}</h5>
-                    @foreach($sectionClass->sectionClassFees as $sectionClassFee)
-                        <p class="text text-secondary">{{$sectionClassFee->fee->name}}</p>
-                        @if($sectionClassFee->fee->id == 1)
-                            <table>
-                                @foreach(App\Models\Term::all() as $term)
-                                    <tr>
-                                        <td>{{$term->name}} :</td>
-                                        <td>0</td>
-                                    </tr>
-                                @endforeach
-                            </table>
-                        @else
-                            @foreach(App\Models\Gender::all() as $gender)
-                                <p class="text text-primary"><b>{{$gender->name}}:</b> {{$sectionClass->materialFees($gender->id)}}</p> 
-                            @endforeach
-                        @endif
-                    @endforeach
-                    <div class="text text-right">
-                    <a href="{{route('finance.payments.index',[$sectionClass->id])}}" class="btn btn-sm btn-outline-danger"><i class="fas fa-eye"></i> View Payments</a>
-                    </div>
-                </div>
-            
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h6 class="text text-primary">Payment management for {{$section->name}}</h6>
+        <div class="d-flex align-items-center gap-2">
+            <select class="form-control form-control-sm" onchange="if(this.value) window.location.href=this.value">
+                <option value="">Select payment menu</option>
+                <option value="{{route('finance.payments.classes', [$section->id, 'school'])}}" {{ $feeType === 'school' ? 'selected' : '' }}>School Fees</option>
+                <option value="{{route('finance.payments.classes', [$section->id, 'pta'])}}" {{ $feeType === 'pta' ? 'selected' : '' }}>PTA Fees</option>
+                <option value="{{route('finance.payments.classes', [$section->id, 'sisco'])}}" {{ $feeType === 'sisco' ? 'selected' : '' }}>SISCO Fees</option>
+                <option value="{{route('finance.fees.classes', [$section->id])}}">Fees Setting</option>
+            </select>
+            <div>
+                <a href="{{route('finance.payments.classes', [$section->id, 'school'])}}" class="btn btn-sm btn-outline-primary {{ $feeType === 'school' ? 'active' : '' }}">School Fees</a>
+                <a href="{{route('finance.payments.classes', [$section->id, 'pta'])}}" class="btn btn-sm btn-outline-primary {{ $feeType === 'pta' ? 'active' : '' }}">PTA Fees</a>
+                <a href="{{route('finance.payments.classes', [$section->id, 'sisco'])}}" class="btn btn-sm btn-outline-primary {{ $feeType === 'sisco' ? 'active' : '' }}">SISCO Fees</a>
+                <a href="{{route('finance.fees.classes', [$section->id])}}" class="btn btn-sm btn-outline-secondary">Fees Setting</a>
             </div>
-            
-        @endforeach
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            @livewire('finance.payments.summary', ['section' => $section, 'feeType' => $feeType])
+        </div>
     </div>
     @endsection
 </x-app-layout>

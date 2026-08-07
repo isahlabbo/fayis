@@ -222,24 +222,24 @@ class SectionClass extends BaseModel
         return $results;
     }
 
-    public function schoolFees($termId, $genderId) {
+    public function schoolFees($termId, $genderId = null) {
         $fees = 0;
         foreach($this->sectionClassFees->where('fee_id', 1) as $sectionClassFee){
             foreach($sectionClassFee->sectionClassFeeItems as $feeItem){
-                if($feeItem->gender_id == $genderId && $feeItem->term_id == $termId){
-                    $fees+=$feeItem->amount;
+                if($feeItem->term_id == $termId && ($genderId === null || $feeItem->gender_id == $genderId)){
+                    $fees += $feeItem->amount;
                 }
             }
         }
         return $fees;
     }
 
-    public function materialFees($genderId) {
+    public function materialFees($genderId = null) {
         $fees = 0;
         foreach($this->sectionClassFees->where('fee_id', 2) as $sectionClassFee){
             foreach($sectionClassFee->sectionClassFeeItems as $feeItem){
-                if($feeItem->gender_id == $genderId){
-                    $fees+=$feeItem->amount;
+                if($genderId === null || $feeItem->gender_id == $genderId){
+                    $fees += $feeItem->amount;
                 }
             }
         }
