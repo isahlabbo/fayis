@@ -9,7 +9,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row g-3">
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="card border-primary">
                                     <div class="card-body text-center">
                                         <h6 class="text-muted">Classes</h6>
@@ -17,7 +17,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="card border-success">
                                     <div class="card-body text-center">
                                         <h6 class="text-muted">Students</h6>
@@ -25,23 +25,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
-                                <div class="card border-info">
-                                    <div class="card-body text-center">
-                                        <h6 class="text-muted">Subjects</h6>
-                                        <h3 class="mb-0">{{ $section->sectionClasses->sum(fn($class) => $class->sectionClassSubjects->where('status', 'Active')->count()) }}</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="card border-warning">
-                                    <div class="card-body text-center">
-                                        <h6 class="text-muted">Teachers</h6>
-                                        <h3 class="mb-0">{{ $section->sectionClasses->sum(fn($class) => $class->sectionClassTeachers->where('status', 'Active')->count()) }}</h3>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="card border-danger">
                                     <div class="card-body text-center">
                                         <h6 class="text-muted">Male</h6>
@@ -49,7 +33,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <div class="card border-pink">
                                     <div class="card-body text-center">
                                         <h6 class="text-muted">Female</h6>
