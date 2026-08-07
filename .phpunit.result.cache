@@ -1,0 +1,1 @@
+{"version":1,"defects":[],"times":{"Tests\\Unit\\FinanceOfficerMiddlewareTest::test_active_patron_is_allowed_to_access_finance_routes":0.298,"Tests\\Unit\\FinanceOfficerMiddlewareTest::test_non_finance_roles_are_redirected_to_restricted_access_page":0.038,"Tests\\Feature\\FinanceUnpaidReportTest::test_finance_users_can_view_the_unpaid_report":7.611}}

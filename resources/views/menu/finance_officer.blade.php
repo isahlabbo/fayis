@@ -18,7 +18,10 @@
             <i class="fas fa-credit-card"></i> SISCO Fees
         </a>
         <a href="{{ route('finance.payments.report', ['section' => $section->id]) }}">
-            <i class="fas fa-chart-line"></i> Reports
+            <i class="fas fa-chart-line"></i> Payment Reports
+        </a>
+        <a href="{{ route('finance.payments.unpaid', ['section' => $section->id]) }}">
+            <i class="fas fa-exclamation-triangle"></i> Unpaid Reports
         </a>
     </div>
 </li>

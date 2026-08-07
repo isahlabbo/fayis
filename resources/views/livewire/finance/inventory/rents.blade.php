@@ -7,7 +7,7 @@
                 <p class="mb-0 text-muted">Manage item rent transactions for teachers.</p>
             </div>
         </div>
-        @if(Auth::user()->role == 'finance')
+        @if(Auth::user()->role == 'finance_officer')
         <div class="card-body">
             <form wire:submit.prevent="saveRent">
                 <div class="form-row">

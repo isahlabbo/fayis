@@ -16,6 +16,9 @@ Route::middleware(['auth', 'verified', 'password', 'finance'])->prefix('/finance
     ->prefix('/payment')
     ->group(function (){
         Route::get('/report', 'PaymentReportController@index')->name('report');
+        Route::get('/report/unpaid', 'PaymentReportController@unpaid')->name('unpaid');
+        Route::get('/report/unpaid/pdf', 'PaymentReportController@unpaidPdf')->name('unpaid.pdf');
+        Route::get('/report/unpaid/csv', 'PaymentReportController@unpaidCsv')->name('unpaid.csv');
         Route::get('/report/pdf', 'PaymentReportController@pdf')->name('report.pdf');
         Route::get('/report/csv', 'PaymentReportController@csv')->name('report.csv');
         Route::get('/{sectionId}/classes/{type?}', 'PaymentController@classes')->name('classes');

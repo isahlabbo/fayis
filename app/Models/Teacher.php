@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 
 class Teacher extends BaseModel
 {
@@ -26,6 +27,15 @@ class Teacher extends BaseModel
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function profileImage()
+    {
+        if ($this->user && !empty($this->user->profile_photo_path)) {
+            return Storage::url($this->user->profile_photo_path);
+        }
+
+        return null;
     }
 
     public function lga()

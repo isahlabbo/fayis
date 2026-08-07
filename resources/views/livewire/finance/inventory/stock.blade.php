@@ -8,7 +8,7 @@
             <a href="{{ route('finance.inventory.stock.pdf', ['from_date' => $from_date, 'to_date' => $to_date, 'category_id' => $category_id, 'searchTerm' => $searchTerm]) }}" class="btn btn-primary"><i class="fas fa-download"></i> Download PDF</a>
         </div>
     </div>
-@if(Auth::user()->role == 'finance')
+@if(Auth::user()->role == 'finance_officer')
     <div class="card mb-4">
         <div class="card-body">
             <form wire:submit.prevent="saveStock" class="form-row align-items-end">

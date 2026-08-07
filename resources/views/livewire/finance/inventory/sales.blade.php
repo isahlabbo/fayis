@@ -1,5 +1,5 @@
 <div>
-    @if(Auth::user()->role == 'finance')
+    @if(Auth::user()->role == 'finance_officer')
     <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
@@ -198,7 +198,7 @@
                                 <td class="text-right">{{ number_format($sale->total_cost, 2) }}</td>
                                 <td>{{ Str::limit($sale->evidence ?? $sale->notes, 30) }}</td>
                                 <td class="text-right">
-                                    @if(Auth::user()->role == 'finance')
+                                    @if(Auth::user()->role == 'finance_officer')
                                     <a href="{{ route('finance.inventory.sales.receipt', ['saleId' => $sale->id]) }}" class="btn btn-sm btn-outline-primary">View</a>
                                     @endif
                                 </td>

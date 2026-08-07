@@ -19,7 +19,9 @@ class FinanceOfficerMiddleware
     {
         $user = Auth::user();
 
-        if($user->status == 'Active' && $user->role == 'finance_officer'){
+        $allowedRoles = ['finance_officer', 'patron'];
+
+        if($user->status == 'Active' && in_array($user->role, $allowedRoles, true)){
             return $next($request);
         }
 

@@ -5,7 +5,7 @@
             <p class="text-muted">Manage categories used to group inventory items.</p>
         </div>
         <div>
-            @if(Auth::user()->role == 'finance')
+            @if(Auth::user()->role == 'finance_officer')
             <button wire:click="createCategory" class="btn btn-primary"><i class="fas fa-plus"></i> New Category</button>
             @endif
             <a href="{{ route('finance.inventory.categories.pdf', ['searchTerm' => $searchTerm]) }}" class="btn btn-outline-secondary"><i class="fas fa-download"></i> Download PDF</a>
