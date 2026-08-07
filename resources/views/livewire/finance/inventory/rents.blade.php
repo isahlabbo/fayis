@@ -1,4 +1,5 @@
 <div>
+   
     <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
@@ -6,6 +7,7 @@
                 <p class="mb-0 text-muted">Manage item rent transactions for teachers.</p>
             </div>
         </div>
+        @if(Auth::user()->role == 'finance')
         <div class="card-body">
             <form wire:submit.prevent="saveRent">
                 <div class="form-row">
@@ -62,5 +64,38 @@
                 </div>
             </form>
         </div>
+        @endif
+    </div>
+    
+    <!-- rents records -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover mb-0">
+            <thead class="thead-light">
+                <tr>
+                    <th>SN</th>
+                    <th>Teacher's Name</th>
+                    <th>Contact</th>
+                    <th>Items</th>
+                    <th class="text-right">Quantity</th>
+                    <th class="text-right">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse(App\Models\InventoryRent::all() as $rent)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ optional($rent->teacher)->user->name ?? 'N/A' }}</td>
+                        <td>{{ optional($rent->teacher)->user->contact ?? 'N/A' }}</td>
+                        <td>{{ $rent->inventoryItem->name ?? 'N/A' }}</td>
+                        <td class="text-right">{{ $rent->quantity }}</td>
+                        <td>{{$rent->status}}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center py-4">No rent records found.</td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 </div>
