@@ -9,20 +9,22 @@
     @section('content')
         @if(Auth::user()->isSuperAdmin())
             @include('dashboard.superadmin')
-        @elseif(Auth::user()->role == 'admin')
+        @elseif(Auth::user()->usesRole('admin'))
             @include('dashboard.admin')
-        @elseif(Auth::user()->role == 'head')
+        @elseif(Auth::user()->usesRole('head'))
             @include('dashboard.head')
-        @elseif(Auth::user()->role == 'exam_officer')
+        @elseif(Auth::user()->usesRole('exam_officer'))
             @include('dashboard.exam_officer')
-        @elseif(Auth::user()->role == 'admission_officer')
+        @elseif(Auth::user()->usesRole('admission_officer'))
             @include('dashboard.admission_officer')
-        @elseif(Auth::user()->role == 'finance_officer')
+        @elseif(Auth::user()->usesRole('finance_officer'))
             @include('dashboard.finance_officer')
-        @elseif(Auth::user()->role == 'patron')
+        @elseif(Auth::user()->usesRole('patron'))
             @include('dashboard.patron')
-        @else
+        @elseif(Auth::user()->usesRole('teacher') && Auth::user()->teacher)
             @include('dashboard.teacher')
+        @else
+            @include('dashboard.account')
         @endif
     @endsection
     

@@ -19,7 +19,7 @@ class ExamOfficerMiddleware
     {
         $user = Auth::user();
 
-        if($user->status == 'Active' && $user->role == 'exam_officer'){
+        if($user->status == 'Active' && ($user->role == 'exam_officer' || (method_exists($user, 'hasPermission') && $user->hasPermission('manage-result-uploads')))){
             return $next($request);
         }
 

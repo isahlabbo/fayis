@@ -8,6 +8,16 @@ use Illuminate\Support\Facades\Storage;
 
 class Teacher extends BaseModel
 {
+    public function getStateIdAttribute()
+    {
+        return optional(optional($this->lga)->state)->name;
+    }
+
+    public function getUserStatusAttribute()
+    {
+        return optional($this->user)->status;
+    }
+
 
     public function sectionClassTeachers()
     {

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SectionAndClassTableSeeder::class);
         $this->call(SectionClassGroupTableSeeder::class);        
         $this->call(SectionAccessment::class);
-        $this->call(UserTableSeeder::class);
+        //$this->call(UserTableSeeder::class);
         $this->call(GenderTableSeeder::class);
         $this->call(TermTableSeeder::class);
         $this->call(AcademicSessionTableSeeder::class);

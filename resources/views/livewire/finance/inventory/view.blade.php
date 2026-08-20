@@ -8,7 +8,7 @@
             <a href="{{ route('finance.inventory.view.pdf', ['from_date' => $from_date, 'to_date' => $to_date, 'category_id' => $category_id, 'searchTerm' => $searchTerm]) }}" class="btn btn-primary"><i class="fas fa-download"></i> Download PDF</a>
         </div>
     </div>
-    @if(Auth::user()->role == 'finance')
+    @if(in_array(Auth::user()->role, ['finance_officer','patron'], true) || Auth::user()->hasPermission('manage-inventory'))
     <div class="mb-4">
         @livewire('finance.inventory.crud')
     </div>
@@ -100,7 +100,7 @@
                             <td>{{ number_format($item->unit_cost, 2) }}</td>
                             <td>{{ number_format($item->quantity * $item->unit_cost, 2) }}</td>
                             <td>
-                                @if(Auth::user()->role == 'finance')
+                                @if(in_array(Auth::user()->role, ['finance_officer','patron'], true) || Auth::user()->hasPermission('manage-inventory'))
                                     <button wire:click="$emit('editInventoryItem', {{ $item->id }})" class="btn btn-sm btn-outline-secondary"><i class="fas fa-pen"></i></button>
                                     <button wire:click="deleteItem({{ $item->id }})" type="button" onclick="confirm('Delete this item?') || event.stopImmediatePropagation()" class="btn btn-sm btn-outline-danger">
                                         <i class="fas fa-trash"></i>

@@ -9,9 +9,11 @@ use App\Models\Section;
 use App\Models\SectionClass;
 use App\Models\SectionClassStudent;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class Sales extends Component
 {
+    public function boot() { abort_unless(Auth::check() && (Auth::user()->role === 'finance_officer' || Auth::user()->hasPermission('manage-sales')), 403); }
     public $section_id;
     public $class_id;
     public $student_id;

@@ -21,7 +21,10 @@ class FinanceOfficerMiddleware
 
         $allowedRoles = ['finance_officer', 'patron'];
 
-        if($user->status == 'Active' && in_array($user->role, $allowedRoles, true)){
+        $financePermissions = ['manage-inventory', 'manage-payments', 'manage-sales', 'manage-rents'];
+        $hasFinancePermission = method_exists($user, 'hasPermission') && collect($financePermissions)->contains(fn ($permission) => $user->hasPermission($permission));
+
+        if($user->status == 'Active' && (in_array($user->role, $allowedRoles, true) || $hasFinancePermission)){
             return $next($request);
         }
 

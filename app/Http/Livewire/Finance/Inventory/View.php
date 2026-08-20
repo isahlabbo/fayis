@@ -5,9 +5,11 @@ namespace App\Http\Livewire\Finance\Inventory;
 use App\Models\InventoryItem;
 use App\Models\InventoryCategory;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class View extends Component
 {
+    public function boot() { abort_unless(Auth::check() && (in_array(Auth::user()->role, ['finance_officer','patron'], true) || Auth::user()->hasPermission('manage-inventory')), 403); }
     public $from_date;
     public $to_date;
     public $category_id;

@@ -34,6 +34,11 @@ class Student extends BaseModel
         return $this->belongsTo(SectionClass::class);
     }
 
+    public function desiredSectionClass()
+    {
+        return $this->belongsTo(SectionClass::class, 'desired_section_class_id');
+    }
+
     public function profileImage()
     {
         return Storage::url($this->picture);

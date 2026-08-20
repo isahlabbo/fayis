@@ -153,4 +153,16 @@ class User extends Authenticatable
 
         return $this->superAdminState;
     }
+
+    /** Match a database role while retaining legacy users.role compatibility. */
+    public function usesRole($role)
+    {
+        if ($this->role === $role) {
+            return true;
+        }
+
+        return $this->relationLoaded('accessRoles')
+            ? $this->accessRoles->contains('slug', $role)
+            : $this->hasAccessRole($role);
+    }
 }

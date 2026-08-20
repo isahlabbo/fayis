@@ -1,5 +1,5 @@
 <div class="row">
-@foreach(App\Models\SectionClassSubjectTeacher::where('teacher_id',Auth::user()->teacher->id)->get() as $subject)
+@forelse(App\Models\SectionClassSubjectTeacher::where('teacher_id',Auth::user()->teacher->id)->get() as $subject)
     @if($subject->sectionClassSubject && $subject->sectionClassSubject->status == 'Active')
     <div class="col-md-4 mb-4">
         <a href="{{route('teacher.subject.index', $subject->id)}}" class="text-decoration-none">
@@ -14,5 +14,13 @@
         </a>
     </div>        
     @endif
-@endforeach
+@empty
+    <div class="col-12">
+        <div class="card border-0 shadow-sm"><div class="card-body text-center py-5">
+            <i class="fas fa-book-open text-muted mb-3" style="font-size:2rem"></i>
+            <h5>No subjects assigned</h5>
+            <p class="text-muted mb-0">Your assigned subjects will appear here.</p>
+        </div></div>
+    </div>
+@endforelse
 </div>

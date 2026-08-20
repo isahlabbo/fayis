@@ -19,7 +19,7 @@ class AdmissionOfficerMiddleware
     {
         $user = Auth::user();
 
-        if($user->status == 'Active' && $user->role == 'admission_officer'){
+        if($user->status == 'Active' && ($user->role == 'admission_officer' || (method_exists($user, 'hasPermission') && $user->hasPermission('manage-students')))){
             return $next($request);
         }
 

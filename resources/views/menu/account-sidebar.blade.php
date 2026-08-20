@@ -1,12 +1,14 @@
 @php
     $user = Auth::user();
     $user->loadMissing(['accessRoles.permissions', 'directPermissions']);
+    $rolePriority = ['head', 'admin', 'admission_officer', 'exam_officer', 'finance_officer', 'patron', 'teacher', 'guardian', 'staff'];
+    $portalRole = collect($rolePriority)->first(fn ($role) => $user->usesRole($role)) ?: $user->role;
     $roleLabels = [
         'admin' => 'Administrator', 'head' => 'Head of School', 'admission_officer' => 'Admissions',
         'exam_officer' => 'Examinations', 'finance_officer' => 'Finance', 'patron' => 'Patron',
         'teacher' => 'Teacher', 'guardian' => 'Guardian', 'staff' => 'Staff',
     ];
-    $roleLabel = $roleLabels[$user->role] ?? ucwords(str_replace('_', ' ', $user->role));
+    $roleLabel = $roleLabels[$portalRole] ?? ucwords(str_replace('_', ' ', $portalRole));
 @endphp
 
 <header class="portal-mobile-bar">
@@ -20,7 +22,7 @@
     <nav>
         <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
 
-        @if($user->role === 'admin')
+        @if($portalRole === 'admin')
             <div class="portal-nav-title">Administration</div>
             @if($user->hasPermission('manage-users'))
                 <a href="{{ route('configuration.users.index') }}"><i class="fas fa-users"></i><span>User Management</span></a>
@@ -55,24 +57,35 @@
                     <a href="{{ route('configuration.role.permissions') }}"><i class="fas fa-link"></i><span>Role Permissions</span></a>
                 </div></details>
             @endif
-        @elseif($user->role === 'head')
-            <div class="portal-nav-title">School management</div>
-            <details><summary><span><i class="fas fa-university"></i> Sections</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu">
-                @foreach(App\Models\Section::orderBy('name')->get() as $section)<a href="{{ route('section.classes', [$section->id]) }}"><i class="fas fa-school"></i><span>{{ $section->name }}</span></a>@endforeach
-                <a href="{{ route('section.index') }}"><i class="fas fa-cog"></i><span>Manage Sections</span></a>
+        @elseif($portalRole === 'head')
+            <div class="portal-nav-title">Academic oversight</div>
+            @if($user->hasPermission('manage-teachers') || $user->hasPermission('manage-class-teacher-allocation') || $user->hasPermission('manage-class-subjects'))
+                <details><summary><span><i class="fas fa-chalkboard-teacher"></i> Teachers</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu">
+                    @if($user->hasPermission('manage-teachers'))<a href="{{ route('head.teachers.index') }}"><i class="fas fa-list-ul"></i><span>List of Teachers</span></a>@endif
+                    @if($user->hasPermission('manage-class-teacher-allocation'))<a href="{{ route('head.teachers.classes') }}"><i class="fas fa-user-tag"></i><span>Class Allocation</span></a>@endif
+                    @if($user->hasPermission('manage-class-subjects'))<a href="{{ route('head.teachers.subjects') }}"><i class="fas fa-book-reader"></i><span>Subject Allocation</span></a>@endif
+                </div></details>
+            @endif
+            <details><summary><span><i class="fas fa-school"></i> Classes & Students</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu">
+                @if($user->hasPermission('manage-class-subjects'))<a href="{{ route('section.index') }}"><i class="fas fa-book-open"></i><span>Class Subjects</span></a>@endif
+                @if($user->hasPermission('manage-students'))<a href="{{ route('admission.student.index') }}"><i class="fas fa-user-graduate"></i><span>Students</span></a>@endif
             </div></details>
-            <details><summary><span><i class="fas fa-building"></i> Administration</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu">
-                <a href="{{ route('administration.user.index') }}"><i class="fas fa-user-tie"></i><span>Administrators</span></a>
-                <a href="{{ route('administration.session.index') }}"><i class="fas fa-calendar"></i><span>Academic Sessions</span></a>
-                <a href="{{ route('administration.teacher.index') }}"><i class="fas fa-chalkboard-teacher"></i><span>Teachers</span></a>
-                <a href="{{ route('administration.staff.index') }}"><i class="fas fa-users"></i><span>Other Staff</span></a>
-                <a href="{{ route('administration.card.index') }}"><i class="fas fa-id-card"></i><span>ID Card Requests</span></a>
+            @if($user->hasPermission('manage-result-uploads'))<a href="{{ route('exam.upload.report') }}"><i class="fas fa-cloud-upload-alt"></i><span>Result Uploads</span></a>@endif
+
+            <div class="portal-nav-title">Finance & resources</div>
+            <details><summary><span><i class="fas fa-wallet"></i> Finance</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu">
+                @if($user->hasPermission('manage-payments'))<a href="{{ route('finance.payments.report') }}"><i class="fas fa-credit-card"></i><span>Payments</span></a>@endif
+                @if($user->hasPermission('manage-sales'))<a href="{{ route('finance.inventory.sales') }}"><i class="fas fa-shopping-cart"></i><span>Sales</span></a>@endif
+                @if($user->hasPermission('manage-rents'))<a href="{{ route('finance.inventory.rents') }}"><i class="fas fa-hand-holding"></i><span>Rents</span></a>@endif
             </div></details>
-            <a href="{{ route('configuration.reportcard.index') }}"><i class="fas fa-sliders-h"></i><span>Report Configuration</span></a>
-        @elseif($user->role === 'admission_officer')
+            @if($user->hasPermission('manage-inventory'))<a href="{{ route('finance.inventory.view') }}"><i class="fas fa-boxes"></i><span>Inventory</span></a>@endif
+        @elseif($portalRole === 'admission_officer')
             <div class="portal-nav-title">Admissions</div>
-            <a class="{{ request()->routeIs('admission.student.*') ? 'active' : '' }}" href="{{ route('admission.student.index') }}"><i class="fas fa-user-graduate"></i><span>Students</span></a>
-        @elseif($user->role === 'exam_officer')
+            <a class="{{ request()->routeIs('admission.applications') ? 'active' : '' }}" href="{{ route('admission.applications') }}"><i class="fas fa-file-signature"></i><span>Applications</span></a>
+            <a class="{{ request()->routeIs('admission.approvals') ? 'active' : '' }}" href="{{ route('admission.approvals') }}"><i class="fas fa-user-check"></i><span>Admission</span></a>
+            <a class="{{ request()->routeIs('admission.students') ? 'active' : '' }}" href="{{ route('admission.students') }}"><i class="fas fa-user-graduate"></i><span>Students</span></a>
+            <a class="{{ request()->routeIs('admission.guardians') ? 'active' : '' }}" href="{{ route('admission.guardians') }}"><i class="fas fa-people-roof"></i><span>Guardians</span></a>
+        @elseif($portalRole === 'exam_officer')
             <div class="portal-nav-title">Examinations</div>
             <a href="{{ route('exam.upload.report') }}"><i class="fas fa-chart-bar"></i><span>Upload Report</span></a>
             <a href="{{ route('exam.upload.class.report') }}"><i class="fas fa-school"></i><span>Class Report</span></a>
@@ -82,9 +95,9 @@
                     <a href="{{ route('exam.upload.result.accessCode', [$section->id]) }}"><i class="fas fa-key"></i><span>{{ $section->name }} Codes</span></a>
                 @endforeach
             </div></details>
-        @elseif(in_array($user->role, ['finance_officer', 'patron'], true))
+        @elseif(in_array($portalRole, ['finance_officer', 'patron'], true))
             <div class="portal-nav-title">Finance</div>
-            @if($user->role === 'finance_officer')
+            @if($portalRole === 'finance_officer')
                 <details><summary><span><i class="fas fa-coins"></i> Sections & Fees</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu">
                     @foreach(App\Models\Section::orderBy('name')->get() as $section)
                         <a href="{{ route('finance.fees.classes', [$section->id]) }}"><i class="fas fa-file-invoice"></i><span>{{ $section->name }} Fees</span></a>
@@ -103,8 +116,8 @@
                 <a href="{{ route('finance.inventory.sales') }}"><i class="fas fa-shopping-cart"></i><span>Sales</span></a>
                 <a href="{{ route('finance.inventory.rents') }}"><i class="fas fa-hand-holding"></i><span>Rents</span></a>
             </div></details>
-            @if($user->role === 'patron')<details><summary><span><i class="fas fa-chart-pie"></i> Statistics</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu"><a href="{{ route('patron.statistics.students') }}"><i class="fas fa-user-graduate"></i><span>Students</span></a><a href="{{ route('patron.statistics.teachers') }}"><i class="fas fa-chalkboard-teacher"></i><span>Teachers</span></a></div></details>@endif
-        @elseif($user->role === 'teacher' && $user->teacher)
+            @if($portalRole === 'patron')<details><summary><span><i class="fas fa-chart-pie"></i> Statistics</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu"><a href="{{ route('patron.statistics.students') }}"><i class="fas fa-user-graduate"></i><span>Students</span></a><a href="{{ route('patron.statistics.teachers') }}"><i class="fas fa-chalkboard-teacher"></i><span>Teachers</span></a></div></details>@endif
+        @elseif($portalRole === 'teacher' && $user->teacher)
             <div class="portal-nav-title">Teaching</div>
             <details><summary><span><i class="fas fa-book"></i> My Subjects</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu">
                 @foreach(App\Models\SectionClassSubjectTeacher::where('teacher_id', $user->teacher->id)->with('sectionClassSubject.subject')->get() as $subject)

@@ -110,6 +110,12 @@ Route::middleware(['auth:sanctum', 'verified', 'password'])
         return view('admin.livewire-resource', compact('resource'));
     })->name('admin.livewire.resource');
 
+    Route::prefix('/head/teachers')->name('head.teachers.')->group(function () {
+        Route::view('/', 'head.teachers.page', ['title'=>'Teachers','component'=>'head.teachers.index'])->middleware('permission:manage-teachers')->name('index');
+        Route::view('/class-allocations', 'head.teachers.page', ['title'=>'Class Allocations','component'=>'head.teachers.class-allocations'])->middleware('permission:manage-class-teacher-allocation')->name('classes');
+        Route::view('/subject-allocations', 'head.teachers.page', ['title'=>'Subject Allocations','component'=>'head.teachers.subject-allocations'])->middleware('permission:manage-class-subjects')->name('subjects');
+    });
+
     Route::view('/configuration/users', 'configuration.users')
         ->middleware('permission:manage-users')
         ->name('configuration.users.index');

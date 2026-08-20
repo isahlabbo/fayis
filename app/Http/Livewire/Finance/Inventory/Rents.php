@@ -6,9 +6,11 @@ use App\Models\InventoryItem;
 use App\Models\InventoryRent;
 use App\Models\Teacher;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class Rents extends Component
 {
+    public function boot() { abort_unless(Auth::check() && (Auth::user()->role === 'finance_officer' || Auth::user()->hasPermission('manage-rents')), 403); }
     public $teacher_id;
     public $item_id;
     public $quantity = 1;
