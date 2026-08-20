@@ -7,7 +7,9 @@
        {{Breadcrumbs::render('dashboard')}}
     @endsection
     @section('content')
-        @if(Auth::user()->role == 'admin')
+        @if(Auth::user()->isSuperAdmin())
+            @include('dashboard.superadmin')
+        @elseif(Auth::user()->role == 'admin')
             @include('dashboard.admin')
         @elseif(Auth::user()->role == 'head')
             @include('dashboard.head')

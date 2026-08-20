@@ -8,6 +8,11 @@ class PermissionController extends Controller
 {
     public function index()
     {
-        return view('configuration.permission.index');
+        return view('configuration.access-control', ['activeTab' => 'permissions']);
+    }
+
+    public function users()
+    {
+        return view('configuration.access-control', ['activeTab' => 'user-access']);
     }
 }

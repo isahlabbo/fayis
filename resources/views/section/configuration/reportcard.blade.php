@@ -81,7 +81,7 @@
                                     <div class="col-md-12"><br></div>
                                     @endforeach
                                 </div>
-                                <div class="row">
+                                <div class="row" id="remark-scales">
                                     <div class="col-md-12">
                                         <p  class="text-center"><b></b></p>
                                         <table class="table-bordered text-center" style="width: 100%; height: 20px;">
@@ -114,7 +114,7 @@
                                     </div>
                                     
                                 </div>
-                                <div class="row">
+                                <div class="row" id="grading-scales">
                                     <div class="col-md-12">
                                         <p  class="text-center"><b>KEY TO GRADING</b></p>
                                         <table class="table-bordered text-center" style="width: 100%; height: 20px;">

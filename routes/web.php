@@ -105,6 +105,15 @@ Route::middleware(['auth:sanctum', 'verified'])
 
 Route::middleware(['auth:sanctum', 'verified', 'password'])
 ->group(function (){
+    Route::get('/admin/manage/{resource}', function ($resource) {
+        abort_unless(in_array($resource, ['calendar','teachers','sections','subjects','classes','grading-scales','remark-scales','comments'], true), 404);
+        return view('admin.livewire-resource', compact('resource'));
+    })->name('admin.livewire.resource');
+
+    Route::view('/configuration/users', 'configuration.users')
+        ->middleware('permission:manage-users')
+        ->name('configuration.users.index');
+
     // configuration
     Route::name('profile.')
     ->prefix('/profile')
@@ -119,18 +128,21 @@ Route::middleware(['auth:sanctum', 'verified', 'password'])
 
     Route::name('configuration.')
     ->prefix('/configuration')
+    ->middleware('permission:manage-access-control')
     ->group(function (){
         //configuration > permissions
         Route::name('role.')
         ->prefix('/role')
         ->group(function (){
             Route::get('/', 'RoleController@index')->name('index');
+            Route::get('/permissions', 'RoleController@permissions')->name('permissions');
         });
 
         Route::name('permission.')
         ->prefix('/permission')
         ->group(function (){
             Route::get('/', 'PermissionController@index')->name('index');
+            Route::get('/users', 'PermissionController@users')->name('users');
         });
     });
 

@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FAYIS | @yield('title')</title>
 
-  <!-- Bootstrap Core CSS -->
-  <link 
-    rel="stylesheet" 
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-  >
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://code.jquery.com" crossorigin>
+  <link rel="dns-prefetch" href="//cdn.datatables.net">
+
+  <!-- Stable framework assets are served locally to avoid an extra CDN round trip. -->
+  <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
 
   <!-- Font Awesome -->
   <link 
@@ -20,6 +21,11 @@
   <!-- Custom Styles -->
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('css/bootstrap_modify.css') }}">
+  @if(Auth::check() && Auth::user()->isSuperAdmin())
+    <link rel="stylesheet" href="{{ asset('css/superadmin.css') }}?v={{ filemtime(public_path('css/superadmin.css')) }}">
+  @elseif(Auth::check())
+    <link rel="stylesheet" href="{{ asset('css/account-sidebar.css') }}?v={{ filemtime(public_path('css/account-sidebar.css')) }}">
+  @endif
   @livewireStyles
   @yield('styles')
 <style>
@@ -28,112 +34,27 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
-<body>
+<body class="{{ Auth::check() && Auth::user()->isSuperAdmin() ? 'sa-layout' : 'account-layout' }}">
 
   <!-- Watermark Background -->
   <div class="page-watermark"></div>
 
-  <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom" style="background-color: white !important;">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="{{route('dashboard')}}">
-        <img src="{{ asset('images/logo.jpg') }}" alt="School Logo" width="70" class="mr-2 rounded">
-        <span class="fw-bold text-success">FAYIS</span>
-      </a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-        <i class="fa fa-bars"></i>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-
-          @if(Auth::user()->role == 'admin')
-              @include('menu.admin')
-          @elseif(Auth::user()->role == 'head')
-              @include('menu.head')
-          @elseif(Auth::user()->role == 'admission_officer')
-              @include('menu.admission_officer')
-          @elseif(Auth::user()->role == 'exam_officer')
-              @include('menu.exam_officer')
-          @elseif(Auth::user()->role == 'finance_officer')
-              @include('menu.finance_officer')
-          @elseif(Auth::user()->role == 'patron')
-              @include('menu.patron')
-          @else
-              @include('menu.teacher')
-          @endif
-          <li class="dropdown ml-3">
-              <a href="#academics" class="dropbtn fw-bold">
-              @if(Auth::user()->profile_photo_path)
-                <img src="{{Auth::user()->profileImage()}}" alt="" width="50" height="50" style="border-radius: 50%;">
-              @else
-                  <img src="{{asset('images/user.jpg')}}" width="50" height="50" alt="" style="border-radius: 50%;">
-              @endif
-                </a>    
-              <div class="dropdown-content" >
-                  <a  href="{{route('profile.show')}}"><i class="fas fa-user-cog"></i> Profile</a>
-                  <a  href="{{route('password.update')}}"><i class="fas fa-key"></i> Change Password</a> 
-                  <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                      <i class="fas fa-sign-out-alt"></i> Logout
-                  </a>
-
-              </div>  
-          </li>
-          
-          <form id="logout-form" action="{{route('logout')}}" method="POST">@csrf</form>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  @if(Auth::check() && Auth::user()->isSuperAdmin())
+    @include('menu.superadmin-sidebar')
+  @else
+    @include('menu.account-sidebar')
+  @endif
 
   <!-- Main Section -->
-  <main class="container py-4">
+  <main class="{{ Auth::check() && Auth::user()->isSuperAdmin() ? 'sa-main' : 'account-main' }}">
     @include('sweetalert::alert')
     @yield('content')
   </main>
 
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"></script>
-
-  <script src="{{ asset('js/Ajax/address.js') }}"></script>
-  <script src="{{ asset('js/Ajax/sectionClasses.js') }}"></script>
-  <script src="{{ asset('js/Ajax/classSubjects.js') }}"></script>
-  <script src="{{ asset('assets/js/spinner.js') }}"></script>
-
-  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-  <script>
-    $(document).ready(function(){
-      $('#myTable').DataTable();
-    });
-  </script>
-
-  <script>
-    $(document).ready(function () {
-      $.ajaxSetup({
-        headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
-      });
-      $('#picture').change(function(){
-        let reader = new FileReader();
-        reader.onload = (e) => $('#picture_preview_container').attr('src', e.target.result);
-        reader.readAsDataURL(this.files[0]);
-      });
-    });
-  </script>
-
-  <script>
-      function printDiv(divId) {
-          const divContent = document.getElementById(divId).innerHTML;
-          const originalContent = document.body.innerHTML;
-
-          document.body.innerHTML = divContent;
-          window.print();
-          document.body.innerHTML = originalContent;
-          location.reload();
-      }
-  </script>
+  <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('js/layout.js') }}"></script>
 
   @livewireScripts
   @yield('scripts')

@@ -8,6 +8,11 @@ class RoleController extends Controller
 {
     public function index()
     {
-        return view('configuration.role.index');
+        return view('configuration.access-control', ['activeTab' => 'roles']);
+    }
+
+    public function permissions()
+    {
+        return view('configuration.access-control', ['activeTab' => 'role-permissions']);
     }
 }

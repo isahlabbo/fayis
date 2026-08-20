@@ -19,6 +19,9 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    protected $superAdminState;
+    protected $permissionStates = [];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -90,5 +93,64 @@ class User extends Authenticatable
     public function app()
     {
         return $this->hasOne(App::class);
+    }
+
+    /** Database-backed roles. The legacy `role` column remains unchanged. */
+    public function accessRoles()
+    {
+        return $this->morphToMany(Role::class, 'model', 'model_has_roles');
+    }
+
+    /** Permissions assigned directly to this user. */
+    public function directPermissions()
+    {
+        return $this->morphToMany(Permission::class, 'model', 'model_has_permissions');
+    }
+
+    public function hasAccessRole($role)
+    {
+        $column = is_numeric($role) ? 'id' : 'slug';
+
+        return $this->accessRoles()->where($column, $role)->exists();
+    }
+
+    public function hasPermission($permission)
+    {
+        // A database-backed superadmin automatically receives current and future permissions.
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        $column = is_numeric($permission) ? 'id' : 'slug';
+
+        $cacheKey = $column.':'.$permission;
+        if (array_key_exists($cacheKey, $this->permissionStates)) {
+            return $this->permissionStates[$cacheKey];
+        }
+
+        if ($this->relationLoaded('directPermissions') && $this->relationLoaded('accessRoles')) {
+            $direct = $this->directPermissions->contains($column, $permission);
+            $inherited = $this->accessRoles->contains(function ($role) use ($column, $permission) {
+                return $role->relationLoaded('permissions') && $role->permissions->contains($column, $permission);
+            });
+
+            return $this->permissionStates[$cacheKey] = $direct || $inherited;
+        }
+
+        return $this->permissionStates[$cacheKey] = $this->directPermissions()->where($column, $permission)->exists()
+            || $this->accessRoles()->whereHas('permissions', function ($query) use ($column, $permission) {
+                $query->where($column, $permission);
+            })->exists();
+    }
+
+    public function isSuperAdmin()
+    {
+        if ($this->superAdminState === null) {
+            $this->superAdminState = $this->relationLoaded('accessRoles')
+                ? $this->accessRoles->contains('slug', 'superadmin')
+                : $this->accessRoles()->where('slug', 'superadmin')->exists();
+        }
+
+        return $this->superAdminState;
     }
 }

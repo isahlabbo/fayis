@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class ModelHasPermission extends Model
 {
     use HasFactory;
+
+    protected $table = 'model_has_permissions';
+    protected $guarded = [];
+    public $incrementing = false;
+    public $timestamps = false;
 }
