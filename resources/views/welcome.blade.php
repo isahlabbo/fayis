@@ -1,219 +1,45 @@
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FAYIS | Welcome</title>
-
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="preconnect" href="https://code.jquery.com" crossorigin>
-
-  <!-- Bootstrap CSS -->
+<html lang="en"><head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Fatima Yahaya International School, Sifawa — knowledge, character, and confident futures.">
+  <title>Fatima Yahaya International School</title>
   <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-
-  <!-- Custom Styles -->
-  <link rel="stylesheet" href="{{asset('css/style.css')}}">
-  <link rel="stylesheet" href="{{asset('css/bootstrap_modify.css')}}">
-  <link rel="stylesheet" href="{{asset('css/slide.css')}}">
-</head>
-<body>
-
-  <!-- Navigation Bar -->
-  <div class="page-watermark"></div>
-  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom" style="background-color: white !important;">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="#home">
-        <img src="{{ asset('images/welcome-logo.png') }}" alt="School Logo" height="85" width="300" class="mr-2 rounded">
-      </a>
-
-      <!-- Navbar Toggle Button -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-        <i class="fa fa-bars"></i>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item ml-3"><a class="dropbt" href="{{route('result.check')}}"><i class="fas fa-poll-h"></i> Check Result</a></li>
-          <li class="nav-item ml-3"><a class="dropbt" href="#about"><i class="fas fa-info-circle"></i> About Us</a></li>
-          <li class="nav-item ml-3"><a class="dropbt" href="#mission-vision"><i class="fas fa-lightbulb"></i> Mission and Vision</a></li>
-          <li class="nav-item ml-3"><a class="dropbt" href="#admission"><i class="fas fa-user-plus"></i> Admission</a></li>
-          <li class="nav-item ml-3"><a class="dropbt" href="#academics"><i class="fas fa-book-open"></i> Academics</a></li>
-          <li class="nav-item ml-3"><a class="dropbt" href="{{route('login')}}"><i class="fas fa-sign-in-alt"></i> Login</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="hero-slider" id="home">
-  <div class="slider text text-center">
-    <!-- Slide 1 -->
-    <div class="slide active" style="background-image: url('{{ asset('images/slide/5.jpeg') }}');">
-      <div class="overlay"></div>
-      <div class="slide-content">
-        <h1 class="slide-title  text text-center" data-text="Welcome to Fatima Yahaya International School, Sifawa"></h1>
-        <p class="slide-desc text text-center" data-text="Empowering Children for a brighter future through quality education and innovation."></p>
-      </div>
-    </div>
-
-    <!-- Slide 2 -->
-    <div class="slide" style="background-image: url('{{ asset('images/slide/4.jpeg') }}');">
-      <div class="overlay"></div>
-      <div class="slide-content">
-        <h1 class="slide-title text text-center" data-text="Building Tomorrow’s Leaders Today"></h1>
-        <p class="slide-desc text text-center" data-text="Our curriculum inspires creativity, innovation, and academic excellence."></p>
-      </div>
-    </div>
-
-    <!-- Slide 3 -->
-      <div class="slide" style="background-image: url('{{ asset('images/slide/2.jpeg') }}');">
-        <div class="overlay"></div>
-        <div class="slide-content">
-          <h1 class="slide-title text text-center" data-text="Where Knowledge Meets Character"></h1>
-          <p class="slide-desc text text-center" data-text="We nurture values, confidence, and skills for lifelong success."></p>
-        </div>
-      </div>
-    
-  <!-- slide 4 -->
-    <div class="slide" style="background-image: url('{{ asset('images/slide/1.jpeg') }}');">
-      <div class="overlay"></div>
-      <div class="slide-content">
-        <h1 class="slide-title text text-center" data-text="Inspiring Excellence, Shaping Futures"></h1>
-        <p class="slide-desc text text-center" data-text="Join a community committed to academic success and personal growth."></p>
-      </div>
-    </div>
-    <!-- slide 5 -->
-    <div class="slide" style="background-image: url('{{ asset('images/slide/3.jpeg') }}');">
-      <div class="overlay"></div>
-      <div class="slide-content">
-        <h1 class="slide-title text text-center" data-text="Discover, Learn, and Grow with Us"></h1>
-        <p class="slide-desc text text-center" data-text="A vibrant learning environment fostering curiosity and innovation."></p>
-      </div>
-    </div>
-    <!-- slide 6 -->
-    <div class="slide" style="background-image: url('{{ asset('images/slide/6.jpeg') }}');">
-      <div class="overlay"></div>
-      <div class="slide-content">
-        <h1 class="slide-title text text-center" data-text="Empowering Young Minds for a Brighter Tomorrow"></h1>
-        <p class="slide-desc text text-center" data-text="Join us in shaping the future through quality education and innovation."></p>
-      </div>
-    </div>
-  </div>
-</section>
-
-  <!-- About Section -->
-  <section class="about" id="about">
-    <h2>About Us</h2>
-    <p>Fatima Yahaya International School is dedicated to nurturing young minds and fostering academic excellence. Our mission is to provide a safe, inclusive, and stimulating environment where every student can thrive.</p>
-    <div class="about-features">
-      <div class="feature"><i class="fa fa-graduation-cap"></i> Qualified Teachers</div>
-      <div class="feature"><i class="fa fa-globe"></i> Modern Facilities</div>
-      <div class="feature"><i class="fa fa-users"></i> Community Engagement</div>
-    </div>
+  <link rel="stylesheet" href="{{ asset('css/welcome.css') }}?v={{ filemtime(public_path('css/welcome.css')) }}">
+</head><body>
+<header class="site-header"><nav class="navbar navbar-expand-lg navbar-light container" aria-label="Main navigation">
+  <a class="navbar-brand" href="#home"><img src="{{ asset('images/welcome-logo.png') }}" alt="Fatima Yahaya International School"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#siteNavigation" aria-controls="siteNavigation" aria-expanded="false" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
+  <div class="collapse navbar-collapse" id="siteNavigation"><ul class="navbar-nav ml-auto align-items-lg-center">
+    <li class="nav-item"><a class="nav-link" href="#about">About</a></li><li class="nav-item"><a class="nav-link" href="#academics">Academics</a></li><li class="nav-item"><a class="nav-link" href="#admission">Admission</a></li><li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+    <li class="nav-item ml-lg-2"><a class="btn btn-outline-brand" href="{{ route('result.check') }}">Check result</a></li><li class="nav-item ml-lg-2"><a class="btn btn-brand" href="{{ route('login') }}">Portal login <i class="fas fa-arrow-right ml-1"></i></a></li>
+  </ul></div>
+</nav></header>
+<main>
+  <section class="hero" id="home"><div class="hero-image" role="img" aria-label="Students at Fatima Yahaya International School"></div><div class="hero-shade"></div>
+    <div class="container hero-content"><div class="hero-copy"><span class="eyebrow"><i class="fas fa-star"></i> Learning with purpose</span><h1>Knowledge. Character.<br><span>Confident futures.</span></h1><p>Fatima Yahaya International School provides a caring, ambitious learning environment where every child is encouraged to discover, grow, and lead.</p><div class="hero-actions"><a class="btn btn-brand btn-lg" href="#admission">Explore admission</a><a class="btn btn-hero-outline btn-lg" href="{{ route('result.check') }}"><i class="fas fa-chart-line mr-2"></i>Check a result</a></div></div></div>
+    <a class="scroll-cue" href="#about" aria-label="Continue to about section"><span>Discover our school</span><i class="fas fa-chevron-down"></i></a>
   </section>
-
-  <!-- Mission & Vision Section -->
-  <section class="mission-vision py-5 bg-light" id="mission-vision">
-    <div class="container">
-      <h2 class="text-center mb-4">Our Vision & Mission</h2>
-      <div class="row">
-        <div class="col-md-6 mb-4">
-          <div class="card shadow-sm h-100 border-0">
-            <div class="card-body">
-              <h4 class="card-title text-success"><i class="fa fa-eye"></i> Vision</h4>
-              <p class="card-text mt-3">
-                To produce visionary citizens equipped with academic excellence, strong values, ethics, and social responsibility, who will move the country toward a better future.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-6 mb-4">
-          <div class="card shadow-sm h-100 border-0">
-            <div class="card-body">
-              <h4 class="card-title text-success"><i class="fa fa-bullseye"></i> Mission</h4>
-              <p class="card-text mt-3">
-                To provide a nurturing and inclusive educational environment, where all learners are inspired to achieve academic excellence, and to exhibit the attitude of responsible and committed members of the community.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Academics Section -->
-  <section class="academics" id="academics">
-    <h2>Academics</h2>
-    <p>We offer a broad curriculum designed to meet the needs of all students, with a focus on science, technology, arts, and humanities.</p>
-    <ul class="academics-list">
-      <li>Nursery</li>
-      <li>Lower Basic</li>
-      <li>Middle Basic</li>
-      <li>Upper Basic</li>
-    </ul>
-  </section>
-
-  <!-- Admission Section -->
-  <section class="admission" id="admission">
-    <h2>Admission</h2>
-    <p>Join our vibrant learning community! Admission is open for the new academic year. Click below to start your application process.</p>
-    <a href="#" class="admission-btn">Start Application</a>
-  </section>
-
-  <!-- section where parent can search the wards performance using unique code -->
-  <section class="result" id="result">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-          <div class="card shadow-sm mb-4">
-            <div class="card-body">
-              <h3 class="card-title text-center text-primary">Check Your Child's Result</h3>
-              <p class="text-center">Enter your child's result reference code here to view their academic performance.</p>
-              <form method="post" action="{{route('result.search')}}"class="result-form">
-              @csrf  
-              <div class="form-group">
-                  <input type="text" class="form-control" name="access_code" placeholder="Enter Reference Code" required>
-                </div>
-                <button class="btn btn-sm btn-outline-primary" type="submit">Check Result</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact Section -->
-  <section class="contact" id="contact">
-    <h2>Contact Us</h2>
-    <div class="contact-info">
-      <p><i class="fa fa-map-marker-alt"></i> School Address: No 2. Birnin Kebbi Road, Sifawa, Bodinga LG, Sokoto State</p>
-      <p><i class="fa fa-phone"></i> Phone: +234 800 123 4567</p>
-      <p><i class="fa fa-envelope"></i> Email: info@fyis.edu.ng</p>
-    </div>
-    <form class="contact-form">
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea placeholder="Your Message" required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <p>&copy; 2025 Hajiya Fatima Yahaya Foundation, Sifawa. All rights reserved.</p>
-  </footer>
-
-  <!-- JS Dependencies for Navbar Toggle -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-
-  <script src="{{asset('js/index.js')}}"></script>
-  <script src="{{asset('js/slide.js')}}"></script>
-</body>
-</html>
+  <section class="trust-strip" aria-label="School strengths"><div class="container trust-grid">
+    <div><i class="fas fa-chalkboard-teacher"></i><span><strong>Committed teachers</strong><small>Guidance that helps every learner thrive</small></span></div><div><i class="fas fa-book-open-reader"></i><span><strong>Balanced learning</strong><small>Strong academics, values, and creativity</small></span></div><div><i class="fas fa-shield-heart"></i><span><strong>Safe community</strong><small>A caring environment built for growth</small></span></div>
+  </div></section>
+  <section class="section-space" id="about"><div class="container"><div class="row align-items-center">
+    <div class="col-lg-6 mb-4 mb-lg-0"><div class="image-composition"><img src="{{ asset('images/slide/2.jpeg') }}" alt="Students learning together"><div class="image-note"><i class="fas fa-seedling"></i><strong>Growing the whole child</strong><span>Academically, socially, and morally</span></div></div></div>
+    <div class="col-lg-5 offset-lg-1"><span class="section-kicker">Who we are</span><h2>A school where every child is known and inspired.</h2><p class="lead-copy">We nurture curious minds and principled young people through purposeful teaching, individual attention, and a strong sense of community.</p><div class="value-list">
+      <div><span><i class="fas fa-graduation-cap"></i></span><p><strong>Academic excellence</strong>High expectations supported by thoughtful, engaging instruction.</p></div><div><span><i class="fas fa-compass"></i></span><p><strong>Character and responsibility</strong>Respect, discipline, integrity, and service guide school life.</p></div><div><span><i class="fas fa-lightbulb"></i></span><p><strong>Curiosity and confidence</strong>Learners are encouraged to ask, create, collaborate, and lead.</p></div>
+    </div></div>
+  </div></div></section>
+  <section class="purpose-section" id="mission-vision"><div class="container"><div class="section-heading text-center"><span class="section-kicker">Our purpose</span><h2>Rooted in values. Ready for tomorrow.</h2><p>Our direction is clear: help learners achieve excellent outcomes and become responsible members of their communities.</p></div><div class="row">
+    <div class="col-md-6 mb-4"><article class="purpose-card"><span class="purpose-icon"><i class="fas fa-eye"></i></span><span class="card-number">01</span><h3>Our vision</h3><p>To produce visionary citizens equipped with academic excellence, strong values, ethics, and social responsibility, who will move the country toward a better future.</p></article></div>
+    <div class="col-md-6 mb-4"><article class="purpose-card"><span class="purpose-icon"><i class="fas fa-bullseye"></i></span><span class="card-number">02</span><h3>Our mission</h3><p>To provide a nurturing and inclusive environment where learners are inspired to achieve academically and become responsible, committed members of the community.</p></article></div>
+  </div></div></section>
+  <section class="section-space" id="academics"><div class="container"><div class="section-heading"><span class="section-kicker">Learning journey</span><h2>A strong foundation at every stage.</h2><p>Our broad curriculum develops literacy, numeracy, scientific thinking, creativity, communication, and character.</p></div><div class="academic-grid">
+    <article><span>01</span><i class="fas fa-shapes"></i><h3>Nursery</h3><p>Playful discovery and an encouraging first experience of school.</p></article><article><span>02</span><i class="fas fa-pencil"></i><h3>Lower Basic</h3><p>Strong foundations in literacy, numeracy, expression, and confidence.</p></article><article><span>03</span><i class="fas fa-flask"></i><h3>Middle Basic</h3><p>Broader knowledge, practical exploration, and independent thinking.</p></article><article><span>04</span><i class="fas fa-user-graduate"></i><h3>Upper Basic</h3><p>Focused preparation for future study, responsibility, and leadership.</p></article>
+  </div></div></section>
+  <section class="admission-section" id="admission"><div class="container"><div class="admission-panel"><div><span class="section-kicker light">Join our community</span><h2>Give your child a confident start.</h2><p>Learn about available classes and begin the admission process through the school portal. Our team is available to guide you.</p><div class="hero-actions"><a class="btn btn-gold btn-lg" href="{{ route('login') }}">Go to admission portal</a><a class="text-link" href="#contact">Speak with the school <i class="fas fa-arrow-right"></i></a></div></div><div class="admission-image"><img src="{{ asset('images/slide/4.jpeg') }}" alt="School learning environment"></div></div></div></section>
+  <section class="result-section" id="result"><div class="container"><div class="result-card"><div class="result-intro"><span class="result-icon"><i class="fas fa-chart-column"></i></span><div><span class="section-kicker">Parent access</span><h2>Check your child’s result</h2><p>Enter the result reference code supplied by the school to securely view academic performance.</p></div></div><form method="post" action="{{ route('result.search') }}" class="result-form">@csrf<label for="access-code">Result reference code</label><div class="result-input"><input id="access-code" type="text" name="access_code" placeholder="Enter reference code" required autocomplete="off"><button type="submit">View result <i class="fas fa-arrow-right"></i></button></div></form></div></div></section>
+  <section class="section-space contact-section" id="contact"><div class="container"><div class="row"><div class="col-lg-5 mb-4 mb-lg-0"><span class="section-kicker">Contact us</span><h2>We would be happy to welcome you.</h2><p class="lead-copy">Contact or visit the school to ask about admission, classes, or life at FAYIS.</p></div><div class="col-lg-6 offset-lg-1"><div class="contact-card"><div><i class="fas fa-location-dot"></i><span><small>Visit us</small><strong>No. 2 Birnin Kebbi Road, Sifawa, Bodinga LGA, Sokoto State</strong></span></div><div><i class="fas fa-phone"></i><span><small>Call us</small><strong>+234 800 123 4567</strong></span></div><div><i class="fas fa-envelope"></i><span><small>Email us</small><strong>info@fyis.edu.ng</strong></span></div></div></div></div></div></section>
+</main>
+<footer class="site-footer"><div class="container footer-grid"><div class="footer-brand"><img src="{{ asset('images/logo.jpg') }}" alt="FAYIS logo"><span><strong>FAYIS</strong><small>Fatima Yahaya International School</small></span></div><p>&copy; {{ date('Y') }} Hajiya Fatima Yahaya Foundation, Sifawa. All rights reserved.</p><a href="#home">Back to top <i class="fas fa-arrow-up"></i></a></div></footer>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script><script src="{{ asset('js/bootstrap.min.js') }}"></script>
+</body></html>
