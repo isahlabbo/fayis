@@ -32,6 +32,7 @@
                     <input wire:model="stock_unit_cost" id="stock_unit_cost" type="number" step="0.01" class="form-control">
                     @error('stock_unit_cost') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
+                <div class="form-group col-md-2"><label for="stock_selling_price">Unit selling price</label><input wire:model="stock_selling_price" id="stock_selling_price" type="number" step="0.01" class="form-control">@error('stock_selling_price') <span class="text-danger">{{ $message }}</span> @enderror</div>
                 <div class="form-group col-md-2">
                     <label for="received_date">Received date</label>
                     <input wire:model="received_date" id="received_date" type="date" class="form-control">
@@ -43,7 +44,7 @@
                     @error('notes') <span class="text-danger">{{ $message }}</span> @enderror
                 </div>
                 <div class="form-group col-md-1 text-right">
-                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-plus"></i> Add</button>
+                    <button type="submit" class="btn btn-success btn-block"><i class="fas fa-save"></i> {{ $stockId ? 'Update' : 'Add' }}</button>@if($stockId)<button type="button" wire:click="resetStockForm" class="btn btn-light btn-block">Cancel</button>@endif
                 </div>
             </form>
         </div>
@@ -121,6 +122,7 @@
                         <th>Item</th>
                         <th>Category</th>
                         <th>Qty</th>
+                        <th>Cost price</th><th>Selling price</th><th>Potential profit</th>
                         <th>Last Updated</th>
                         <th>Value</th>
                     </tr>
@@ -132,16 +134,19 @@
                             <td>{{ $item->name }}</td>
                             <td>{{ optional($item->category)->name ?? 'Unassigned' }}</td>
                             <td>{{ $item->quantity }}</td>
+                            <td>{{ number_format($item->unit_cost,2) }}</td><td>{{ number_format($item->selling_price,2) }}</td><td>{{ number_format(($item->selling_price-$item->unit_cost)*$item->quantity,2) }}</td>
                             <td>{{ $item->updated_at->format('Y-m-d') }}</td>
                             <td>{{ number_format($item->quantity * $item->unit_cost, 2) }}</td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-4">No stock records found.</td>
+                            <td colspan="9" class="text-center py-4">No stock records found.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
     </div>
+    @error('stock_delete')<div class="alert alert-danger mt-3">{{$message}}</div>@enderror
+    <div class="card mt-4"><div class="card-header bg-white"><strong>Stock price batches (oldest sold first)</strong></div><div class="table-responsive"><table class="table table-hover mb-0"><thead class="thead-light"><tr><th>Received</th><th>Item</th><th>Original qty</th><th>Remaining</th><th>Purchase price</th><th>Selling price</th><th>Expected batch profit</th><th>Actions</th></tr></thead><tbody>@forelse($stocks as $batch)<tr><td>{{optional($batch->received_date)->format('Y-m-d')}}</td><td>{{$batch->item->name}}</td><td>{{$batch->quantity}}</td><td>{{$batch->remaining_quantity}}</td><td>{{number_format($batch->unit_cost,2)}}</td><td>{{number_format($batch->unit_selling_price,2)}}</td><td>{{number_format(($batch->unit_selling_price-$batch->unit_cost)*$batch->remaining_quantity,2)}}</td><td class="text-nowrap"><button wire:click="editStock({{$batch->id}})" class="btn btn-sm btn-outline-primary">Edit</button> <button wire:click="deleteStock({{$batch->id}})" onclick="confirm('Delete this unused stock batch?')||event.stopImmediatePropagation()" class="btn btn-sm btn-outline-danger" @if($batch->remaining_quantity!=$batch->quantity) disabled @endif>Delete</button></td></tr>@empty<tr><td colspan="8" class="text-center py-4">No stock batches found.</td></tr>@endforelse</tbody></table></div></div>
 </div>

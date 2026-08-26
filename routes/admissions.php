@@ -5,6 +5,7 @@ Route::middleware(['auth','verified', 'admission', 'password'])->name('admission
     Route::view('/applications', 'admission.livewire-page', ['title'=>'Applications','component'=>'admission.applications'])->middleware('permission:manage-admissions')->name('applications');
     Route::view('/approvals', 'admission.livewire-page', ['title'=>'Admissions','component'=>'admission.admissions'])->middleware('permission:manage-admissions')->name('approvals');
     Route::view('/students', 'admission.livewire-page', ['title'=>'Students','component'=>'admission.students'])->middleware('permission:manage-admissions')->name('students');
+    Route::view('/promotions', 'admission.livewire-page', ['title'=>'Student Promotions','component'=>'admission.promotions'])->name('promotions');
     Route::view('/guardians', 'admission.livewire-page', ['title'=>'Guardians','component'=>'admission.guardians'])->middleware('permission:manage-admissions')->name('guardians');
     Route::name('student.')
     ->prefix('/student')

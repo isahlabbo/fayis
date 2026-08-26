@@ -75,6 +75,7 @@ class Kernel extends HttpKernel
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'password' => \App\Http\Middleware\UpdatePasswordMiddleware::class,
         'permission' => \App\Http\Middleware\PermissionMiddleware::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
         'role_or_permission' => \App\Http\Middleware\RoleOrPermissionMiddleware::class,
         //'doNotCacheResponse' => \Spatie\ResponseCache\Middlewares\DoNotCacheResponse::class,
     ];

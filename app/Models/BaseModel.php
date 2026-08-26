@@ -34,7 +34,7 @@ class BaseModel extends Model
             $end = substr($oldSessionName,5,4)+1;
             $session = AcademicSession::firstOrCreate(['name'=>$start.'/'.$end]);
             foreach([1,2,3] as $termId){
-                $session->academicSessioTerms()->firstOrCreate(['term_id'=>$termId]);
+                $session->academicSessionTerms()->firstOrCreate(['term_id'=>$termId]);
             }
         }
         return $session;

@@ -19,6 +19,7 @@ class InventoryItem extends BaseModel
         'name',
         'description',
         'unit_cost',
+        'selling_price',
         'quantity',
     ];
 

@@ -39,8 +39,21 @@ class PaymentController extends Controller
     }
 
     public function receipt($paymentId) {
-        
-        return view('finance.payments.receipt',['payment'=>Payment::find($paymentId)]);
+        $payment = Payment::findOrFail($paymentId);
+        $payments = $payment->receipt_group
+            ? Payment::with(['term','sectionClassFee.fee'])->where('receipt_group',$payment->receipt_group)->orderBy('term_id')->get()
+            : collect([$payment->load(['term','sectionClassFee.fee'])]);
+        return view('finance.payments.receipt', compact('payment','payments'));
+    }
+
+    public function receiptPdf($paymentId)
+    {
+        $payment=Payment::findOrFail($paymentId);
+        $payments=$payment->receipt_group?Payment::with(['term','sectionClassFee.fee'])->where('receipt_group',$payment->receipt_group)->orderBy('term_id')->get():collect([$payment->load(['term','sectionClassFee.fee'])]);
+        return response()->view('finance.payments.receipt-pdf',compact('payment','payments'),200, [
+            'Content-Type'=>'text/html; charset=UTF-8',
+            'Content-Disposition'=>'inline; filename="payment-receipt-'.$payment->id.'.html"',
+        ]);
     }
 
     public function classes($sectionId, $feeType = null) {

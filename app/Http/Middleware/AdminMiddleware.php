@@ -20,7 +20,7 @@ class AdminMiddleware
         $user = Auth::user();
 
         // Keep the legacy admin check while superadmin is migrated to database RBAC.
-        if($user->status == 'Active' && ($user->role == 'admin' || $user->isSuperAdmin())){
+        if($user && $user->status == 'Active' && ($user->usesRole('admin') || $user->isSuperAdmin())){
             return $next($request);
         }
 

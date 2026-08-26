@@ -1,79 +1,17 @@
 @extends('layouts.guest')
-    @section('title')
-        {{config('app.name')}} {{$payment->id}} receipt
-    @endsection
-   
-    @section('content')
-    <div class="row">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-2">
-            <button class="btn btn-secondary btn-block" id="print" onclick="printContent('report');" >Print</button>
-        <br>
-        </div>
-    <br>
-    </div>
-    <div class="container" id="report">
-        @for($i=1; $i<=3; $i++)
-        <div class="receipt" style="page-break-inside: avoid;">
-            <div class="head">
-                <div class="row">
-                        <div class="col-sm-2 text-right"><img src="{{asset('images/logo.jpg')}}" alt="" width="120"></div>
-                        <div class="col-sm-8 text text-center">
-                            <h3 class="text text-primary">FATIMA YAHAYA INTERNATIONAL SCHOOL, SOKOTO</h3>
-                            <h5 class="text text-secondary">No 2. Birnin Kebbi Road, Sifawa, Bodinga LG, Sokoto State</h5>
-                            <h6><i>Website: www.fayis.ng E-mail info@fayis.ng GSM 09066878547, 07037370625</i></h6>
-                            <p><b>{{$payment->academicSession->name}} Academic Session</b></p>
-                        </div>
-                        <div class="col-sm-2 text text-left">
-                        {{$payment->generateQrCode('The payment of '.$payment->sectionClassStudent->student->name.' for '.$payment->term->name.' is recorded successfully at '.$payment->date, 120)}}
-                        <p><b>Scan to Verify</b></p>
-                        </div>
-                </div>
-            </div>
-            <table class="table table-sm table-stripped p-4 mt-4 table-stripped">
-                <tr>
-                    <td><b>Name</b></td>
-                    <td>{{$payment->sectionClassStudent->student->name}}</td>
-                </tr>
-                <tr>
-                    <td><b>Admission No</b></td>
-                    <td>{{$payment->sectionClassStudent->student->admission_no}}</td>
-                </tr>
-                <tr>
-                    <td><b>Class</b></td>
-                    <td>{{$payment->sectionClassStudent->sectionClass->name}}</td>
-                </tr>
-                <tr>
-                    <td><b>Description</b></td>
-                    <td>{{$payment->sectionClassFee->fee->name}}</b></td>
-                </tr>
-                <tr>
-                    <td><b>Amount Paid</b></td>
-                    <td>
-                   {{number_format($payment->amount,2)}}
-                    </td>
-                </tr>
-                <tr>
-                    <td><b>Recorded By</b></td>
-                    <td>
-                   {{$payment->user->name}}
-                    </td>
-                </tr>
-                
-                <tr>
-                    <td><b>Transaction ID</b></td>
-                    <td>{{$payment->id}}</td>
-                </tr>
-                <tr>
-                    <td><b>Session Term</b></td>
-                    <td>{{$payment->term->name}}</td>
-                </tr>
-            
-            </table>
-            <p> Sign: ___________________________ Date: {{$payment->date}}</p>
-        </div> 
-        <br>
-        <br>
-        @endfor
-    </div>
-    @endsection
+@section('title','Payment Receipt #'.$payment->id)
+@section('content')
+<div class="receipt-actions"><a href="{{ url()->previous() }}" class="btn btn-light btn-sm">Back</a><button type="button" class="btn btn-primary btn-sm" onclick="window.print()">Print receipt</button></div>
+<main class="thermal-receipt">
+    <div class="receipt-center"><h1>{{config('app.title')}}</h1><div class="school-address">{{config('app.address')}}</div><div>{{config('app.contact')}}</div><h2>PAYMENT RECEIPT</h2></div>
+    <div class="dash"></div>
+    <div class="line"><span>Receipt</span><strong>#{{$payment->id}}</strong></div><div class="line"><span>Date</span><strong>{{$payment->date}}</strong></div>
+    <div class="line"><span>Student</span><strong>{{$payment->sectionClassStudent->student->name}}</strong></div><div class="line"><span>Admission No.</span><strong>{{$payment->sectionClassStudent->student->admission_no ?: '-'}}</strong></div>
+    <div class="line"><span>Class</span><strong>{{$payment->sectionClassStudent->sectionClass->name}}</strong></div><div class="line"><span>Session</span><strong>{{$payment->academicSession->name}}</strong></div><div class="line"><span>Term</span><strong>{{$payment->term->name}}</strong></div>
+    <div class="dash"></div>@foreach($payments as $line)<div class="line"><span>{{$line->sectionClassFee->fee->name}} - {{$line->term->name}}</span><strong>{{number_format($line->amount,2)}}</strong></div>@endforeach<div class="total"><span>TOTAL</span><span>{{number_format($payments->sum('amount'),2)}}</span></div>
+    <div class="dash"></div><div class="line"><span>Payment mode</span><strong>{{$payment->mode}}</strong></div><div class="line"><span>Recorded by</span><strong>{{optional($payment->user)->name}}</strong></div>
+    <p class="thanks">Thank you<br>Keep this receipt for your records.</p>
+</main>
+<style>.receipt-actions{max-width:100mm;margin:18px auto;display:flex;justify-content:space-between}.thermal-receipt{width:100mm;max-width:100mm;box-sizing:border-box;margin:0 auto;padding:3mm 2mm 5mm;font:24px/1.25 monospace;color:#000;background:#fff;break-inside:avoid;page-break-inside:avoid}.receipt-center{text-align:center}.receipt-center h1{font-size:40px;margin:0}.receipt-center h2{font-size:32px;margin:4px 0}.school-address{font-size:22px}.dash{border-top:1px dashed #000;margin:5px 0}.line,.total{display:flex;justify-content:space-between;gap:6px;margin:5px 0;break-inside:avoid;page-break-inside:avoid}.line strong{text-align:right}.total{font-size:34px;font-weight:bold;border-top:2px solid #000;border-bottom:2px solid #000;padding:7px 0}.thanks{text-align:center;margin:10px 0 2px;break-inside:avoid;page-break-inside:avoid}@media print{@page{size:100mm 350mm;margin:0}html,body{width:100mm!important;height:350mm!important;margin:0!important;padding:0!important;background:#fff!important;overflow:hidden!important}body *{visibility:hidden!important}.thermal-receipt,.thermal-receipt *{visibility:visible!important}.thermal-receipt{position:absolute!important;left:0!important;top:0!important;width:100mm!important;max-width:100mm!important;box-sizing:border-box!important;margin:0!important;padding:0 1mm!important;font-size:28px!important;line-height:1.2!important;box-shadow:none!important;overflow:visible!important;break-inside:avoid!important;page-break-inside:avoid!important;break-after:avoid!important;page-break-after:avoid!important}.receipt-center h1{font-size:44px!important}.receipt-center h2{font-size:34px!important;margin:2px 0!important}.school-address{font-size:24px!important}.dash{margin:3px 0!important;border-top-width:1px!important}.line,.total{margin:4px 0!important;break-inside:avoid!important;page-break-inside:avoid!important}.total{font-size:36px!important;padding:6px 0!important}.thanks{margin-top:8px!important;break-before:avoid!important;page-break-before:avoid!important}.receipt-actions{display:none!important}}</style>
+<style>@media print{@page{size:auto!important;margin:0!important}html,body,body>section.container{width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:0!important}.thermal-receipt{position:absolute!important;inset:0 auto auto 0!important;width:100%!important;max-width:none!important;margin:0!important;padding:0 1%!important;box-sizing:border-box!important}.thermal-receipt .line,.thermal-receipt .total{width:100%!important;max-width:none!important}}</style>
+@endsection

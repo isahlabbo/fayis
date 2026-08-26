@@ -34,6 +34,7 @@
                 </div>
 
                 <div class="form-row mt-3">
+                    <div class="form-group col-md-4"><label>Academic session</label><select wire:model="academic_session_id" class="form-control"><option value="">Select session</option>@foreach($sessions as $session)<option value="{{$session->id}}">{{$session->name}}</option>@endforeach</select>@error('academic_session_id')<span class="text-danger">{{$message}}</span>@enderror</div>
                     <div class="form-group col-md-2">
                         <label for="quantity">Quantity</label>
                         <input wire:model="quantity" id="quantity" class="form-control" type="number" min="1">
@@ -81,14 +82,14 @@
                 </tr>
             </thead>
             <tbody>
-                @forelse(App\Models\InventoryRent::all() as $rent)
+                @forelse($rents as $rent)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ optional($rent->teacher)->user->name ?? 'N/A' }}</td>
                         <td>{{ optional($rent->teacher)->user->contact ?? 'N/A' }}</td>
-                        <td>{{ $rent->inventoryItem->name ?? 'N/A' }}</td>
+                        <td>{{ optional($rent->item)->name ?? 'N/A' }}<br><small>{{ optional($rent->academicSession)->name }}</small></td>
                         <td class="text-right">{{ $rent->quantity }}</td>
-                        <td>{{$rent->status}}</td>
+                        <td>{{$rent->status}} ({{$rent->returned_quantity}}/{{$rent->quantity}} returned) @if($rent->returned_quantity < $rent->quantity)<button wire:click="returnItems({{$rent->id}})" class="btn btn-sm btn-success ml-1">Return balance</button>@endif</td>
                     </tr>
                 @empty
                     <tr>

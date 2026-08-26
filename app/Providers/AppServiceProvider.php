@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\SectionClassStudent;
+use App\Services\Finance\ApplyAdvancePayments;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +25,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        SectionClassStudent::created(function (SectionClassStudent $enrolment) {
+            app(ApplyAdvancePayments::class)->handle($enrolment);
+        });
     }
 }

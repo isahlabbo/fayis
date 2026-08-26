@@ -20,7 +20,7 @@
 
   <!-- Custom Styles -->
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-  <link rel="stylesheet" href="{{ asset('css/bootstrap_modify.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/bootstrap_modify.css') }}?v={{ filemtime(public_path('css/bootstrap_modify.css')) }}">
   @if(Auth::check() && Auth::user()->isSuperAdmin())
     <link rel="stylesheet" href="{{ asset('css/superadmin.css') }}?v={{ filemtime(public_path('css/superadmin.css')) }}">
   @elseif(Auth::check())

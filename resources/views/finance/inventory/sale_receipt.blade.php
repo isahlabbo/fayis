@@ -1,87 +1,24 @@
 @extends('layouts.guest')
-
-@section('title')
-    {{ config('app.name') }} Inventory Sale Receipt
-@endsection
-
+@section('title','Sales Receipt #'.$sale->id)
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <a href="{{ route('finance.inventory.sales') }}" class="btn btn-outline-secondary btn-sm">Back to sale</a>
-    <button type="button" class="btn btn-secondary btn-sm" onclick="printContent();">Print</button>
-</div>
-
-<div id="receipt-print">
-    <div class="receipt-container" style="max-width:280px; margin:0 auto; padding:10px; font-family: 'Courier New', monospace; font-size:12px; color:#000;">
-        <div style="text-align:center; margin-bottom:10px;">
-            <img src="{{ asset('images/logo.jpg') }}" alt="Logo" style="max-width:90px; display:block; margin:0 auto 6px;" />
-            <div style="font-size:16px; font-weight:700;">{{ config('app.name') }}</div>
-            <div style="font-size:13px; margin-top:3px;">Sale Receipt</div>
-            <div style="font-size:11px; color:#333; margin-top:4px;">{{ now()->format('Y-m-d H:i') }}</div>
-        </div>
-
-        <div style="border-top:1px dashed #000; margin:10px 0;"></div>
-
-        <table style="width:100%; border-collapse:collapse; font-size:12px; border:1px solid #ddd;">
-            <thead>
-                <tr>
-                    <th style="text-align:left; padding:6px; border-bottom:1px solid #ddd;">Item</th>
-                    <th style="text-align:right; padding:6px; border-bottom:1px solid #ddd;">Qty</th>
-                    <th style="text-align:right; padding:6px; border-bottom:1px solid #ddd;">Unit</th>
-                    <th style="text-align:right; padding:6px; border-bottom:1px solid #ddd;">Amt</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($sale->saleItems as $line)
-                    <tr>
-                        <td style="padding:2px 0;">{{ optional($line->item)->name }}{{ optional($line->item)->sku ? ' ('.optional($line->item)->sku.')' : '' }}</td>
-                        <td style="text-align:right; padding:2px 0;">{{ $line->quantity }}</td>
-                        <td style="text-align:right; padding:2px 0;">{{ number_format($line->unit_cost, 2) }}</td>
-                        <td style="text-align:right; padding:2px 0;">{{ number_format($line->amount, 2) }}</td>
-                    </tr>
-                @endforeach
-                <tr>
-                    <td colspan="3" style="text-align:right; padding:6px; font-weight:700; border-top:1px solid #ddd;">Total</td>
-                    <td style="text-align:right; padding:6px; font-weight:700; border-top:1px solid #ddd;">{{ number_format($sale->total_cost, 2) }}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div style="border-top:1px dashed #000; margin:10px 0;"></div>
-
-        <table style="width:100%; font-size:12px;">
-            <tr>
-                <td style="padding:3px 0; width:35%;"><strong>Student</strong></td>
-                <td style="padding:3px 0;">{{ optional(optional($sale->student)->student)->name ?? 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td style="padding:3px 0;"><strong>Admission</strong></td>
-                <td style="padding:3px 0;">{{ optional(optional($sale->student)->student)->admission_no ?? 'N/A' }}</td>
-            </tr>
-            <tr>
-                <td style="padding:3px 0;"><strong>Date</strong></td>
-                <td style="padding:3px 0;">{{ optional($sale->usage_date)->format('Y-m-d') }}</td>
-            </tr>
-            <tr>
-                <td style="padding:3px 0;"><strong>Evidence</strong></td>
-                <td style="padding:3px 0;">{{ $sale->evidence ?? 'N/A' }}</td>
-            </tr>
-        </table>
-
-        <div style="border-top:1px dashed #000; margin:10px 0;"></div>
-        <div style="font-size:12px; margin-top:8px;">Sign: ___________________________</div>
-        <div style="font-size:12px;">Date: {{ optional($sale->usage_date)->format('Y-m-d') }}</div>
-    </div>
-</div>
-
-<script>
-    window.printContent = function() {
-        window.print();
-    }
-</script>
-<style>
-    @media print {
-        .btn { display: none !important; }
-        .d-flex.justify-content-between { display: none !important; }
-    }
-</style>
+<div class="receipt-actions"><a href="{{route('finance.inventory.sales')}}" class="btn btn-light btn-sm">Back to sales</a><button type="button" class="btn btn-primary btn-sm" onclick="window.print()">Print receipt</button></div>
+<main class="thermal-receipt">
+    <div class="receipt-center"><h1>{{config('app.title')}}</h1><div class="school-address">{{config('app.address')}}</div><div>{{config('app.contact')}}</div><h2>SALES RECEIPT</h2></div>
+    <div class="dash"></div>
+    <div class="line"><span>Receipt</span><strong>#{{$sale->id}}</strong></div>
+    <div class="line"><span>Date</span><strong>{{optional($sale->usage_date)->format('Y-m-d')}}</strong></div>
+    <div class="line"><span>Student</span><strong>{{optional(optional($sale->student)->student)->name ?? 'N/A'}}</strong></div>
+    <div class="line"><span>Admission No.</span><strong>{{optional(optional($sale->student)->student)->admission_no ?? '-'}}</strong></div>
+    <div class="line"><span>Class</span><strong>{{optional(optional($sale->student)->sectionClass)->name ?? '-'}}</strong></div>
+    <div class="dash"></div>
+    <div class="item-head"><span>Item / Qty</span><span>Amount</span></div>
+    @foreach($sale->saleItems as $line)
+        <div class="sale-line"><div><strong>{{optional($line->item)->name}}</strong><br><small>{{$line->quantity}} x {{number_format($line->unit_cost,2)}}</small></div><strong>{{number_format($line->amount,2)}}</strong></div>
+    @endforeach
+    <div class="total"><span>TOTAL</span><span>{{number_format($sale->total_cost,2)}}</span></div>
+    <div class="dash"></div><div class="line"><span>Payment method</span><strong>{{$sale->payment_method}}</strong></div>
+    <p class="thanks">Thank you<br>Keep this receipt for your records.</p>
+</main>
+<style>.receipt-actions{max-width:100mm;margin:18px auto;display:flex;justify-content:space-between}.thermal-receipt{width:100mm;max-width:100mm;box-sizing:border-box;margin:0 auto;padding:3mm 2mm 5mm;font:24px/1.25 monospace;color:#000;background:#fff;break-inside:avoid;page-break-inside:avoid}.receipt-center{text-align:center}.receipt-center h1{font-size:40px;margin:0}.receipt-center h2{font-size:32px;margin:4px 0}.school-address{font-size:22px}.dash{border-top:1px dashed #000;margin:5px 0}.line,.total,.sale-line,.item-head{display:flex;justify-content:space-between;gap:6px;margin:5px 0;break-inside:avoid;page-break-inside:avoid}.line strong,.sale-line>strong{text-align:right}.item-head{font-weight:bold;border-bottom:1px solid #000}.sale-line small{font-size:.82em}.total{font-size:34px;font-weight:bold;border-top:2px solid #000;border-bottom:2px solid #000;padding:7px 0}.thanks{text-align:center;margin:10px 0 2px;break-inside:avoid;page-break-inside:avoid}@media print{@page{size:100mm 350mm;margin:0}html,body{width:100mm!important;height:350mm!important;margin:0!important;padding:0!important;background:#fff!important;overflow:hidden!important}body *{visibility:hidden!important}.thermal-receipt,.thermal-receipt *{visibility:visible!important}.thermal-receipt{position:absolute!important;left:0!important;top:0!important;width:100mm!important;max-width:100mm!important;box-sizing:border-box!important;margin:0!important;padding:0 1mm!important;font-size:28px!important;line-height:1.2!important;box-shadow:none!important;overflow:visible!important;break-inside:avoid!important;page-break-inside:avoid!important;break-after:avoid!important;page-break-after:avoid!important}.receipt-center h1{font-size:44px!important}.receipt-center h2{font-size:34px!important;margin:2px 0!important}.school-address{font-size:24px!important}.dash{margin:3px 0!important}.line,.total,.sale-line,.item-head{margin:4px 0!important;break-inside:avoid!important;page-break-inside:avoid!important}.total{font-size:36px!important;padding:6px 0!important}.thanks{margin-top:8px!important}.receipt-actions{display:none!important}}</style>
+<style>@media print{@page{size:auto!important;margin:0!important}html,body,body>section.container{width:100%!important;max-width:none!important;min-width:0!important;margin:0!important;padding:0!important}.thermal-receipt{position:absolute!important;inset:0 auto auto 0!important;width:100%!important;max-width:none!important;margin:0!important;padding:0 1%!important;box-sizing:border-box!important}.thermal-receipt .line,.thermal-receipt .total,.thermal-receipt .sale-line,.thermal-receipt .item-head{width:100%!important;max-width:none!important}}</style>
 @endsection

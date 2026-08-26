@@ -1,0 +1,13 @@
+@extends('layouts.guest')
+@section('title','Advance Payment Receipt')
+@section('content')
+<div class="receipt-actions"><a href="{{route('finance.advance-payments.collect',$advance->fee_id)}}" class="btn btn-light btn-sm">Back</a><button onclick="window.print()" class="btn btn-primary btn-sm">Print receipt</button></div>
+<main class="thermal-receipt">
+ <div class="receipt-center"><h1>{{config('app.title')}}</h1><div>{{config('app.address')}}</div><div>{{config('app.contact')}}</div><h2>ADVANCE PAYMENT</h2></div><div class="dash"></div>
+ <div class="line"><span>Student</span><strong>{{$advance->student->name}}</strong></div><div class="line"><span>Admission No.</span><strong>{{$advance->student->admission_no ?: '-'}}</strong></div><div class="line"><span>Date</span><strong>{{$advance->date->format('Y-m-d')}}</strong></div><div class="dash"></div>
+ @foreach($lines as $line)<div class="allocation"><strong>{{$line->fee->name}}</strong><span>{{$line->academicSession->name}} / {{$line->sectionClass->name}} / {{$line->term->name}}</span><strong>{{number_format($line->amount,2)}}</strong></div>@endforeach
+ <div class="total"><span>TOTAL</span><span>{{number_format($lines->sum('amount'),2)}}</span></div><div class="line"><span>Method</span><strong>{{$advance->mode}}</strong></div>
+ <p class="thanks">Pending allocation. Credit activates when the student enters the matching session and class.</p>
+</main>
+<style>.receipt-actions{max-width:100mm;margin:18px auto;display:flex;justify-content:space-between}.thermal-receipt{width:100mm;max-width:100%;box-sizing:border-box;margin:auto;padding:3mm 2mm;font:20px/1.25 monospace;color:#000;background:#fff}.receipt-center{text-align:center}.receipt-center h1{font-size:34px;margin:0}.receipt-center h2{font-size:27px;margin:4px}.dash{border-top:1px dashed #000;margin:6px 0}.line,.total{display:flex;justify-content:space-between;gap:8px;margin:5px 0}.allocation{display:grid;grid-template-columns:1fr auto;gap:2px 8px;margin:7px 0}.allocation span{grid-column:1}.allocation>strong:last-child{grid-column:2;grid-row:1/3;align-self:center}.total{font-size:28px;font-weight:bold;border-block:2px solid;padding:6px 0}.thanks{text-align:center}@media print{@page{size:auto;margin:0}html,body,body>section.container{width:100%!important;max-width:none!important;margin:0!important;padding:0!important}body *{visibility:hidden!important}.thermal-receipt,.thermal-receipt *{visibility:visible!important}.thermal-receipt{position:absolute;inset:0 auto auto 0;width:100%!important;max-width:none!important;padding:0 1%!important}.receipt-actions{display:none!important}}</style>
+@endsection

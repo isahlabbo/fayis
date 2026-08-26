@@ -62,7 +62,7 @@
                                         <th>Item</th>
                                         <th class="text-right">Available</th>
                                         <th class="text-right">Quantity</th>
-                                        <th class="text-right">Unit cost</th>
+                                        <th class="text-right">FIFO average price</th>
                                         <th class="text-right">Line total</th>
                                     </tr>
                                 </thead>
@@ -76,7 +76,7 @@
                                                 @error('itemQuantities.' . $item->id) <span class="text-danger small">{{ $message }}</span> @enderror
                                             </td>
                                             <td class="text-right" style="width: 140px;">
-                                                <input wire:model.lazy="itemUnitCosts.{{ $item->id }}" type="number" step="0.01" class="form-control form-control-sm text-right" />
+                                                <input wire:model="itemUnitCosts.{{ $item->id }}" type="number" step="0.01" class="form-control form-control-sm text-right" readonly />
                                                 @error('itemUnitCosts.' . $item->id) <span class="text-danger small">{{ $message }}</span> @enderror
                                             </td>
                                             <td class="text-right">
@@ -100,23 +100,11 @@
                         <label for="total_cost">Total cost</label>
                         <input type="text" id="total_cost" class="form-control" value="{{ number_format($totalSaleAmount, 2) }}" readonly>
                     </div>
-                </div>
-
-                <div class="form-row mt-3">
-                    <div class="form-group col-md-6">
-                        <label for="evidence">Evidence</label>
-                        <textarea wire:model="evidence" id="evidence" class="form-control" rows="3"></textarea>
-                        @error('evidence') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label for="notes">Notes</label>
-                        <textarea wire:model="notes" id="notes" class="form-control" rows="3"></textarea>
-                        @error('notes') <span class="text-danger">{{ $message }}</span> @enderror
-                    </div>
+                    <div class="form-group col-md-3"><label for="payment_method">Payment method</label><select wire:model="payment_method" id="payment_method" class="form-control"><option>Cash</option><option>Transfer</option><option>POS</option><option>Cheque</option></select>@error('payment_method') <span class="text-danger">{{ $message }}</span> @enderror</div>
                 </div>
 
                 <div class="d-flex justify-content-end">
-                    <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> Record Sale</button>
+                    <button type="submit" class="btn btn-success"><i class="fas fa-check"></i> {{ $saleId ? 'Update Sale' : 'Record Sale' }}</button>@if($saleId)<button type="button" wire:click="cancelEdit" class="btn btn-light ml-2">Cancel edit</button>@endif
                 </div>
             </form>
         </div>
@@ -142,12 +130,12 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="searchTerm">Search</label>
-                    <input wire:model="searchTerm" id="searchTerm" class="form-control" placeholder="Student, item, evidence">
+                    <input wire:model="searchTerm" id="searchTerm" class="form-control" placeholder="Student, item, payment method">
                 </div>
             </form>
 
             <div class="row text-center mb-4">
-                <div class="col-md-4 mb-2">
+                <div class="col-md-3 mb-2">
                     <div class="card shadow-sm border-0">
                         <div class="card-body py-3">
                             <h6 class="text-muted">Sales count</h6>
@@ -155,7 +143,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-2">
+                <div class="col-md-3 mb-2">
                     <div class="card shadow-sm border-0">
                         <div class="card-body py-3">
                             <h6 class="text-muted">Total revenue</h6>
@@ -163,7 +151,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-2">
+                <div class="col-md-3 mb-2">
                     <div class="card shadow-sm border-0">
                         <div class="card-body py-3">
                             <h6 class="text-muted">Items sold</h6>
@@ -171,6 +159,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-md-3 mb-2"><div class="card shadow-sm border-0"><div class="card-body py-3"><h6 class="text-muted">Gross profit</h6><div class="h3 mb-0">{{ number_format($totalProfit,2) }}</div></div></div></div>
             </div>
 
             <div class="table-responsive">
@@ -183,7 +172,8 @@
                             <th>Items</th>
                             <th class="text-right">Qty</th>
                             <th class="text-right">Total</th>
-                            <th>Evidence</th>
+                            <th class="text-right">Profit</th>
+                            <th>Payment method</th>
                             <th class="text-right">Receipt</th>
                         </tr>
                     </thead>
@@ -196,16 +186,17 @@
                                 <td>{{ $sale->saleItems->pluck('item.name')->filter()->implode(', ') }}</td>
                                 <td class="text-right">{{ $sale->saleItems->sum('quantity') }}</td>
                                 <td class="text-right">{{ number_format($sale->total_cost, 2) }}</td>
-                                <td>{{ Str::limit($sale->evidence ?? $sale->notes, 30) }}</td>
+                                <td class="text-right text-success">{{ number_format($sale->saleItems->sum('profit'), 2) }}</td>
+                                <td>{{ $sale->payment_method }}</td>
                                 <td class="text-right">
                                     @if(Auth::user()->role === 'finance_officer' || Auth::user()->hasPermission('manage-sales'))
-                                    <a href="{{ route('finance.inventory.sales.receipt', ['saleId' => $sale->id]) }}" class="btn btn-sm btn-outline-primary">View</a>
+                                    <a href="{{ route('finance.inventory.sales.receipt', ['saleId' => $sale->id]) }}" class="btn btn-sm btn-outline-primary">Receipt</a> <button wire:click="editSale({{$sale->id}})" class="btn btn-sm btn-outline-secondary">Edit</button> <button wire:click="deleteSale({{$sale->id}})" onclick="confirm('Delete this sale and restore its stock?')||event.stopImmediatePropagation()" class="btn btn-sm btn-outline-danger">Delete</button>
                                     @endif
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center py-4">No sales found for this filter.</td>
+                                <td colspan="9" class="text-center py-4">No sales found for this filter.</td>
                             </tr>
                         @endforelse
                     </tbody>

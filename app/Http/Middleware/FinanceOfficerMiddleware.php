@@ -22,9 +22,14 @@ class FinanceOfficerMiddleware
         $allowedRoles = ['finance_officer', 'patron'];
 
         $financePermissions = ['manage-inventory', 'manage-payments', 'manage-sales', 'manage-rents'];
-        $hasFinancePermission = method_exists($user, 'hasPermission') && collect($financePermissions)->contains(fn ($permission) => $user->hasPermission($permission));
+        $hasFinancePermission = $user && (method_exists($user, 'hasAnyPermission')
+            ? $user->hasAnyPermission($financePermissions)
+            : collect($financePermissions)->contains(fn ($permission) => $user->hasPermission($permission)));
+        $hasFinanceRole = $user && (method_exists($user, 'hasAnyAccessRole')
+            ? $user->hasAnyAccessRole($allowedRoles)
+            : in_array($user->role, $allowedRoles, true));
 
-        if($user->status == 'Active' && (in_array($user->role, $allowedRoles, true) || $hasFinancePermission)){
+        if($user && $user->status == 'Active' && ($hasFinanceRole || $hasFinancePermission)){
             return $next($request);
         }
 

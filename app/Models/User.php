@@ -114,6 +114,19 @@ class User extends Authenticatable
         return $this->accessRoles()->where($column, $role)->exists();
     }
 
+    public function hasAnyAccessRole(...$roles)
+    {
+        $roles = collect($roles)->flatten()->filter()->values();
+
+        return $roles->contains(fn ($role) => $this->usesRole($role));
+    }
+
+    public function hasAnyPermission(...$permissions)
+    {
+        return collect($permissions)->flatten()->filter()
+            ->contains(fn ($permission) => $this->hasPermission($permission));
+    }
+
     public function hasPermission($permission)
     {
         // A database-backed superadmin automatically receives current and future permissions.

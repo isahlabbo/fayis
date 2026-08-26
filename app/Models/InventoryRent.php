@@ -14,6 +14,7 @@ class InventoryRent extends BaseModel
         'quantity',
         'usage_date',
         'notes',
+        'academic_session_id', 'returned_quantity', 'returned_at', 'status',
     ];
 
     public function item()
@@ -25,4 +26,6 @@ class InventoryRent extends BaseModel
     {
         return $this->belongsTo(Teacher::class, 'teacher_id');
     }
+
+    public function academicSession(){ return $this->belongsTo(AcademicSession::class); }
 }

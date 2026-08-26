@@ -19,7 +19,12 @@ class AdmissionOfficerMiddleware
     {
         $user = Auth::user();
 
-        if($user->status == 'Active' && ($user->role == 'admission_officer' || (method_exists($user, 'hasPermission') && $user->hasPermission('manage-students')))){
+        $hasRole = $user && (method_exists($user, 'usesRole') ? $user->usesRole('admission_officer') : $user->role === 'admission_officer');
+        $hasPermission = $user && (method_exists($user, 'hasAnyPermission')
+            ? $user->hasAnyPermission('manage-admissions', 'manage-students')
+            : ($user->hasPermission('manage-admissions') || $user->hasPermission('manage-students')));
+
+        if($user && $user->status == 'Active' && ($hasRole || $hasPermission)){
             return $next($request);
         }
 

@@ -19,7 +19,7 @@ class TeacherMiddleware
     {
         $user = Auth::user();
 
-        if($user->role == 'teacher'){
+        if($user && $user->status == 'Active' && $user->usesRole('teacher')){
             return $next($request);
         }
 

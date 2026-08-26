@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Fatima Yahaya International School'),
+    'name' => env('APP_NAME', 'FATIMA YAHAYA INTERNATIONAL SCHOOL'),
 
     'title' => env('APP_TITLE', 'FAYIS'),
 

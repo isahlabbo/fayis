@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 
 class RoleOrPermissionMiddleware
 {
-    /** Allow the legacy role or any supplied database permission during migration. */
-    public function handle(Request $request, Closure $next, $legacyRole, ...$permissions)
+    /** Allow a database/legacy role or any supplied database permission. */
+    public function handle(Request $request, Closure $next, $role, ...$permissions)
     {
         $user = $request->user();
         if ($user && $user->status === 'Active') {
-            if ($user->role === $legacyRole) {
+            if ($user->usesRole($role)) {
                 return $next($request);
             }
             foreach ($permissions as $permission) {

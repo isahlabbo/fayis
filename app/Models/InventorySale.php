@@ -6,11 +6,13 @@ use App\Models\BaseModel;
 
 class InventorySale extends BaseModel
 {
+    protected $casts = ['usage_date' => 'date'];
     protected $table = 'inventory_sales';
 
     protected $fillable = [
         'section_class_student_id',
         'total_cost',
+        'payment_method',
         'evidence',
         'usage_date',
         'notes',

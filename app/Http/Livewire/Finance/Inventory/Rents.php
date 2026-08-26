@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Finance\Inventory;
 
 use App\Models\InventoryItem;
 use App\Models\InventoryRent;
+use App\Models\AcademicSession;
+use App\Models\FinanceActivityLog;
 use App\Models\Teacher;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +20,7 @@ class Rents extends Component
     public $notes;
     public $teachers;
     public $items;
+    public $academic_session_id;
 
     protected function rules()
     {
@@ -27,6 +30,7 @@ class Rents extends Component
             'quantity' => 'required|integer|min:1',
             'usage_date' => 'required|date',
             'notes' => 'nullable|string|max:1000',
+            'academic_session_id' => 'required|exists:academic_sessions,id',
         ];
     }
 
@@ -35,6 +39,7 @@ class Rents extends Component
         $this->teachers = Teacher::with('user')->orderBy('id')->get();
         $this->items = InventoryItem::with('category')->where('quantity', '>', 0)->orderBy('name')->get();
         $this->usage_date = now()->format('Y-m-d');
+        $this->academic_session_id = AcademicSession::where('status','Active')->value('id');
     }
 
     public function updatedItemId($value)
@@ -48,7 +53,8 @@ class Rents extends Component
         $item = InventoryItem::findOrFail($this->item_id);
         $totalCost = 0;
 
-        InventoryRent::create([
+        abort_if($item->quantity < $data['quantity'], 422, 'Insufficient stock.');
+        $rent = InventoryRent::create([
             'inventory_item_id' => $data['item_id'],
             'teacher_id' => $data['teacher_id'],
             'quantity' => $data['quantity'],
@@ -58,9 +64,11 @@ class Rents extends Component
             'evidence' => null,
             'usage_date' => $data['usage_date'],
             'notes' => $data['notes'],
+            'academic_session_id' => $data['academic_session_id'], 'status'=>'Rented',
         ]);
 
         $item->decrement('quantity', $data['quantity']);
+        FinanceActivityLog::record('inventory_rent', $rent, 'Material rented to teacher', 0, ['quantity'=>$data['quantity'],'balance'=>$item->fresh()->quantity]);
 
         session()->flash('success', 'Inventory rent recorded successfully.');
 
@@ -69,11 +77,21 @@ class Rents extends Component
         $this->usage_date = now()->format('Y-m-d');
     }
 
+    public function returnItems($id, $quantity = null)
+    {
+        $rent=InventoryRent::findOrFail($id);$balance=$rent->quantity-$rent->returned_quantity;$returnQty=$quantity ? (int)$quantity : $balance;
+        abort_if($returnQty<1 || $returnQty>$balance,422,'Invalid return quantity.');
+        $rent->increment('returned_quantity',$returnQty);$rent->item()->increment('quantity',$returnQty);$rent->refresh();
+        $rent->update(['returned_at'=>now()->toDateString(),'status'=>$rent->returned_quantity >= $rent->quantity ? 'Returned' : 'Partially Returned']);
+        FinanceActivityLog::record('inventory_return',$rent,'Material returned by teacher',0,['quantity'=>$returnQty,'balance'=>$rent->item->fresh()->quantity]);session()->flash('success','Return recorded.');
+    }
+
     public function render()
     {
         return view('livewire.finance.inventory.rents', [
             'teachers' => $this->teachers,
             'items' => $this->items,
+            'sessions' => AcademicSession::latest('id')->get(), 'rents'=>InventoryRent::with(['teacher.user','item','academicSession'])->latest()->get(),
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin;
 
 use App\Models\AcademicSession;
+use App\Models\AcademicSessionTerm;
 use App\Models\GradeScale;
 use App\Models\HeadTeacherComment;
 use App\Models\RemarkScale;
@@ -11,6 +12,7 @@ use App\Models\SectionClass;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\TeacherComment;
+use App\Models\Term;
 use App\Models\Lga;
 use App\Models\Role;
 use App\Models\State;
@@ -34,6 +36,7 @@ class ResourceManager extends Component
     public $search = '';
     public $showForm = false;
     public $recordType;
+    public $termSessionId, $termRecordId, $termForm = [], $showTermForm = false;
 
     private function definitions()
     {
@@ -67,6 +70,71 @@ class ResourceManager extends Component
     public function updatingSearch() { $this->resetPage(); }
     public function updatedFormStateId() { $this->form['lga_id'] = null; }
     public function create() { $this->resetForm(); $this->showForm = true; }
+
+    public function manageTerms($sessionId)
+    {
+        abort_unless($this->resource === 'calendar', 404);
+        $this->termSessionId = AcademicSession::findOrFail($sessionId)->id;
+        $this->resetTermForm();
+    }
+
+    public function createTerm()
+    {
+        abort_unless($this->resource === 'calendar' && $this->termSessionId, 404);
+        $this->resetTermForm();
+        $this->showTermForm = true;
+    }
+
+    public function editTerm($id)
+    {
+        $term = AcademicSessionTerm::where('academic_session_id', $this->termSessionId)->findOrFail($id);
+        $this->termRecordId = $term->id;
+        $this->termForm = ['term_id'=>$term->term_id, 'status'=>$term->status, 'start_at'=>$term->start_at, 'end_at'=>$term->end_at];
+        $this->showTermForm = true;
+    }
+
+    public function saveTerm()
+    {
+        $data = $this->validate([
+            'termForm.term_id'=>['required','exists:terms,id',Rule::unique('academic_session_terms','term_id')->where(fn($q)=>$q->where('academic_session_id',$this->termSessionId))->ignore($this->termRecordId)],
+            'termForm.status'=>'required|in:Active,Not Active', 'termForm.start_at'=>'nullable|date',
+            'termForm.end_at'=>'nullable|date|after_or_equal:termForm.start_at',
+        ])['termForm'];
+        $session = AcademicSession::findOrFail($this->termSessionId);
+        if ($session->start_at && $data['start_at'] && $data['start_at'] < $session->start_at) {
+            $this->addError('termForm.start_at','The term cannot start before the academic session.'); return;
+        }
+        if ($session->end_at && $data['end_at'] && $data['end_at'] > $session->end_at) {
+            $this->addError('termForm.end_at','The term cannot end after the academic session.'); return;
+        }
+        DB::transaction(function () use ($data) {
+            if ($data['status'] === 'Active') {
+                AcademicSession::where('id','!=',$this->termSessionId)->update(['status'=>'Not Active']);
+                AcademicSession::whereKey($this->termSessionId)->update(['status'=>'Active']);
+                AcademicSessionTerm::where('id','!=',$this->termRecordId ?: 0)->update(['status'=>'Not Active']);
+            }
+            AcademicSessionTerm::updateOrCreate(['id'=>$this->termRecordId], $data + ['academic_session_id'=>$this->termSessionId]);
+        });
+        $this->resetTermForm(); session()->flash('success','Academic session term saved successfully.');
+    }
+
+    public function deleteTerm($id)
+    {
+        try {
+            $term = AcademicSessionTerm::where('academic_session_id',$this->termSessionId)->findOrFail($id);
+            $wasActive = $term->status === 'Active';
+            $term->delete();
+            if ($wasActive) AcademicSession::whereKey($this->termSessionId)->update(['status'=>'Not Active']);
+            session()->flash('success','Academic session term deleted.');
+        } catch (\Throwable $e) { session()->flash('error','This term is in use and cannot be deleted.'); }
+    }
+
+    public function resetTermForm()
+    {
+        $this->termRecordId = null; $this->showTermForm = false;
+        $this->termForm = ['term_id'=>null,'status'=>'Not Active','start_at'=>null,'end_at'=>null];
+        $this->resetValidation();
+    }
 
     public function edit($id, $type = null)
     {
@@ -168,6 +236,8 @@ class ResourceManager extends Component
         $lgas = Lga::with('state')
             ->when($this->resource === 'teachers', fn($query) => $selectedState ? $query->where('state_id', $selectedState) : $query->whereRaw('1 = 0'))
             ->orderBy('name')->get();
-        return view('livewire.admin.resource-manager', compact('definition','records','headComments','states','lgas') + ['sections'=>Section::orderBy('name')->get()]);
+        $termSession = $this->resource === 'calendar' && $this->termSessionId ? AcademicSession::find($this->termSessionId) : null;
+        $sessionTerms = $termSession ? AcademicSessionTerm::with('term')->where('academic_session_id',$termSession->id)->orderBy('term_id')->get() : collect();
+        return view('livewire.admin.resource-manager', compact('definition','records','headComments','states','lgas','termSession','sessionTerms') + ['sections'=>Section::orderBy('name')->get(),'terms'=>Term::orderBy('id')->get()]);
     }
 }
