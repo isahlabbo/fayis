@@ -44,15 +44,18 @@
         </tr>
         @endif
     @endforeach
-    <table class="table-bordered">
+    </tbody>
+</table>
+
+<table class="table-bordered" style="width: 300px; margin-top: 4px;">
+    <tbody>
     <tr>
         <td width="200"><b>Total Marks:</b></td>
         <td width="100"><b>{{$sectionClassStudentTerm->sectionClassStudentTermResultPublish->total_marks ?? ''}}</b></td>
     </tr>
     <tr>
         <td><b>Obtain Marks:</b></td>
-        <td colaps="7"><b>{{$sectionClassStudentTerm->sectionClassStudentTermResultPublish->obtain_marks ?? ''}}</b></td>
+        <td><b>{{$sectionClassStudentTerm->sectionClassStudentTermResultPublish->obtain_marks ?? ''}}</b></td>
     </tr>
-    </table>    
     </tbody>
 </table>

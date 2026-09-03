@@ -65,34 +65,21 @@
 </div>
 
 <div class="col-md-4" style="color: black;">
-    <p class="mb-0" style="color: black;">
-    <tr><td>Next Term Begins:</td> <td class="text text-left"><b>{{strtoupper(date('d-M-Y',strtotime($sectionClassStudent->nextSectionClassStudentTerm()->start_at ?? ''))) ?? 'Not available'}}</b></td></tr></p>
+    <p class="mb-0" style="color: black;">Next Term Begins: <b>{{strtoupper(date('d-M-Y',strtotime($sectionClassStudent->nextSectionClassStudentTerm()->start_at ?? ''))) ?? 'Not available'}}</b></p>
     <p class="mb-0" style="color: black;">Term: <b>{{strtoupper($sectionClassStudentTerm->academicSessionTerm->term->name ?? '')}}</b></p>
     <p class="mb-0" style="color: black;">Class: <b>{{$sectionClassStudent->sectionClass->name ?? ''}} {{$sectionClassStudent->sectionClass->sectionClassGroup->name ?? ''}}</b></p>
     <p class="mb-0" style="color: black;">Session: <b>{{$sectionClassStudentTerm->academicSessionTerm->academicSession->name ?? ''}}</b></p>
     <p class="mb-0" style="color: black;"><b>ATTENDANCE:</b></p>
-    <p class="mb-0" style="color: black;">
-        <tr>
-            <td>Days school open:</td>
-            <td><b>{{$sectionClassStudentTerm->sectionClassStudentTermAccessment->days_school_open ?? 0}}</b></td>
-        </tr>
-    </p>
-    <p class="mb-0" style="color: black;">
-    <tr>
-        <td>Day(s) Present:</td>
-        <td><b>{{$sectionClassStudentTerm->sectionClassStudentTermAccessment->days_present ?? 0}}</b></td>
-    </tr>
-    
-    </p>
-    <p class="mb-0" style="color: black;">
-        <tr>
-            <td>Day(s) Absent:</td>
-            <td><b>{{$sectionClassStudentTerm->sectionClassStudentTermAccessment->days_absent ?? 0}}</b></td>
-        </tr>
-    </p>
+    <table style="width: 100%;">
+        <tbody>
+            <tr><td>Days school open:</td><td><b>{{$sectionClassStudentTerm->sectionClassStudentTermAccessment->days_school_open ?? 0}}</b></td></tr>
+            <tr><td>Day(s) Present:</td><td><b>{{$sectionClassStudentTerm->sectionClassStudentTermAccessment->days_present ?? 0}}</b></td></tr>
+            <tr><td>Day(s) Absent:</td><td><b>{{$sectionClassStudentTerm->sectionClassStudentTermAccessment->days_absent ?? 0}}</b></td></tr>
+        </tbody>
+    </table>
 </div>
 <div class="col-md-2 text-center">
     
-    <img src="{{asset('images/user.jpg')}}" width="150" height="170p" class="rounded" alt="">
+    <img src="{{asset('images/user.jpg')}}" width="150" height="170" class="rounded" alt="">
     
 </div>
