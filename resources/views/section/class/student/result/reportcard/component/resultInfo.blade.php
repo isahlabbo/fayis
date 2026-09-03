@@ -5,7 +5,6 @@
             <th>SUBJECT</th>
             <th>1ST CA</th>
             <th>2ND CA</th>
-            <th>ASSIGN.</th>
             <th>EXAM</th>
             <th>TOTAL</th>
             <th>GRADE</th>
@@ -27,15 +26,11 @@
                     && $result->subjectTeacherTermlyUpload->sectionClassSubjectTeacher
                     && $result->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject;
             })
-            ->groupBy(function ($result) {
+            ->sortByDesc('id')
+            ->unique(function ($result) {
                 return $result->subjectTeacherTermlyUpload
                     ->sectionClassSubjectTeacher
                     ->section_class_subject_id;
-            })
-            ->map(function ($results) {
-                return $results->sortByDesc(function ($result) {
-                    return [(float) $result->total, $result->id];
-                })->first();
             })
             ->sortBy(function ($result) {
                 return $result->subjectTeacherTermlyUpload
@@ -54,7 +49,6 @@
             <td>{{$studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject->name ?? 'Not Available'}}</td>
             <td class="text text-center">{{$studentResult->first_ca ?? 'Abs'}}</td>
             <td class="text text-center">{{$studentResult->second_ca ?? 'Abs'}}</td>
-            <td class="text text-center">{{$studentResult->assignment ?? 0}}</td>
             <td class="text text-center">{{$studentResult->exam ?? 'Abs'}}</td>
             <td class="text text-center">{{$studentResult->total ?? 'Abs'}}</td>
             <td class="text text-center">{{$studentResult->grade ?? 'Abs'}}</td>
@@ -73,11 +67,11 @@
     <tbody>
     <tr>
         <td width="200"><b>Total Marks:</b></td>
-        <td width="100"><b>{{number_format($subjects * 100, 0)}}</b></td>
+        <td width="100"><b>{{$sectionClassStudentTerm->sectionClassStudentTermResultPublish->total_marks ?? ''}}</b></td>
     </tr>
     <tr>
         <td><b>Obtain Marks:</b></td>
-        <td><b>{{number_format($obtainedMarks, 2)}}</b></td>
+        <td><b>{{$sectionClassStudentTerm->sectionClassStudentTermResultPublish->obtain_marks ?? ''}}</b></td>
     </tr>
     </tbody>
 </table>

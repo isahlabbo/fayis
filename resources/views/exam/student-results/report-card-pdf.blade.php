@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><style>
-@page{size:A4 portrait;margin:8mm}*{box-sizing:border-box}body{font-family:DejaVu Sans,sans-serif;font-size:7.5px;line-height:1.1;color:#111;margin:0}table{width:100%;border-collapse:collapse}th,td{border:.5px solid #555;padding:2px 3px;vertical-align:middle}th{background:#eaf4ea;text-transform:uppercase}.header td{border:0}.logo{width:60px;max-height:55px}.school{text-align:center}.school h1{font-size:18px;color:#08752d;margin:0}.school p{font-size:8px;margin:1px}.title{text-align:center;font-size:10px;font-weight:bold;border-top:2px solid #08752d;border-bottom:2px solid #c62020;padding:3px;margin:3px 0}.details td{padding:3px}.label{color:#555;width:15%}.value{font-weight:bold;width:35%}.scores{table-layout:fixed;margin-top:4px}.scores td{text-align:center}.scores .subject{text-align:left;width:24%}.summary{width:60%;margin-top:3px}.summary td{font-weight:bold}.two-col{table-layout:fixed;margin-top:4px}.two-col>tbody>tr>td{border:0;padding:0 2px;width:50%;vertical-align:top}.heading{text-align:center;background:#eaf4ea;border:.5px solid #555;font-weight:bold;padding:2px}.remarks{margin-top:4px}.remarks td:first-child{font-weight:bold;width:26%}.muted{color:#666}
-</style></head><body>
-@php
-$termResults=$sectionClassStudentTerm->studentResults->filter(function($r){return $r->subjectTeacherTermlyUpload&&$r->subjectTeacherTermlyUpload->sectionClassSubjectTeacher&&$r->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject;})->groupBy(function($r){return $r->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->section_class_subject_id;})->map(function($rows){return $rows->sortByDesc(function($r){return [(float)$r->total,$r->id];})->first();})->sortBy(function($r){return $r->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject->name;});
-$obtained=$termResults->sum(function($r){return (float)$r->total;});$obtainable=$termResults->count()*100;$assessment=$sectionClassStudentTerm->sectionClassStudentTermAccessment;
-@endphp
-<table class="header"><tr><td style="width:15%"><img class="logo" src="{{public_path(config('app.logo'))}}"></td><td class="school" style="width:70%"><h1>{{config('app.title')}}</h1><p>{{config('app.address')}}</p><p><em>{{config('app.motto')}}</em></p><p>{{config('app.contact')}}</p></td><td style="width:15%;text-align:right"><img class="logo" src="{{public_path('images/user.jpg')}}"></td></tr></table>
-<div class="title">REPORT SHEET — {{strtoupper($sectionClassStudentTerm->academicSessionTerm->term->name)}}, {{$sectionClassStudentTerm->academicSessionTerm->academicSession->name}} SESSION</div>
-<table class="details"><tr><td class="label">Student</td><td class="value">{{$student->name}}</td><td class="label">Admission No.</td><td class="value">{{$student->admission_no?:'—'}}</td></tr><tr><td class="label">Class</td><td class="value">{{$sectionClassStudent->sectionClass->name}}</td><td class="label">Gender</td><td class="value">{{optional($student->gender)->name?:'—'}}</td></tr><tr><td class="label">Average</td><td class="value">{{$termResults->count()?number_format($obtained/$termResults->count(),2):'0.00'}}%</td><td class="label">Position</td><td class="value">{{optional($sectionClassStudentTerm->sectionClassStudentTermResultPublish)->position?:'—'}}</td></tr></table>
-<table class="scores"><thead><tr><th class="subject">Subject</th><th>1st CA</th><th>2nd CA</th><th>Assign.</th><th>Exam</th><th>Total</th><th>Grade</th><th>Position</th><th>Remark</th></tr></thead><tbody>
-@forelse($termResults as $result)<tr><td class="subject">{{$result->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject->name}}</td><td>{{$result->first_ca}}</td><td>{{$result->second_ca}}</td><td>{{$result->assignment??0}}</td><td>{{$result->exam}}</td><td><b>{{$result->total}}</b></td><td>{{$result->grade}}</td><td>{{$result->subjectTeacherTermlyUpload->position($result->total)}}</td><td>{{$result->remark()?:'—'}}</td></tr>@empty<tr><td colspan="9" class="muted" style="text-align:center">No results recorded for this term.</td></tr>@endforelse
-</tbody></table>
-<table class="summary"><tr><td>Total obtainable</td><td>{{number_format($obtainable,0)}}</td><td>Marks obtained</td><td>{{number_format($obtained,2)}}</td></tr></table>
-<table class="two-col"><tbody><tr><td><div class="heading">Affective Traits</div><table><thead><tr><th>Trait</th><th>Rating</th></tr></thead><tbody>@forelse(optional($assessment)->sectionClassStudentTermAccessmentAffectiveTraits??collect() as $trait)<tr><td>{{optional($trait->getAffectiveTrait())->name}}</td><td>{{$trait->value}}</td></tr>@empty<tr><td colspan="2" class="muted">No assessment</td></tr>@endforelse</tbody></table></td><td><div class="heading">Psychomotor</div><table><thead><tr><th>Skill</th><th>Rating</th></tr></thead><tbody>@forelse(optional($assessment)->sectionClassStudentTermAccessmentPsychomotors??collect() as $skill)@if($skill->getPsychomotor())<tr><td>{{$skill->getPsychomotor()->name}}</td><td>{{$skill->value}}</td></tr>@endif @empty<tr><td colspan="2" class="muted">No assessment</td></tr>@endforelse</tbody></table></td></tr></tbody></table>
-<table class="remarks"><tr><td>Attendance</td><td>Open: {{optional($assessment)->days_school_open??0}} &nbsp; Present: {{optional($assessment)->days_present??0}} &nbsp; Absent: {{optional($assessment)->days_absent??0}}</td></tr><tr><td>Class master's remark</td><td>{{optional(optional($assessment)->teacherComment)->name?:'—'}}</td></tr><tr><td>Head of school's remark</td><td>{{optional(optional($assessment)->headTeacherComment)->name?:'—'}}</td></tr></table>
-</body></html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        @page { margin: 18px; }
+        body { color: #111; font-family: DejaVu Sans, sans-serif; font-size: 10px; }
+        .row { width: 100%; clear: both; }
+        .col-md-12 { width: 100%; }
+        .col-md-10 { width: 82%; float: left; }
+        .col-md-6 { width: 49%; float: left; }
+        .col-md-5 { width: 41%; float: left; }
+        .col-md-4 { width: 32%; float: left; }
+        .col-md-2 { width: 16%; float: left; }
+        .col-md-1 { width: 8%; float: left; min-height: 1px; }
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .mb-0 { margin-bottom: 0; }
+        table { width: 100%; border-collapse: collapse; }
+        .table-bordered th, .table-bordered td { border: 1px solid #555; padding: 3px; }
+        h2, h3, h4, p { margin: 3px 0; }
+        img { max-width: 100%; }
+    </style>
+</head>
+<body>
+    @include('section.class.student.result.reportcard.view')
+</body>
+</html>

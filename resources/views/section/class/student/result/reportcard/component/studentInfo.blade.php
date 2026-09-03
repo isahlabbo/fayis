@@ -58,7 +58,7 @@
     @if(config('app.fee'))
     <tr style="color: black;">
         <td><p class="mb-0">Next Term Fee:</p></td>
-        <td><p class="mb-0 text-right"><b>{{$sectionClassStudentTerm->sectionClassStudent->sectionClass->schoolFees($sectionClassStudentTerm->term_id+1, $student->gender->id)}}</b></p></td>
+        <td><p class="mb-0 text-right"><b>{{$sectionClassStudentTerm->sectionClassStudent->sectionClass->schoolFees($sectionClassStudentTerm->academicSessionTerm->term->id + 1, $student->gender->id)}}</b></p></td>
     </tr>
     @endif        
     </table>
