@@ -20,8 +20,12 @@
         .text-right { text-align: right; }
         .mb-0 { margin-bottom: 0; }
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th, td { overflow-wrap: break-word; }
+        th, td { overflow-wrap: normal; word-break: normal; }
         .table-bordered th, .table-bordered td { border: 1px solid #555; padding: 2px; }
+        .assessment-grid { margin-top: 3px; table-layout: fixed; }
+        .assessment-grid > tbody > tr > td { border: 0; padding: 2px; vertical-align: top; width: 50%; }
+        .assessment-grid .row, .assessment-grid .col-md-12 { float: none; padding: 0; width: 100%; }
+        .report-scale td, .report-scale th, .report-grading td, .report-grading th { white-space: normal; }
         h2, h3, h4, p { margin: 2px 0; }
         img { max-width: 100%; }
     </style>

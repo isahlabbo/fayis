@@ -1,9 +1,9 @@
 <p  class="text-center"><b></b></p>
-<table class="table-bordered text-center" style="width: 100%; height: 20px;">
+<table class="table-bordered text-center report-scale" style="width: 100%; height: 20px;">
     <thead>
         <tr>
-            <th>SCALE</th>
-            <th></th>
+            <th style="width: 25%;">SCALE</th>
+            <th style="width: 75%;">DESCRIPTION</th>
         </tr>
     </thead>
     <tbody>

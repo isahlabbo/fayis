@@ -24,6 +24,20 @@
         <!-- result end -->
         <!-- accessment start -->
         <br>
+        @if(!empty($pdfMode))
+        <table class="assessment-grid">
+            <tbody>
+                <tr>
+                    <td>@include('section.class.student.result.reportcard.component.affectiveTrait')</td>
+                    <td>@include('section.class.student.result.reportcard.component.psychomotor')</td>
+                </tr>
+                <tr>
+                    <td>@include('section.class.student.result.reportcard.component.scale')</td>
+                    <td>@include('section.class.student.result.reportcard.component.grading')</td>
+                </tr>
+            </tbody>
+        </table>
+        @else
         <div class="row">
 
             <div class="col-md-5">
@@ -49,6 +63,7 @@
                 </div>
             <!-- psychomotor and rest start -->
         </div>
+        @endif
         <!-- accessment end -->
 
         <!-- remarks start -->

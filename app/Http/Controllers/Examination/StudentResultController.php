@@ -89,7 +89,10 @@ class StudentResultController extends Controller
             'sectionClassStudent.sectionClass.sectionClassSubjects',
             'studentResults.subjectTeacherTermlyUpload.sectionClassSubjectTeacher.sectionClassSubject',
             'sectionClassStudentTermResultPublish',
-            'sectionClassStudentTermAccessment',
+            'sectionClassStudentTermAccessment.teacherComment',
+            'sectionClassStudentTermAccessment.headTeacherComment',
+            'sectionClassStudentTermAccessment.sectionClassStudentTermAccessmentAffectiveTraits.affectiveTrait',
+            'sectionClassStudentTermAccessment.sectionClassStudentTermAccessmentPsychomotors.psychomotor',
         ]);
 
         $sectionClassStudent = $studentTerm->sectionClassStudent;
@@ -103,6 +106,7 @@ class StudentResultController extends Controller
             'remarkScales' => RemarkScale::all(),
             'psychomotors' => Psychomotor::all(),
             'affectiveTraits' => AffectiveTrait::all(),
+            'pdfMode' => true,
         ];
 
         $html = view('exam.student-results.report-card-pdf', $data)->render();
