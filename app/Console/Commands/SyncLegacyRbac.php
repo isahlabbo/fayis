@@ -50,6 +50,8 @@ class SyncLegacyRbac extends Command
         'manage-students' => ['Manage students', 'Create and maintain student records'],
         'send-notifications' => ['Send notifications', 'Send school notifications to account groups'],
         'manage-school-results' => ['Manage school results', 'Review and oversee results across the school'],
+        'view-student-results' => ['View student results', 'Search student results and download report cards'],
+        'view-result-access-codes' => ['View result access codes', 'Search students and view result access codes'],
         'manage-sections' => ['Manage sections', 'Maintain sections, classes, students and class allocation'],
         'manage-school-administration' => ['Manage school administration', 'Maintain sessions, calendars, teachers and staff'],
         'manage-report-card-configuration' => ['Manage report-card configuration', 'Maintain grades, remarks, traits and report-card text'],
@@ -74,10 +76,10 @@ class SyncLegacyRbac extends Command
         'head' => [
             'send-notifications', 'manage-school-results', 'manage-sections', 'manage-school-administration', 'manage-report-card-configuration',
             'manage-teachers', 'manage-class-subjects', 'manage-class-teacher-allocation', 'manage-result-uploads', 'manage-inventory',
-            'manage-payments', 'manage-sales', 'manage-rents', 'manage-students',
+            'manage-payments', 'manage-sales', 'manage-rents', 'manage-students', 'view-student-results', 'view-result-access-codes',
         ],
         'admission_officer' => ['manage-admissions'],
-        'exam_officer' => ['manage-examinations'],
+        'exam_officer' => ['manage-examinations', 'view-student-results', 'view-result-access-codes'],
         'finance_officer' => ['manage-fees', 'manage-payments', 'manage-inventory'],
         // FinanceOfficerMiddleware explicitly accepts patrons, and the patron menu exposes finance/inventory reports.
         'patron' => ['manage-fees', 'manage-payments', 'manage-inventory', 'view-school-analytics'],

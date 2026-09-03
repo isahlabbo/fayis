@@ -77,6 +77,8 @@
                 @if($user->hasAnyPermission('manage-students', 'manage-admissions'))<a class="{{ request()->routeIs('admission.promotions') ? 'active' : '' }}" href="{{ route('admission.promotions') }}"><i class="fas fa-level-up-alt"></i><span>Promotions</span></a>@endif
             </div></details>
             @if($user->hasPermission('manage-result-uploads'))<a href="{{ route('exam.upload.report') }}"><i class="fas fa-cloud-upload-alt"></i><span>Result Uploads</span></a>@endif
+            @if($user->hasPermission('view-student-results'))<a class="{{ request()->routeIs('exam.student-results.*') ? 'active' : '' }}" href="{{ route('exam.student-results.index') }}"><i class="fas fa-file-pdf"></i><span>Student Results</span></a>@endif
+            @if($user->hasPermission('view-result-access-codes'))<a class="{{ request()->routeIs('exam.result-access-codes.*') ? 'active' : '' }}" href="{{ route('exam.result-access-codes.index') }}"><i class="fas fa-key"></i><span>Result Access Code</span></a>@endif
 
             @unless($hasFinancePortal)
                 <div class="portal-nav-title">Finance & resources</div>
@@ -103,12 +105,8 @@
             <div class="portal-nav-title">Examinations</div>
             <a href="{{ route('exam.upload.report') }}"><i class="fas fa-chart-bar"></i><span>Upload Report</span></a>
             <a href="{{ route('exam.upload.class.report') }}"><i class="fas fa-school"></i><span>Class Report</span></a>
-            <details><summary><span><i class="fas fa-file-alt"></i> Sections</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu">
-                @foreach(App\Models\Section::orderBy('name')->get() as $section)
-                    <a href="{{ route('exam.upload.index', [$section->id]) }}"><i class="fas fa-upload"></i><span>{{ $section->name }} Uploads</span></a>
-                    <a href="{{ route('exam.upload.result.accessCode', [$section->id]) }}"><i class="fas fa-key"></i><span>{{ $section->name }} Codes</span></a>
-                @endforeach
-            </div></details>
+            @if($user->hasPermission('view-student-results'))<a class="{{ request()->routeIs('exam.student-results.*') ? 'active' : '' }}" href="{{ route('exam.student-results.index') }}"><i class="fas fa-file-pdf"></i><span>Student Results</span></a>@endif
+            @if($user->hasPermission('view-result-access-codes'))<a class="{{ request()->routeIs('exam.result-access-codes.*') ? 'active' : '' }}" href="{{ route('exam.result-access-codes.index') }}"><i class="fas fa-key"></i><span>Result Access Code</span></a>@endif
         @endif
 
         @if($hasFinancePortal)

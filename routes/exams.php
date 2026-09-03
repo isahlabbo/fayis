@@ -1,8 +1,25 @@
 <?php
+Route::middleware(['auth', 'verified', 'password', 'permission:view-student-results'])
+    ->namespace('Examination')
+    ->name('exam.student-results.')
+    ->prefix('exam/student-results')
+    ->group(function () {
+        Route::get('/', 'StudentResultController@index')->name('index');
+        Route::get('/{studentTerm}/report-card', 'StudentResultController@download')->name('download');
+    });
+
+Route::middleware(['auth', 'verified', 'password', 'permission:view-result-access-codes'])
+    ->namespace('Examination')
+    ->group(function () {
+        Route::get('exam/result-access-codes', 'ResultController@accessCodes')
+            ->name('exam.result-access-codes.index');
+        Route::post('exam/result-access-codes/generate', 'ResultController@generateAccessCodes')
+            ->name('exam.result-access-codes.generate');
+    });
+
 Route::middleware(['auth','verified','exam', 'password'])
 ->namespace('Examination')
 ->name('exam.')->prefix('exam/')->group(function () {
-    
     Route::name('upload.')
     ->prefix('/upload')
     ->group(function (){
