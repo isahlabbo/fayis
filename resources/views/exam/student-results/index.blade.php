@@ -90,6 +90,9 @@
                                     </td>
                                     <td>
                                         @if($studentTerm)
+                                            <a class="btn btn-sm btn-outline-primary" href="{{ route('exam.student-results.audit', $studentTerm) }}">
+                                                <i class="fas fa-chart-bar mr-1"></i> Audit result
+                                            </a>
                                             <a class="btn btn-sm btn-outline-success" href="{{ route('exam.student-results.download', $studentTerm) }}">
                                                 <i class="fas fa-file-pdf mr-1"></i> Download report card
                                             </a>

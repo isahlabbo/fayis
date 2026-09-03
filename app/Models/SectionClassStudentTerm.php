@@ -125,6 +125,40 @@ class SectionClassStudentTerm extends BaseModel
     public function subjectCounts() {
         return $this->studentResults->count();
     }
+
+    /** Results that belong to this exact session/term, with one valid row per subject. */
+    public function reportResults()
+    {
+        $academicSessionTerm = $this->academicSessionTerm;
+
+        return $this->studentResults
+            ->filter(function ($result) use ($academicSessionTerm) {
+                $upload = $result->subjectTeacherTermlyUpload;
+
+                return $upload
+                    && $upload->sectionClassSubjectTeacher
+                    && $upload->sectionClassSubjectTeacher->sectionClassSubject
+                    && (int) $upload->academic_session_id === (int) $academicSessionTerm->academic_session_id
+                    && (int) $upload->term_id === (int) $academicSessionTerm->term_id;
+            })
+            ->groupBy(function ($result) {
+                return $result->subjectTeacherTermlyUpload
+                    ->sectionClassSubjectTeacher
+                    ->section_class_subject_id;
+            })
+            ->map(function ($results) {
+                return $results->sortByDesc(function ($result) {
+                    return ((float) $result->total * 1000000) + $result->id;
+                })->first();
+            })
+            ->sortBy(function ($result) {
+                return $result->subjectTeacherTermlyUpload
+                    ->sectionClassSubjectTeacher
+                    ->sectionClassSubject
+                    ->name;
+            })
+            ->values();
+    }
     
     public function publishThisTermResult()
     {

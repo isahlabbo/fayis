@@ -21,31 +21,7 @@
     @php
         $subjects = 0;
         $obtainedMarks = 0;
-        $selectedAcademicSessionTerm = $sectionClassStudentTerm->academicSessionTerm;
-        $termResults = $sectionClassStudentTerm->studentResults
-            ->filter(function ($result) use ($selectedAcademicSessionTerm) {
-                return $result->subjectTeacherTermlyUpload
-                    && $result->subjectTeacherTermlyUpload->sectionClassSubjectTeacher
-                    && $result->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject
-                    && (int) $result->subjectTeacherTermlyUpload->academic_session_id === (int) $selectedAcademicSessionTerm->academic_session_id
-                    && (int) $result->subjectTeacherTermlyUpload->term_id === (int) $selectedAcademicSessionTerm->term_id;
-            })
-            ->groupBy(function ($result) {
-                return $result->subjectTeacherTermlyUpload
-                    ->sectionClassSubjectTeacher
-                    ->section_class_subject_id;
-            })
-            ->map(function ($results) {
-                return $results->sortByDesc(function ($result) {
-                    return ((float) $result->total * 1000000) + $result->id;
-                })->first();
-            })
-            ->sortBy(function ($result) {
-                return $result->subjectTeacherTermlyUpload
-                    ->sectionClassSubjectTeacher
-                    ->sectionClassSubject
-                    ->name;
-            });
+        $termResults = $sectionClassStudentTerm->reportResults();
     @endphp
     
     @foreach($termResults as $studentResult)

@@ -120,4 +120,26 @@ class StudentResultController extends Controller
             'Content-Disposition' => 'attachment; filename="'.$filename.'"',
         ]);
     }
+
+    public function audit(SectionClassStudentTerm $studentTerm)
+    {
+        $studentTerm->load([
+            'academicSessionTerm.academicSession',
+            'academicSessionTerm.term',
+            'sectionClassStudent.student.guardian',
+            'sectionClassStudent.student.gender',
+            'sectionClassStudent.sectionClass.section',
+            'studentResults.subjectTeacherTermlyUpload.sectionClassSubjectTeacher.sectionClassSubject',
+            'sectionClassStudentTermResultPublish',
+            'sectionClassStudentTermAccessment.teacherComment',
+            'sectionClassStudentTermAccessment.headTeacherComment',
+            'sectionClassStudentTermAccessment.sectionClassStudentTermAccessmentAffectiveTraits',
+            'sectionClassStudentTermAccessment.sectionClassStudentTermAccessmentPsychomotors',
+        ]);
+
+        return view('exam.student-results.audit', [
+            'studentTerm' => $studentTerm,
+            'results' => $studentTerm->reportResults(),
+        ]);
+    }
 }

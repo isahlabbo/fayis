@@ -12,6 +12,7 @@ class ExamStudentResultsTest extends TestCase
     {
         $this->assertTrue(Route::has('exam.student-results.index'));
         $this->assertTrue(Route::has('exam.student-results.download'));
+        $this->assertTrue(Route::has('exam.student-results.audit'));
         $this->assertTrue(Route::has('exam.result-access-codes.index'));
         $this->assertTrue(Route::has('exam.result-access-codes.generate'));
         $this->assertTrue(class_exists(Dompdf::class));

@@ -5,6 +5,7 @@ Route::middleware(['auth', 'verified', 'password', 'permission:view-student-resu
     ->prefix('exam/student-results')
     ->group(function () {
         Route::get('/', 'StudentResultController@index')->name('index');
+        Route::get('/{studentTerm}/audit', 'StudentResultController@audit')->name('audit');
         Route::get('/{studentTerm}/report-card', 'StudentResultController@download')->name('download');
     });
 
