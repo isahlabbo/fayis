@@ -20,14 +20,31 @@
     @php
         $subjects = 0;
         $obtainedMarks = 0;
+        $termResults = $sectionClassStudentTerm->studentResults
+            ->filter(function ($result) {
+                return $result->subjectTeacherTermlyUpload
+                    && $result->subjectTeacherTermlyUpload->sectionClassSubjectTeacher
+                    && $result->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject;
+            })
+            ->sortByDesc('id')
+            ->unique(function ($result) {
+                return $result->subjectTeacherTermlyUpload
+                    ->sectionClassSubjectTeacher
+                    ->section_class_subject_id;
+            })
+            ->sortBy(function ($result) {
+                return $result->subjectTeacherTermlyUpload
+                    ->sectionClassSubjectTeacher
+                    ->sectionClassSubject
+                    ->name;
+            });
     @endphp
     
-    @foreach($sectionClassStudentTerm->studentResults as $studentResult)
+    @foreach($termResults as $studentResult)
         @php
             $subjects++;
             $obtainedMarks = $obtainedMarks + $studentResult->total;
         @endphp
-        @if($studentResult && $studentResult->subjectTeacherTermlyUpload && $studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher)
         <tr >
             <td>{{$studentResult->subjectTeacherTermlyUpload->sectionClassSubjectTeacher->sectionClassSubject->name ?? 'Not Available'}}</td>
             <td class="text text-center">{{$studentResult->first_ca ?? 'Abs'}}</td>
@@ -42,7 +59,6 @@
             <td class="text text-center">{{$studentResult->teacher()->user->name ?? 'Not Available'}}</td>
             @endif            
         </tr>
-        @endif
     @endforeach
     </tbody>
 </table>
