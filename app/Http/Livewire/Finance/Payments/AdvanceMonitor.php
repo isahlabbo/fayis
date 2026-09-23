@@ -6,6 +6,7 @@ use App\Models\AcademicSession;
 use App\Models\AdvancePayment;
 use App\Models\Section;
 use App\Models\SectionClass;
+use App\Services\Finance\DeleteAdvancePayment;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -27,6 +28,13 @@ class AdvanceMonitor extends Component
     public function updatedSectionId() { $this->classId = ''; $this->resetPage(); }
     public function updatedClassId() { $this->resetPage(); }
     public function updatedStatus() { $this->resetPage(); }
+
+    public function deleteAdvancePayment($advanceId)
+    {
+        app(DeleteAdvancePayment::class)->handle($advanceId);
+        $this->resetPage();
+        session()->flash('success', 'Advance payment deleted and any applied amount reversed.');
+    }
 
     private function filteredQuery()
     {

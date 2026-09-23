@@ -1,5 +1,12 @@
 <?php
 
+Route::middleware(['auth', 'verified', 'password', \App\Http\Middleware\SanitaryMaterialAccess::class])
+    ->prefix('/finance/sanitary-material')->name('finance.sanitary.')->group(function () {
+        Route::view('/items', 'finance.livewire-page', ['title' => 'Sanitary Material - Items', 'component' => 'finance.sanitary.items'])->name('items');
+        Route::view('/stock', 'finance.livewire-page', ['title' => 'Sanitary Material - Stock', 'component' => 'finance.sanitary.stock'])->name('stock');
+        Route::view('/usage', 'finance.livewire-page', ['title' => 'Sanitary Material - Usage', 'component' => 'finance.sanitary.usage'])->name('usage');
+    });
+
 Route::middleware(['auth', 'verified', 'password', 'finance'])->prefix('/finance')->namespace('Finance')->name('finance.')->group(function () {
     Route::view('/fee-settings', 'finance.livewire-page', ['title'=>'Fees Setting','component'=>'finance.fee-settings'])->middleware('permission:manage-fees')->name('fee-settings');
     Route::view('/activity-report', 'finance.livewire-page', ['title'=>'Finance Reports','component'=>'finance.reports'])->middleware('permission:manage-payments')->name('activity-report');

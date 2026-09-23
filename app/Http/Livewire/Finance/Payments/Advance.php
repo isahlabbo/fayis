@@ -13,6 +13,7 @@ use App\Models\Section;
 use App\Models\Student;
 use App\Models\Term;
 use App\Services\Finance\ApplyAdvancePayments;
+use App\Services\Finance\DeleteAdvancePayment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -141,6 +142,12 @@ class Advance extends Component
                 }
             })->get()->each(fn($enrolment)=>app(ApplyAdvancePayments::class)->handle($enrolment));
         return redirect()->route('finance.advance-payments.receipt', $first->id);
+    }
+
+    public function deleteAdvancePayment($advanceId)
+    {
+        app(DeleteAdvancePayment::class)->handle($advanceId, $this->feeId);
+        session()->flash('success', 'Advance payment deleted and any applied amount reversed.');
     }
 
     private function configuredAmount($classId, $termId, $genderId)

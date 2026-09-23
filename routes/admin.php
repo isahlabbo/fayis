@@ -23,4 +23,14 @@ Route::middleware(['auth','verified','admin', 'password'])
         Route::get('/{cardRequest}/delete', 'CardRequestController@delete')->name('delete');
 
     });
+
+    Route::name('material.')
+    ->prefix('/material-collection')
+    ->middleware('permission:manage-material-collection')
+    ->group(function (){
+        Route::get('/', 'MaterialCollectionController@index')->name('index');
+        Route::get('/print', 'MaterialCollectionController@print')->name('print');
+        Route::get('/records', 'MaterialCollectionController@records')->name('records.index');
+        Route::get('/records/report', 'MaterialCollectionController@report')->name('records.report');
+    });
 });

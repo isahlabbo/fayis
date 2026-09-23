@@ -22,6 +22,7 @@ class SyncLegacyRbac extends Command
         'superadmin' => ['Super Administrator', 'Full access to every database-backed permission'],
         'admin' => ['Administrator', 'System users, card requests and access-control administration'],
         'head' => ['Head of School', 'School oversight, administration, sections and academic configuration'],
+        'mentor' => ['Mentor', 'Read-only sanitary material monitoring'],
         'admission_officer' => ['Admission Officer', 'Student admission and enrolment operations'],
         'exam_officer' => ['Examination Officer', 'Examination uploads, results, publishing and access codes'],
         'finance_officer' => ['Finance Officer', 'Fees, payments, reports and inventory operations'],
@@ -34,6 +35,7 @@ class SyncLegacyRbac extends Command
     private const PERMISSIONS = [
         'manage-users' => ['Manage users', 'View and maintain system user accounts'],
         'manage-card-requests' => ['Manage card requests', 'Review, update, print and remove ID card requests'],
+        'manage-material-collection' => ['Manage material collection', 'Select students and generate printable material collection sheets'],
         'manage-access-control' => ['Manage access control', 'Maintain roles and permissions'],
         'manage-calendar' => ['Manage calendar', 'Maintain academic sessions, terms and calendar settings'],
         'manage-teachers' => ['Manage teachers', 'Create, update and maintain teacher records'],
@@ -72,6 +74,7 @@ class SyncLegacyRbac extends Command
             'manage-users', 'manage-card-requests', 'manage-access-control',
             'manage-calendar', 'manage-teachers', 'manage-sections', 'manage-subjects',
             'manage-classes', 'manage-grading-scales', 'manage-remark-scales', 'manage-comments',
+            'manage-material-collection',
         ],
         'head' => [
             'send-notifications', 'manage-school-results', 'manage-sections', 'manage-school-administration', 'manage-report-card-configuration',
@@ -79,6 +82,7 @@ class SyncLegacyRbac extends Command
             'manage-payments', 'manage-sales', 'manage-rents', 'manage-students', 'view-student-results', 'view-result-access-codes',
         ],
         'admission_officer' => ['manage-admissions'],
+        'mentor' => [],
         'exam_officer' => ['manage-examinations', 'view-student-results', 'view-result-access-codes'],
         'finance_officer' => ['manage-fees', 'manage-payments', 'manage-inventory'],
         // FinanceOfficerMiddleware explicitly accepts patrons, and the patron menu exposes finance/inventory reports.

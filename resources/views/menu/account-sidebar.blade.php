@@ -1,9 +1,9 @@
 @php
     $user = Auth::user();
     $user->loadMissing(['accessRoles.permissions', 'directPermissions']);
-    $rolePriority = ['head', 'admin', 'admission_officer', 'exam_officer', 'finance_officer', 'patron', 'teacher', 'guardian', 'staff'];
+    $rolePriority = ['head', 'admin', 'mentor', 'admission_officer', 'exam_officer', 'finance_officer', 'patron', 'teacher', 'guardian', 'staff'];
     $roleLabels = [
-        'admin' => 'Administrator', 'head' => 'Head of School', 'admission_officer' => 'Admissions',
+        'admin' => 'Administrator', 'head' => 'Head of School', 'mentor' => 'Mentor', 'admission_officer' => 'Admissions',
         'exam_officer' => 'Examinations', 'finance_officer' => 'Finance', 'patron' => 'Patron',
         'teacher' => 'Teacher', 'guardian' => 'Guardian', 'staff' => 'Staff',
     ];
@@ -31,6 +31,8 @@
                 <a href="{{ route('configuration.users.index') }}"><i class="fas fa-users"></i><span>User Management</span></a>
             @endif
             @if($user->hasPermission('manage-card-requests'))<a class="{{ request()->routeIs('admin.card.*') ? 'active' : '' }}" href="{{ route('admin.card.index') }}"><i class="fas fa-id-card"></i><span>Card Requests</span></a>@endif
+            @if($user->hasPermission('manage-material-collection'))<a class="{{ request()->routeIs('admin.material.index') ? 'active' : '' }}" href="{{ route('admin.material.index') }}"><i class="fas fa-box-open"></i><span>Material Collection</span></a>@endif
+            @if($user->hasPermission('manage-material-collection'))<a class="{{ request()->routeIs('admin.material.records.*') ? 'active' : '' }}" href="{{ route('admin.material.records.index') }}"><i class="fas fa-clipboard-check"></i><span>Collection Records</span></a>@endif
 
             @if($user->hasPermission('manage-calendar') || $user->hasPermission('manage-teachers') || $user->hasPermission('manage-sections') || $user->hasPermission('manage-subjects') || $user->hasPermission('manage-classes'))
                 <div class="portal-nav-title">Academics</div>
@@ -158,6 +160,14 @@
             </div></details>
             <details><summary><span><i class="fas fa-chalkboard"></i> My Classes</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu">
                 @foreach(App\Models\SectionClassTeacher::where('teacher_id', $user->teacher->id)->with('sectionClass')->get() as $classTeacher)<a href="{{ route('teacher.class.index', [$classTeacher->id]) }}"><i class="fas fa-users"></i><span>{{ $classTeacher->sectionClass->name }}</span></a>@endforeach
+            </div></details>
+        @endif
+
+        @if(\App\Support\SanitaryAccess::canView($user))
+            <details @if(request()->routeIs('finance.sanitary.*')) open @endif><summary><span><i class="fas fa-pump-soap"></i> Sanitary Material</span><i class="fas fa-chevron-down portal-chevron"></i></summary><div class="portal-submenu">
+                <a class="{{ request()->routeIs('finance.sanitary.items') ? 'active' : '' }}" href="{{ route('finance.sanitary.items') }}"><i class="fas fa-list"></i><span>Items</span></a>
+                <a class="{{ request()->routeIs('finance.sanitary.stock') ? 'active' : '' }}" href="{{ route('finance.sanitary.stock') }}"><i class="fas fa-box-open"></i><span>Stock</span></a>
+                <a class="{{ request()->routeIs('finance.sanitary.usage') ? 'active' : '' }}" href="{{ route('finance.sanitary.usage') }}"><i class="fas fa-clipboard-list"></i><span>Usage</span></a>
             </div></details>
         @endif
 

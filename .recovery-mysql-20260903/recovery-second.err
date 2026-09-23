@@ -1,0 +1,11 @@
+2026-09-03T16:41:28.406301Z 0 [System] [MY-015015] [Server] MySQL Server - start.
+2026-09-03T16:41:28.676788Z 0 [Warning] [MY-010097] [Server] Insecure configuration for --secure-file-priv: Current value does not restrict location of generated files. Consider setting it to a valid, non-empty path.
+2026-09-03T16:41:28.676952Z 0 [System] [MY-010116] [Server] C:\laragon\bin\mysql\mysql-8.4.3-winx64\bin\mysqld.exe (mysqld 8.4.3) starting as process 6640
+2026-09-03T16:41:28.796812Z 1 [System] [MY-013576] [InnoDB] InnoDB initialization has started.
+2026-09-03T16:41:29.265145Z 1 [ERROR] [MY-013039] [InnoDB] Can't create UNDO tablespace innodb_undo_002  since 'C:\laragon\www\fayis\.recovery-mysql-20260903\undo_002' already exists.
+2026-09-03T16:41:29.268288Z 1 [ERROR] [MY-012930] [InnoDB] Plugin initialization aborted with error Generic error.
+2026-09-03T16:41:29.337052Z 1 [ERROR] [MY-010334] [Server] Failed to initialize DD Storage Engine
+2026-09-03T16:41:29.340008Z 0 [ERROR] [MY-010020] [Server] Data Dictionary initialization failed.
+2026-09-03T16:41:29.342136Z 0 [ERROR] [MY-010119] [Server] Aborting
+2026-09-03T16:41:29.359339Z 0 [System] [MY-010910] [Server] C:\laragon\bin\mysql\mysql-8.4.3-winx64\bin\mysqld.exe: Shutdown complete (mysqld 8.4.3)  MySQL Community Server - GPL.
+2026-09-03T16:41:29.363969Z 0 [System] [MY-015016] [Server] MySQL Server - end.
