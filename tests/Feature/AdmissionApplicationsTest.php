@@ -60,11 +60,9 @@ class AdmissionApplicationsTest extends TestCase
     {
         Livewire::test(Applications::class)
             ->assertViewHas('statistics', ['total' => 3, 'male' => 1, 'female' => 1, 'unspecified' => 1])
-            ->assertViewHas('stats', fn($rows) => $rows->pluck('application_count', 'id')->all() === [1 => 2, 2 => 1])
             ->set('filterSessionId', '1')->set('filterSectionId', '1')->set('filterClassId', '1')
             ->assertViewHas('statistics', ['total' => 2, 'male' => 1, 'female' => 1, 'unspecified' => 0])
             ->set('search', 'Applicant 2')->assertViewHas('statistics', ['total' => 1, 'male' => 0, 'female' => 1, 'unspecified' => 0])
-            ->assertViewHas('stats', fn($rows) => $rows->sum('application_count') === 1)
             ->set('filterSessionId', '2')->assertViewHas('applications', fn($rows) => $rows->isEmpty());
     }
 
@@ -77,5 +75,28 @@ class AdmissionApplicationsTest extends TestCase
             ->set('search', '08012345678')->assertViewHas('applications', fn($rows) => $rows->count() === 1)
             ->call('resetFilters')->assertSet('search', '')->assertSet('filterSectionId', '')
             ->assertSet('classId', '1')->assertViewHas('applications', fn($rows) => $rows->count() === 3);
+    }
+
+    public function test_admissions_lists_only_pending_applications_and_statistics_follow_combined_filters()
+    {
+        Livewire::test(\App\Http\Livewire\Admission\Admissions::class)
+            ->assertViewHas('applications', fn($rows) => $rows->pluck('id')->sort()->values()->all() === [1, 2, 3])
+            ->assertViewHas('statistics', ['total' => 3, 'male' => 1, 'female' => 1, 'unspecified' => 1])
+            ->set('filterSessionId', '1')->set('filterSectionId', '1')->set('filterClassId', '1')
+            ->assertViewHas('statistics', ['total' => 2, 'male' => 1, 'female' => 1, 'unspecified' => 0])
+            ->set('search', 'Applicant 2')
+            ->assertViewHas('statistics', ['total' => 1, 'male' => 0, 'female' => 1, 'unspecified' => 0])
+            ->set('filterSessionId', '2')
+            ->assertViewHas('statistics', ['total' => 0, 'male' => 0, 'female' => 0, 'unspecified' => 0])
+            ->call('resetFilters')->assertViewHas('applications', fn($rows) => $rows->count() === 3);
+    }
+
+    public function test_admission_filter_change_clears_class_filter_and_open_review()
+    {
+        Livewire::test(\App\Http\Livewire\Admission\Admissions::class)
+            ->set('filterClassId', '1')->call('select', 1)->assertSet('studentId', 1)
+            ->set('filterSectionId', '2')->assertSet('filterClassId', '')->assertSet('studentId', null)
+            ->assertViewHas('filterClasses', fn($rows) => $rows->pluck('id')->all() === [2])
+            ->assertViewHas('statistics', ['total' => 1, 'male' => 0, 'female' => 0, 'unspecified' => 1]);
     }
 }

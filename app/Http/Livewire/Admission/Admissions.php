@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Admission;
 
 use App\Models\SectionClass;
+use App\Models\AcademicSession;
+use App\Models\Section;
 use App\Models\SectionClassStudent;
 use App\Models\Student;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +14,18 @@ use Livewire\Component;
 class Admissions extends Component
 {
     public $search = '', $studentId, $classId;
+    public $filterSessionId = '', $filterSectionId = '', $filterClassId = '';
+
+    public function updatedFilterSectionId() { $this->filterClassId = ''; }
+    public function updated($property)
+    {
+        if (in_array($property, ['search', 'filterSessionId', 'filterSectionId', 'filterClassId'], true)) $this->cancel();
+    }
+    public function resetFilters()
+    {
+        $this->reset(['search', 'filterSessionId', 'filterSectionId', 'filterClassId']);
+        $this->cancel();
+    }
     public function boot() { abort_unless(Auth::check() && Auth::user()->hasPermission('manage-admissions'), 403); }
     public function select($id) { $student=Student::where('admission_status','Pending')->findOrFail($id); $this->studentId=$id; $this->classId=$student->desired_section_class_id; }
     public function cancel() { $this->reset(['studentId','classId']); $this->resetValidation(); }
@@ -32,7 +46,24 @@ class Admissions extends Component
     }
     public function render()
     {
-        $applications=Student::with(['guardian','desiredSectionClass.section'])->where('admission_status','Pending')->when($this->search,fn($q)=>$q->where('name','like','%'.$this->search.'%'))->latest()->get();
-        return view('livewire.admission.admissions',compact('applications')+['classes'=>SectionClass::with('section')->orderBy('name')->get()]);
+        $applications = Student::with(['guardian','gender','desiredSectionClass.section'])->where('admission_status','Pending')
+            ->whereHas('desiredSectionClass')
+            ->when($this->filterSessionId, fn($q) => $q->where('academic_session_id', $this->filterSessionId))
+            ->when($this->filterSectionId, fn($q) => $q->whereHas('desiredSectionClass', fn($class) => $class->where('section_id', $this->filterSectionId)))
+            ->when($this->filterClassId, fn($q) => $q->where('desired_section_class_id', $this->filterClassId))
+            ->when($this->search, fn($q) => $q->where(fn($x) => $x->where('name','like','%'.$this->search.'%')->orWhereHas('guardian',fn($g)=>$g->where('phone','like','%'.$this->search.'%'))))
+            ->latest()->get();
+        $statistics = [
+            'total' => $applications->count(),
+            'male' => $applications->filter(fn($student) => strtolower(trim(optional($student->gender)->name ?? '')) === 'male')->count(),
+            'female' => $applications->filter(fn($student) => strtolower(trim(optional($student->gender)->name ?? '')) === 'female')->count(),
+        ];
+        $statistics['unspecified'] = $statistics['total'] - $statistics['male'] - $statistics['female'];
+        $sections = Section::orderBy('name')->get();
+        return view('livewire.admission.admissions', compact('applications', 'statistics', 'sections') + [
+            'classes' => SectionClass::with('section')->orderBy('name')->get(),
+            'filterClasses' => SectionClass::when($this->filterSectionId, fn($q) => $q->where('section_id', $this->filterSectionId))->orderBy('name')->get(),
+            'sessions' => AcademicSession::orderByDesc('id')->get(),
+        ]);
     }
 }

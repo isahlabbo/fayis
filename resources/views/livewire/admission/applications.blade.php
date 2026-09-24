@@ -17,7 +17,6 @@
         @endforeach
     </div>
     @if($statistics['unspecified'])<p class="text-muted">{{ $statistics['unspecified'] }} application(s) have an unspecified gender and are included in the total.</p>@endif
-    <div class="row mb-3">@foreach($stats as $section)<div class="col-6 col-md-3 mb-2"><div class="card h-100 shadow-sm"><div class="card-body"><small class="text-muted">{{ $section->name }}</small><h3 class="mb-0">{{ $section->application_count }}</h3><small>pending</small></div></div></div>@endforeach</div>
     @if($showForm)<div class="card shadow-sm mb-3"><div class="card-body"><h5>{{ $studentId ? 'Edit' : 'New' }} application</h5><div class="row">
         <div class="col-md-6 form-group"><label>Student name</label><input wire:model.defer="name" class="form-control">@error('name')<small class="text-danger">{{ $message }}</small>@enderror</div>
         <div class="col-md-3 form-group"><label>Date of birth</label><input type="date" wire:model.defer="dateOfBirth" class="form-control"></div>

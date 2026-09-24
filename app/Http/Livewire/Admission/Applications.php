@@ -70,11 +70,7 @@ class Applications extends Component
         ];
         $statistics['unspecified'] = $statistics['total'] - $statistics['male'] - $statistics['female'];
         $sections = Section::orderBy('name')->get();
-        $stats = $sections->map(function ($section) use ($applications) {
-            $section->application_count = $applications->where('desiredSectionClass.section_id', $section->id)->count();
-            return $section;
-        });
-        return view('livewire.admission.applications', compact('applications', 'stats', 'statistics', 'sections') + [
+        return view('livewire.admission.applications', compact('applications', 'statistics', 'sections') + [
             'classes' => SectionClass::with('section')->orderBy('name')->get(),
             'filterClasses' => SectionClass::when($this->filterSectionId, fn($q) => $q->where('section_id', $this->filterSectionId))->orderBy('name')->get(),
             'sessions' => AcademicSession::orderByDesc('id')->get(),
