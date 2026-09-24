@@ -75,7 +75,7 @@ class FinanceUnpaidReportTest extends TestCase
         DB::table('academic_sessions')->insert(['id' => 1, 'name' => '2026/2027']);
         foreach ([1 => 'First Term', 2 => 'Second Term'] as $id => $name) {
             DB::table('terms')->insert(compact('id', 'name'));
-            DB::table('academic_session_terms')->insert(['academic_session_id' => 1, 'term_id' => $id]);
+            DB::table('academic_session_terms')->insert(['academic_session_id' => 1, 'term_id' => $id, 'status' => $id === 1 ? 'Active' : 'Not Active']);
         }
         DB::table('students')->insert(['id' => 1, 'name' => 'Test Student', 'admission_no' => 'ADM-1', 'gender_id' => 1]);
         DB::table('section_class_students')->insert(['id' => 1, 'student_id' => 1, 'section_class_id' => 1, 'academic_session_id' => 1]);
@@ -108,7 +108,7 @@ class FinanceUnpaidReportTest extends TestCase
     public function test_report_includes_students_without_invoices_and_matches_gender_specific_fees()
     {
         $this->assertFalse(Schema::hasTable('invoices'));
-        $this->assertBalance(2750)->assertSee('Test Student');
+        $this->assertBalance(1750)->assertSee('Test Student');
         $this->assertBalance(1250, ['session' => 1, 'term' => 1, 'fee' => 1]);
         $this->assertBalance(0, ['search' => 'missing']);
         $this->assertBalance(0, ['section' => 99]);
@@ -123,7 +123,7 @@ class FinanceUnpaidReportTest extends TestCase
         $this->assertBalance(850, ['term' => 1, 'fee' => 1])->assertSee('Partial');
         $this->record(850);
         $this->assertBalance(0, ['term' => 1, 'fee' => 1]);
-        $this->assertBalance(1500);
+        $this->assertBalance(500);
     }
 
     public function test_multi_term_payment_allocates_only_the_received_amount_in_term_order()
@@ -131,7 +131,9 @@ class FinanceUnpaidReportTest extends TestCase
         $this->record(1500, [2, 1]);
         $this->assertEquals([1250, 250], Payment::orderBy('term_id')->pluck('amount')->map(fn($v) => (float) $v)->all());
         $this->assertCount(1, Payment::pluck('receipt_group')->unique());
-        $this->assertBalance(750, ['fee' => 1, 'term' => 2]);
+        DB::table('academic_session_terms')->where('term_id', 1)->update(['status' => 'Not Active']);
+        DB::table('academic_session_terms')->where('term_id', 2)->update(['status' => 'Active']);
+        $this->assertBalance(750, ['fee' => 1]);
     }
 
     public function test_overpayment_is_rejected_without_writing_any_payment()
@@ -216,5 +218,44 @@ class FinanceUnpaidReportTest extends TestCase
         $migration->up();
         $migration->down();
         $this->assertEquals(123.45, \App\Models\Invoice::sum('amount'));
+    }
+
+    public function test_current_period_cannot_be_overridden_by_url_filters()
+    {
+        DB::table('academic_sessions')->insert(['id' => 2, 'name' => '2025/2026', 'status' => 'Not Active']);
+        DB::table('academic_session_terms')->insert(['academic_session_id' => 2, 'term_id' => 1]);
+        DB::table('section_class_students')->insert(['student_id' => 1, 'section_class_id' => 1, 'academic_session_id' => 2]);
+        $filters = ['session' => 2, 'term' => 2];
+        $this->assertBalance(1750, $filters)->assertDontSee('name="session"', false)->assertDontSee('name="term"', false);
+        $response = $this->get(route('finance.payments.unpaid.csv', $filters))->assertOk();
+        $rows = array_map('str_getcsv', explode("\n", trim($response->streamedContent())));
+        $this->assertCount(3, $rows);
+        foreach (array_slice($rows, 1) as $row) {
+            $this->assertEquals('2026/2027', $row[4]);
+            $this->assertEquals('First Term', $row[5]);
+        }
+
+        $controller = \Mockery::mock(\App\Http\Controllers\Finance\PaymentReportController::class)
+            ->makePartial()->shouldAllowMockingProtectedMethods();
+        $controller->shouldReceive('renderPdfView')->once()->withArgs(function ($view, $data, $filename) {
+            $this->assertEquals('2026/2027', $data['filters']['Session']);
+            $this->assertEquals('First Term', $data['filters']['Term']);
+            $this->assertEquals([1], $data['unpaidStudents']->pluck('academic_session_id')->unique()->values()->all());
+            $this->assertEquals([1], $data['unpaidStudents']->flatMap->outstandingFees->pluck('term_id')->unique()->values()->all());
+            return true;
+        })->andReturn(response('Current term PDF'));
+        $this->app->instance(\App\Http\Controllers\Finance\PaymentReportController::class, $controller);
+        $this->get(route('finance.payments.unpaid.pdf', $filters))->assertOk();
+    }
+
+    public function test_report_and_exports_require_a_current_period()
+    {
+        DB::table('academic_session_terms')->update(['status' => 'Not Active']);
+        foreach (['unpaid', 'unpaid.csv', 'unpaid.pdf'] as $route) {
+            $this->get(route('finance.payments.'.$route))->assertStatus(422);
+        }
+        DB::table('academic_session_terms')->where('term_id', 1)->update(['status' => 'Active']);
+        DB::table('academic_sessions')->update(['status' => 'Not Active']);
+        $this->get(route('finance.payments.unpaid'))->assertStatus(422);
     }
 }

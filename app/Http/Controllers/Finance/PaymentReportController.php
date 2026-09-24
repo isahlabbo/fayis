@@ -122,7 +122,8 @@ class PaymentReportController extends Controller
         $classes = SectionClass::orderBy('name')->get();
         $terms = Term::orderBy('name')->get();
 
-        $unpaidStudents = $this->unpaidStudents($request);
+        $period = $this->currentUnpaidPeriod();
+        $unpaidStudents = $this->unpaidStudents($request, $period);
 
         $totals = [
             'count' => $unpaidStudents->pluck('student_id')->unique()->count(),
@@ -137,9 +138,9 @@ class PaymentReportController extends Controller
             'selectedSection' => $request->query('section'),
             'selectedClass' => $request->query('section_class'),
             'selectedSearch' => $request->query('search'),
-            'sessions' => AcademicSession::orderByDesc('id')->get(),
+            'currentPeriod' => $period,
             'fees' => Fee::orderBy('name')->get(),
-            'selectedSession' => $request->query('session'),
+
             'selectedTerm' => $request->query('term'),
             'selectedFee' => $request->query('fee'),
             'totals' => $totals,
@@ -148,17 +149,19 @@ class PaymentReportController extends Controller
 
     public function unpaidPdf(Request $request)
     {
-        $unpaidStudents = $this->unpaidStudents($request);
+        $period = $this->currentUnpaidPeriod();
+        $unpaidStudents = $this->unpaidStudents($request, $period);
 
         return $this->renderPdfView('finance.payments.unpaid_pdf', [
             'unpaidStudents' => $unpaidStudents,
-            'filters' => $this->filterLabels($request),
+            'filters' => array_merge($this->filterLabels($request), ['Session' => $period->academicSession->name, 'Term' => $period->term->name]),
         ], 'unpaid-report.pdf');
     }
 
     public function unpaidCsv(Request $request)
     {
-        $unpaidStudents = $this->unpaidStudents($request);
+        $period = $this->currentUnpaidPeriod();
+        $unpaidStudents = $this->unpaidStudents($request, $period);
         $filename = 'unpaid-report-'.date('YmdHis').'.csv';
 
         $headers = [
@@ -207,20 +210,30 @@ class PaymentReportController extends Controller
             ->orderBy('date', 'desc');
     }
 
-    protected function unpaidStudents(Request $request)
+    protected function currentUnpaidPeriod()
+    {
+        $session = AcademicSession::where('status', 'Active')->first();
+        $period = $session ? $session->academicSessionTerms()->with(['academicSession', 'term'])
+            ->where('status', 'Active')->first() : null;
+        abort_unless($period && $period->term, 422, 'Configure an active academic session and current term before viewing the unpaid report.');
+
+        return $period;
+    }
+
+    protected function unpaidStudents(Request $request, $period)
     {
         return SectionClassStudent::query()
             ->with(array_merge(FeeBalances::RELATIONS, ['sectionClass.section']))
             ->where('status', 'Active')
-            ->when($request->query('session'), fn($query, $value) => $query->where('academic_session_id', $value))
+            ->where('academic_session_id', $period->academic_session_id)
             ->when($request->query('section'), fn($query, $value) => $query->whereHas('sectionClass', fn($sectionQuery) => $sectionQuery->where('section_id', $value)))
             ->when($request->query('section_class'), fn($query, $value) => $query->where('section_class_id', $value))
             ->when($request->query('search'), fn($query, $value) => $query->whereHas('student', fn($studentQuery) => $studentQuery->where('name', 'like', "%{$value}%")
                 ->orWhere('admission_no', 'like', "%{$value}%")))
             ->get()
-            ->filter(function ($student) use ($request) {
+            ->filter(function ($student) use ($request, $period) {
                 $balances = app(FeeBalances::class)->forEnrolment($student)
-                    ->when($request->query('term'), fn($rows, $value) => $rows->where('term_id', $value))
+                    ->where('term_id', $period->term_id)
                     ->when($request->query('fee'), fn($rows, $value) => $rows->where('fee_id', $value))
                     ->filter(fn($balance) => $balance->balance > 0)->values();
                 $student->setRelation('outstandingFees', $balances);
