@@ -94,6 +94,62 @@ class AdmissionStudentsTest extends TestCase
             ->assertViewHas('records', fn ($rows) => $rows->isEmpty());
     }
 
+    public function test_deleting_old_enrolment_preserves_profile_other_sessions_and_other_classes()
+    {
+        DB::table('section_classes')->insert(['id' => 2, 'name' => 'Other class', 'section_id' => 1]);
+        DB::table('section_class_students')->insert(['id' => 5, 'student_id' => 1, 'academic_session_id' => 1, 'section_class_id' => 2, 'status' => 'Not Active']);
+        DB::table('section_class_student_terms')->insert([
+            ['id' => 2, 'section_class_student_id' => 4, 'academic_session_term_id' => 1, 'status' => 'Not Active'],
+            ['id' => 3, 'section_class_student_id' => 5, 'academic_session_term_id' => 1, 'status' => 'Not Active'],
+        ]);
+        Livewire::test(Students::class)->set('sessionId', '1')->set('status', '')->set('classId', '1')
+            ->set('selectAll', true)->assertSet('selected', ['4'])->call('deleteSelectedEnrolments')
+            ->assertHasNoErrors()->assertSet('selected', [])->assertSet('selectAll', false);
+        $this->assertDatabaseMissing('section_class_students', ['id' => 4]);
+        $this->assertDatabaseMissing('section_class_student_terms', ['id' => 2]);
+        $this->assertDatabaseHas('students', ['id' => 1]);
+        $this->assertDatabaseHas('section_class_students', ['id' => 1, 'academic_session_id' => 2]);
+        $this->assertDatabaseHas('section_class_students', ['id' => 5, 'section_class_id' => 2]);
+        $this->assertDatabaseHas('section_class_student_terms', ['id' => 1]);
+        $this->assertDatabaseHas('section_class_student_terms', ['id' => 3]);
+    }
+
+    public function test_deletion_requires_specific_class_session_and_current_selection()
+    {
+        Livewire::test(Students::class)->set('selectAll', true)->call('deleteSelectedEnrolments')->assertHasErrors('classId');
+        Livewire::test(Students::class)->set('sessionId', '')->set('classId', '1')->set('selectAll', true)
+            ->call('deleteSelectedEnrolments')->assertHasErrors('sessionId');
+        $screen = Livewire::test(Students::class)->set('classId', '1')->set('selectAll', true);
+        DB::table('section_class_students')->where('id', 2)->update(['academic_session_id' => 1]);
+        $screen->call('deleteSelectedEnrolments')->assertHasErrors('selected');
+        $this->assertEquals(4, DB::table('section_class_students')->count());
+        $this->assertEquals(1, DB::table('section_class_student_terms')->count());
+    }
+
+    /** @dataProvider dependentEnrolmentRecords */
+    public function test_linked_records_block_the_entire_deletion($table, $column)
+    {
+        Schema::create($table, function (Blueprint $schema) use ($column) {
+            $schema->id(); $schema->integer($column);
+        });
+        DB::table($table)->insert([$column => 1]);
+        Livewire::test(Students::class)->set('classId', '1')->set('selectAll', true)
+            ->call('deleteSelectedEnrolments')->assertHasErrors('selected');
+        $this->assertEquals(4, DB::table('section_class_students')->count());
+        $this->assertEquals(1, DB::table('section_class_student_terms')->count());
+        $this->assertEquals(1, DB::table($table)->count());
+    }
+
+    public function dependentEnrolmentRecords(): array
+    {
+        return [
+            ['payments', 'section_class_student_id'],
+            ['student_results', 'section_class_student_term_id'],
+            ['inventory_sales', 'section_class_student_id'],
+            ['student_promotions', 'from_enrolment_id'],
+        ];
+    }
+
     public function test_student_screen_requires_admissions_permission()
     {
         $user = new User(['role' => 'staff']);

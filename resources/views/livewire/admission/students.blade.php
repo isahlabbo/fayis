@@ -41,6 +41,15 @@
             </div>
             @error('selected')<div class="text-danger">{{ $message }}</div>@enderror
             @error('selected.*')<div class="text-danger">{{ $message }}</div>@enderror
+            <div class="border-top pt-3 mt-3">
+                <h6>Delete selected enrolments</h6>
+                <p class="text-muted small">Choose the exact class and academic session in the filters above. This deletes only the selected enrolments and their term rows. Student profiles and enrolments in other sessions stay intact. Enrolments with linked payments, results or other records cannot be deleted here.</p>
+                @error('sessionId')<div class="text-danger">{{ $message }}</div>@enderror
+                @error('classId')<div class="text-danger">{{ $message }}</div>@enderror
+                <button type="button" class="btn btn-outline-danger" wire:click="deleteSelectedEnrolments" wire:loading.attr="disabled"
+                    onclick="if (!confirm('Delete the selected class/session enrolments and their term rows? Student profiles and other enrolments will be kept.')) event.stopImmediatePropagation();"
+                    @if(!$sessionId || !$classId) disabled @endif>Delete {{ count($selected) }} selected enrolment(s)</button>
+            </div>
         </form>
         @endif
         <div class="table-responsive"><table class="table table-hover">
