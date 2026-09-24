@@ -53,6 +53,7 @@ class Applications extends Component
     public function render()
     {
         $applications = Student::with(['guardian','desiredSectionClass.section'])->where('admission_status','Pending')
+            ->whereHas('desiredSectionClass')
             ->when($this->search, fn($q) => $q->where(fn($x) => $x->where('name','like','%'.$this->search.'%')->orWhereHas('guardian',fn($g)=>$g->where('phone','like','%'.$this->search.'%'))))
             ->latest()->get();
         $stats = Section::withCount(['sectionClasses as application_count'=>fn($q)=>$q->join('students','students.desired_section_class_id','=','section_classes.id')->where('students.admission_status','Pending')])->get();
