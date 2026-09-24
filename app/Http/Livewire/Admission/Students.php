@@ -43,7 +43,7 @@ class Students extends Component
             $termIds = DB::table('section_class_student_terms')->whereIn('section_class_student_id', $ids)
                 ->lockForUpdate()->pluck('id');
 
-            // Refuse deletion rather than cascade or orphan records outside the two requested tables.
+            // Preserve dependencies other than the explicitly requested term and promotion rows.
             $references = [
                 ['payments', 'section_class_student_id', $ids],
                 ['section_class_student_payments', 'section_class_student_id', $ids],
@@ -51,8 +51,6 @@ class Students extends Component
                 ['inventory_sales', 'section_class_student_id', $ids],
                 ['inventory_usages', 'section_class_student_id', $ids],
                 ['material_collections', 'section_class_student_id', $ids],
-                ['student_promotions', 'from_enrolment_id', $ids],
-                ['student_promotions', 'to_enrolment_id', $ids],
                 ['student_results', 'section_class_student_term_id', $termIds],
                 ['section_class_student_term_accessments', 'section_class_student_term_id', $termIds],
                 ['section_class_student_term_result_publishes', 'section_class_student_term_id', $termIds],
@@ -63,13 +61,18 @@ class Students extends Component
                     throw ValidationException::withMessages(['selected' => 'Nothing was deleted. A selected enrolment has linked records in '.$table.'. Review those records before deleting the enrolment.']);
                 }
             }
+            if (Schema::hasTable('student_promotions')) {
+                DB::table('student_promotions')->where(function ($query) use ($ids) {
+                    $query->whereIn('from_enrolment_id', $ids)->orWhereIn('to_enrolment_id', $ids);
+                })->delete();
+            }
             DB::table('section_class_student_terms')->whereIn('id', $termIds)->delete();
             DB::table('section_class_students')->whereIn('id', $ids)->delete();
         });
         $count = count($data['selected']);
         $this->clearSelection();
         $this->reset(['targetSessionId', 'targetStatus']);
-        session()->flash('success', $count.' selected enrolment(s) and their term rows deleted. Student profiles and other class/session enrolments were preserved.');
+        session()->flash('success', $count.' selected enrolment(s), their term rows and linked promotion records deleted. Student profiles and other class/session enrolments were preserved.');
     }
 
     public function updateSelected()

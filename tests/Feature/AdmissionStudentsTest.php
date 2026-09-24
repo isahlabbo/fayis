@@ -146,8 +146,50 @@ class AdmissionStudentsTest extends TestCase
             ['payments', 'section_class_student_id'],
             ['student_results', 'section_class_student_term_id'],
             ['inventory_sales', 'section_class_student_id'],
-            ['student_promotions', 'from_enrolment_id'],
         ];
+    }
+
+    /** @dataProvider promotionDeletionCases */
+    public function test_deletion_removes_only_linked_promotions_and_preserves_other_enrolments($blocked)
+    {
+        Schema::create('student_promotions', function (Blueprint $table) {
+            $table->id(); $table->integer('student_id');
+            $table->integer('from_enrolment_id'); $table->integer('to_enrolment_id');
+        });
+        DB::table('section_class_students')->insert(['id' => 5, 'student_id' => 1, 'academic_session_id' => 1, 'section_class_id' => 1, 'status' => 'Not Active']);
+        DB::table('student_promotions')->insert([
+            ['id' => 1, 'student_id' => 1, 'from_enrolment_id' => 4, 'to_enrolment_id' => 1],
+            ['id' => 2, 'student_id' => 1, 'from_enrolment_id' => 1, 'to_enrolment_id' => 5],
+            ['id' => 3, 'student_id' => 1, 'from_enrolment_id' => 4, 'to_enrolment_id' => 5],
+        ]);
+        if ($blocked) {
+            Schema::create('payments', function (Blueprint $table) {
+                $table->id(); $table->integer('section_class_student_id');
+            });
+            DB::table('payments')->insert(['section_class_student_id' => 1]);
+        }
+        $screen = Livewire::test(Students::class)->set('classId', '1')->set('search', 'ADM-1')
+            ->set('selectAll', true)->assertSet('selected', ['1'])->call('deleteSelectedEnrolments');
+        if ($blocked) {
+            $screen->assertHasErrors('selected');
+            $this->assertEquals(3, DB::table('student_promotions')->count());
+            $this->assertDatabaseHas('section_class_students', ['id' => 1]);
+            $this->assertDatabaseHas('section_class_student_terms', ['id' => 1]);
+        } else {
+            $screen->assertHasNoErrors();
+            $this->assertEquals([3], DB::table('student_promotions')->pluck('id')->all());
+            $this->assertDatabaseMissing('section_class_students', ['id' => 1]);
+            $this->assertDatabaseMissing('section_class_student_terms', ['id' => 1]);
+        }
+        $this->assertDatabaseHas('students', ['id' => 1]);
+        $this->assertDatabaseHas('section_class_students', ['id' => 4, 'status' => 'Not Active']);
+        $this->assertDatabaseHas('section_class_students', ['id' => 5, 'status' => 'Not Active']);
+        $this->assertDatabaseHas('section_class_students', ['id' => 2]);
+    }
+
+    public function promotionDeletionCases(): array
+    {
+        return [[false], [true]];
     }
 
     public function test_student_screen_requires_admissions_permission()
