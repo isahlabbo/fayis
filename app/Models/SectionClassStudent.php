@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class SectionClassStudent extends BaseModel
 {
+    public function academicSession()
+    {
+        return $this->belongsTo(AcademicSession::class);
+    }
     
     public function sectionClass()
     {

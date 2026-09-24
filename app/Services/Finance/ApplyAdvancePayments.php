@@ -14,6 +14,7 @@ class ApplyAdvancePayments
     public function handle(SectionClassStudent $enrolment): void
     {
         DB::transaction(function () use ($enrolment) {
+            SectionClassStudent::whereKey($enrolment->id)->lockForUpdate()->firstOrFail();
             $advances = AdvancePayment::where('student_id', $enrolment->student_id)
                 ->where('academic_session_id', $enrolment->academic_session_id)
                 ->where('section_class_id', $enrolment->section_class_id)

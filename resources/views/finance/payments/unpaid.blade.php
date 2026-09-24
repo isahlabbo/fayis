@@ -7,7 +7,7 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
                 <h5 class="text-primary">Unpaid Report</h5>
-                <p class="text-muted mb-0">Search students with outstanding invoices by section, class, or student name.</p>
+                <p class="text-muted mb-0">Outstanding configured fees after recorded payments and applied advance payments. Filter by session, term, fee, class, or student.</p>
             </div>
             <div class="btn-group">
                 <a href="{{ route('finance.payments.unpaid.pdf', request()->query()) }}" class="btn btn-sm btn-outline-primary">Download PDF</a>
@@ -18,6 +18,33 @@
         <div class="card mb-4">
             <div class="card-body">
                 <form method="get" class="row gy-3 gx-3 align-items-end">
+                    <div class="col-md-4">
+                        <label class="form-label">Session</label>
+                        <select name="session" class="form-control">
+                            <option value="">All Sessions</option>
+                            @foreach($sessions as $session)
+                                <option value="{{ $session->id }}" {{ $selectedSession == $session->id ? 'selected' : '' }}>{{ $session->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Term</label>
+                        <select name="term" class="form-control">
+                            <option value="">All Terms</option>
+                            @foreach($terms as $term)
+                                <option value="{{ $term->id }}" {{ $selectedTerm == $term->id ? 'selected' : '' }}>{{ $term->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Fee</label>
+                        <select name="fee" class="form-control">
+                            <option value="">All Fees</option>
+                            @foreach($fees as $fee)
+                                <option value="{{ $fee->id }}" {{ $selectedFee == $fee->id ? 'selected' : '' }}>{{ $fee->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="col-md-4">
                         <label class="form-label">Section</label>
                         <select name="section" class="form-control">
@@ -73,28 +100,30 @@
                         <th>Admission No</th>
                         <th>Class</th>
                         <th>Section</th>
-                        <th>Amount Due</th>
+                        <th>Session</th><th>Term</th><th>Fee</th><th>Fee Due</th><th>Paid</th><th>Balance</th>
                         <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($unpaidStudents as $student)
-                        @foreach($student->sectionClassStudentTerms as $term)
-                            @php $invoice = $term->invoice; @endphp
-                            @if($invoice && $invoice->status !== 'paid')
+                        @foreach($student->outstandingFees as $balance)
                                 <tr>
                                     <td>{{ $student->student->name ?? '-' }}</td>
                                     <td>{{ $student->student->admission_no ?? '-' }}</td>
                                     <td>{{ $student->sectionClass->name ?? '-' }}</td>
                                     <td>{{ $student->sectionClass->section->name ?? '-' }}</td>
-                                    <td>{{ number_format($invoice->amount, 2) }}</td>
-                                    <td>{{ $invoice->status ?? 'Unpaid' }}</td>
+                                    <td>{{ $student->academicSession->name ?? '-' }}</td>
+                                    <td>{{ $balance->term->name ?? '-' }}</td>
+                                    <td>{{ $balance->fee->name ?? '-' }}</td>
+                                    <td>{{ number_format($balance->due, 2) }}</td>
+                                    <td>{{ number_format($balance->paid, 2) }}</td>
+                                    <td>{{ number_format($balance->balance, 2) }}</td>
+                                    <td>{{ $balance->status }}</td>
                                 </tr>
-                            @endif
                         @endforeach
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center">No unpaid students found for the selected filters.</td>
+                            <td colspan="11" class="text-center">No unpaid students found for the selected filters.</td>
                         </tr>
                     @endforelse
                 </tbody>
