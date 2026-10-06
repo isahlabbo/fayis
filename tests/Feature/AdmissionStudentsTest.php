@@ -3,11 +3,13 @@
 namespace Tests\Feature;
 
 use App\Http\Livewire\Admission\Students;
+use App\Http\Controllers\Section\StudentController;
 use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Http\Request;
 use Livewire\Livewire;
 use Tests\TestCase;
 
@@ -24,7 +26,9 @@ class AdmissionStudentsTest extends TestCase
                 $table->id(); $table->string('name')->nullable(); $table->timestamps();
                 if ($name === 'students') {
                     $table->string('admission_no'); $table->integer('gender_id')->nullable(); $table->integer('guardian_id')->nullable();
+                    $table->date('date_of_birth')->nullable();
                 }
+                if ($name === 'guardians') { $table->string('phone')->nullable(); $table->string('email')->nullable(); $table->text('address')->nullable(); }
                 if ($name === 'section_classes') $table->integer('section_id');
                 if (in_array($name, ['academic_sessions', 'section_class_students'])) $table->string('status');
                 if ($name === 'section_class_students') {
@@ -82,6 +86,51 @@ class AdmissionStudentsTest extends TestCase
             ->set('status', 'Active')->assertViewHas('records', fn ($rows) => $rows->isEmpty());
     }
 
+    public function test_students_can_be_withdrawn_individually_and_filtered_by_that_status()
+    {
+        $screen = Livewire::test(Students::class)->assertSee('Withdrawn')
+            ->assertViewHas('updateableStatuses', fn ($statuses) => !$statuses->contains('Withdrawn'))
+            ->set('targetStatus', 'Withdrawn')->set('selectAll', true)->call('updateSelected')->assertHasErrors('targetStatus')
+            ->call('withdraw', 1)->assertHasNoErrors()->assertSet('status', 'Withdrawn')
+            ->assertViewHas('records', fn ($rows) => $rows->count() === 1 && $rows->first()->id === 1 && $rows->first()->status === 'Withdrawn')
+            ->assertViewHas('statistics', ['total' => 1, 'male' => 1, 'female' => 0, 'unspecified' => 0]);
+
+        $this->assertDatabaseHas('section_class_students', ['id' => 1, 'status' => 'Withdrawn']);
+        $this->assertDatabaseHas('section_class_students', ['id' => 2, 'status' => 'Active']);
+        $this->assertDatabaseHas('section_class_student_terms', ['id' => 1, 'status' => 'Not Active']);
+    }
+
+    public function test_transfer_late_and_leave_are_available_for_bulk_status_updates()
+    {
+        foreach (['Transfer', 'Late', 'Leave'] as $status) {
+            Livewire::test(Students::class)->assertSee($status)
+                ->set('selectAll', true)->set('targetStatus', $status)->call('updateSelected')->assertHasNoErrors();
+            $this->assertDatabaseHas('section_class_students', ['id' => 1, 'status' => $status]);
+            DB::table('section_class_students')->where('status', $status)->update(['status' => 'Active']);
+        }
+    }
+
+    public function test_student_edit_updates_current_enrolment_status_and_term_statuses()
+    {
+        DB::table('guardians')->insert(['id' => 1, 'name' => 'Guardian', 'phone' => '08000000000']);
+        DB::table('students')->where('id', 1)->update(['guardian_id' => 1]);
+
+        $editView = app(StudentController::class)->edit(1);
+        $this->assertSame('Active', $editView->getData()['sectionClassStudent']->status);
+        $this->assertContains('Withdrawn', $editView->getData()['enrolmentStatuses']->all());
+
+        $request = Request::create('/admission/student/student/1/update', 'POST', [
+            'name' => 'Student 1 Updated', 'phone' => '08000000000', 'guardian_name' => 'Guardian',
+            'email' => '', 'address' => '', 'date_of_birth' => '2015-01-01', 'class' => 1,
+            'admission_no' => 'ADM-1', 'gender' => 7, 'status' => 'Leave',
+        ]);
+        app(StudentController::class)->update($request, 1);
+
+        $this->assertDatabaseHas('section_class_students', ['id' => 1, 'status' => 'Leave']);
+        $this->assertDatabaseHas('section_class_student_terms', ['id' => 1, 'status' => 'Not Active']);
+        $this->assertDatabaseHas('students', ['id' => 1, 'name' => 'STUDENT 1 UPDATED']);
+    }
+
     public function test_selection_and_search_are_scoped_to_matching_students()
     {
         Livewire::test(Students::class)->set('selectAll', true)->assertSet('selected', ['2', '1'])
@@ -112,6 +161,34 @@ class AdmissionStudentsTest extends TestCase
         $this->assertDatabaseHas('section_class_students', ['id' => 5, 'section_class_id' => 2]);
         $this->assertDatabaseHas('section_class_student_terms', ['id' => 1]);
         $this->assertDatabaseHas('section_class_student_terms', ['id' => 3]);
+    }
+
+    public function test_section_and_session_deletion_spans_classes_but_preserves_other_sections_and_sessions()
+    {
+        DB::table('sections')->insert(['id' => 2, 'name' => 'Other section']);
+        DB::table('section_classes')->insert([
+            ['id' => 2, 'name' => 'Primary Two', 'section_id' => 1],
+            ['id' => 3, 'name' => 'Other class', 'section_id' => 2],
+        ]);
+        DB::table('section_class_students')->where('id', 2)->update(['section_class_id' => 2]);
+        DB::table('section_class_students')->where('id', 3)->update(['section_class_id' => 3, 'status' => 'Active']);
+        Livewire::test(Students::class)->set('sectionId', '1')->set('selectAll', true)
+            ->assertSet('classId', '')->call('deleteSelectedEnrolments')->assertHasNoErrors();
+        $this->assertDatabaseMissing('section_class_students', ['id' => 1]);
+        $this->assertDatabaseMissing('section_class_students', ['id' => 2]);
+        $this->assertDatabaseHas('section_class_students', ['id' => 3]);
+        $this->assertDatabaseHas('section_class_students', ['id' => 4]);
+        $this->assertEquals(3, DB::table('students')->count());
+    }
+
+    public function test_section_deletion_rejects_a_selection_that_moved_outside_the_section()
+    {
+        DB::table('sections')->insert(['id' => 2, 'name' => 'Other section']);
+        DB::table('section_classes')->insert(['id' => 2, 'name' => 'Other class', 'section_id' => 2]);
+        $screen = Livewire::test(Students::class)->set('sectionId', '1')->set('selectAll', true);
+        DB::table('section_class_students')->where('id', 2)->update(['section_class_id' => 2]);
+        $screen->call('deleteSelectedEnrolments')->assertHasErrors('selected');
+        $this->assertEquals(4, DB::table('section_class_students')->count());
     }
 
     public function test_deletion_requires_specific_class_session_and_current_selection()

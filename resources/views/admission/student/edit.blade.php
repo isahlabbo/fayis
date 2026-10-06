@@ -66,11 +66,22 @@
                                             <div class="col-md-3"><label for="">Class</label></div>
                                             <div class="col-md-9">
                                                 <select name="class" id="" class="form-control">
-                                                    <option value="{{$student->activeSectionClass()->id ?? ''}}">{{$student->activeSectionClass()->name ?? 'Select Class'}}</option>
+                                                    <option value="{{$sectionClassStudent->section_class_id ?? $student->activeSectionClass()->id ?? ''}}">{{$sectionClassStudent->sectionClass->name ?? $student->activeSectionClass()->name ?? 'Select Class'}}</option>
                                                     @foreach(App\Models\SectionClass::all() as $sectionClass)
                                                         <option value="{{$sectionClass->id}}">{{$sectionClass->name}}</option>
                                                     @endforeach
                                                 </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-md-3"><label for="enrolment-status">Enrolment Status</label></div>
+                                            <div class="col-md-9">
+                                                <select name="status" id="enrolment-status" class="form-control" required>
+                                                    @foreach($enrolmentStatuses as $status)
+                                                        <option value="{{ $status }}" {{ old('status', $sectionClassStudent->status ?? 'Active') === $status ? 'selected' : '' }}>{{ $status }}</option>
+                                                    @endforeach
+                                                </select>
+                                                @error('status')<small class="text-danger">{{ $message }}</small>@enderror
                                             </div>
                                         </div>
                                         <div class="form-group row">

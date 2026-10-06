@@ -13,6 +13,8 @@
             @include('dashboard.admin')
         @elseif(Auth::user()->usesRole('head'))
             @include('dashboard.head')
+        @elseif(Auth::user()->usesRole('mentor'))
+            @include('dashboard.mentor')
         @elseif(Auth::user()->usesRole('exam_officer'))
             @include('dashboard.exam_officer')
         @elseif(Auth::user()->usesRole('admission_officer'))

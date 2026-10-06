@@ -25,7 +25,7 @@
         @if(count($selected))
         <form wire:submit.prevent="updateSelected" class="border rounded p-3 mb-3" wire:key="selected-students-update">
             <h5>Update selected students</h5>
-            <p class="text-muted small">Choose a session, status, or both. Session changes keep the same class and preserve earlier enrolments and records.</p>
+            <p class="text-muted small">Choose a session or a status such as Transfer, Late, or Leave. Withdraw students individually from the Actions column. Session changes keep the same class and preserve earlier enrolments and records.</p>
             <div class="row align-items-end">
                 <div class="col-md-4 form-group">
                     <label for="bulk-session">Academic session</label>
@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-md-4 form-group">
                     <label for="bulk-status">Enrolment status</label>
-                    <select id="bulk-status" wire:model.defer="targetStatus" class="form-control"><option value="">Keep current status</option>@foreach($statuses as $value)<option value="{{ $value }}">{{ $value }}</option>@endforeach</select>
+                    <select id="bulk-status" wire:model.defer="targetStatus" class="form-control"><option value="">Keep current status</option>@foreach($updateableStatuses as $value)<option value="{{ $value }}">{{ $value }}</option>@endforeach</select>
                     @error('targetStatus')<small class="text-danger">{{ $message }}</small>@enderror
                 </div>
                 <div class="col-md-4 form-group"><button type="submit" class="btn btn-primary" wire:loading.attr="disabled" @if(!count($selected)) disabled @endif>Update {{ count($selected) }} selected</button></div>
@@ -43,12 +43,13 @@
             @error('selected.*')<div class="text-danger">{{ $message }}</div>@enderror
             <div class="border-top pt-3 mt-3">
                 <h6>Delete selected enrolments</h6>
-                <p class="text-muted small">Choose the exact class and academic session in the filters above. This deletes the selected enrolments, their term rows and promotion records linked to those enrolments. Student profiles and other enrolments stay intact. This does not reactivate earlier enrolments. Linked payments, results or other records still block deletion.</p>
+                <p class="text-muted small">Choose an academic session and a section or class in the filters above. Leave class as All classes to select across the section. This deletes the selected enrolments, their term rows and linked promotion records. Student profiles and other enrolments stay intact. This does not reactivate earlier enrolments. Linked payments, results or other records still block deletion.</p>
                 @error('sessionId')<div class="text-danger">{{ $message }}</div>@enderror
                 @error('classId')<div class="text-danger">{{ $message }}</div>@enderror
+                @error('sectionId')<div class="text-danger">{{ $message }}</div>@enderror
                 <button type="button" class="btn btn-outline-danger" wire:click="deleteSelectedEnrolments" wire:loading.attr="disabled"
                     onclick="if (!confirm('Delete the selected class/session enrolments, their term rows and linked promotion records? Student profiles and other enrolments will be kept.')) event.stopImmediatePropagation();"
-                    @if(!$sessionId || !$classId) disabled @endif>Delete {{ count($selected) }} selected enrolment(s)</button>
+                    @if(!$sessionId || (!$sectionId && !$classId)) disabled @endif>Delete {{ count($selected) }} selected enrolment(s)</button>
             </div>
         </form>
         @endif
@@ -63,7 +64,15 @@
 
                         <td>{{ optional($record->academicSession)->name ?? '-' }}</td><td>{{ $record->status }}</td>
                         <td>{{ optional($record->student->guardian)->name }}<br><small>{{ optional($record->student->guardian)->phone }}</small></td>
-                        <td><a href="{{ route('admission.student.edit', $record->student_id) }}" class="btn btn-sm btn-outline-primary" aria-label="Edit {{ $record->student->name }}"><i class="fas fa-edit mr-1" aria-hidden="true"></i>Edit</a></td>
+                        <td class="text-nowrap">
+                            <a href="{{ route('admission.student.edit', $record->student_id) }}" class="btn btn-sm btn-outline-primary" aria-label="Edit {{ $record->student->name }}"><i class="fas fa-edit mr-1" aria-hidden="true"></i>Edit</a>
+                            @if($record->status !== 'Withdrawn')
+                                <button type="button" wire:click="withdraw({{ $record->id }})" class="btn btn-sm btn-outline-danger" wire:loading.attr="disabled"
+                                    onclick="if (!confirm('Withdraw this student? They will no longer appear in active class lists.')) event.stopImmediatePropagation();">
+                                    <i class="fas fa-user-minus mr-1" aria-hidden="true"></i>Withdraw
+                                </button>
+                            @endif
+                        </td>
                     </tr>
                 @empty
                     <tr><td colspan="8" class="text-center text-muted">No students match the selected filters.</td></tr>

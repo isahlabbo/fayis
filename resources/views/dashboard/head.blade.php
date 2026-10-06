@@ -1,5 +1,6 @@
 
-  
+@include('dashboard.student_statistics')
+
 <div class="row mt-4">
         
        

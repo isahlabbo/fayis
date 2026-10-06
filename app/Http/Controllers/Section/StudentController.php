@@ -8,7 +8,9 @@ use App\Models\Student;
 use App\Models\Section;
 use App\Models\Guardian;
 use App\Models\SectionClass;
+use App\Models\SectionClassStudent;
 use App\Services\Upload\FileUpload;
+use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
@@ -40,8 +42,17 @@ class StudentController extends Controller
 
     public function edit($studentId)
     {
+        $student = Student::findOrFail($studentId);
+        $currentSession = $student->currentSession();
+        $sectionClassStudent = $currentSession
+            ? $student->sectionClassStudents()->with('sectionClass')->where('academic_session_id', $currentSession->id)->latest('id')->first()
+            : null;
 
-       return view('admission.student.edit',['student'=>Student::find($studentId)]);
+        return view('admission.student.edit', [
+            'student' => $student,
+            'sectionClassStudent' => $sectionClassStudent,
+            'enrolmentStatuses' => $this->enrolmentStatuses(),
+        ]);
     }
 
 
@@ -140,7 +151,8 @@ class StudentController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
             'date_of_birth' => ['required'],
-            'class' => ['required']
+            'class' => ['required'],
+            'status' => ['required', Rule::in($this->enrolmentStatuses()->all())],
         ]);
         $student = Student::find($studentId);
         
@@ -165,20 +177,27 @@ class StudentController extends Controller
             $this->storeFile($student,'picture',$request->picture,'/Student/Pictures/');
         }
 
+        $currentSession = $student->currentSession();
         $classStudent = $student->sectionClassStudents()->firstOrCreate([
             'section_class_id'=>$request->class,
-            'academic_session_id'=> $student->currentSession()->id
-        ]);
-        
-        
-        foreach($student->currentSession()->academicSessionTerms as $academicSessionTerm){
-            if($academicSessionTerm->status == 'Active'){
-                $academicSessionTerm->sectionClassStudentTerms()->firstOrCreate(['status'=>'Active','section_class_student_id'=>$classStudent->id]);
-            }else{
-                $academicSessionTerm->sectionClassStudentTerms()->firstOrCreate(['section_class_student_id'=>$classStudent->id]);
-            }
+            'academic_session_id'=> $currentSession->id,
+        ], ['status' => $request->status]);
+        $classStudent->update(['status' => $request->status]);
+
+        foreach ($currentSession->academicSessionTerms as $academicSessionTerm) {
+            $classStudent->sectionClassStudentTerms()->updateOrCreate(
+                ['academic_session_term_id' => $academicSessionTerm->id],
+                ['status' => $request->status === 'Active' && $academicSessionTerm->status === 'Active' ? 'Active' : 'Not Active']
+            );
         }
 
         return redirect()->route('admission.student.view',[$classStudent->sectionClass->id])->withSuccess('Student Updated Successfully');
+    }
+
+    private function enrolmentStatuses()
+    {
+        return collect(['Active', 'Not Active', 'Transfer', 'Late', 'Leave', 'Withdrawn'])
+            ->merge(SectionClassStudent::query()->distinct()->pluck('status'))
+            ->filter()->unique()->values();
     }
 }

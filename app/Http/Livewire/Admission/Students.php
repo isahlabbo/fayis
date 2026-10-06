@@ -24,20 +24,24 @@ class Students extends Component
         abort_unless(Auth::check() && Auth::user()->hasPermission('manage-admissions'), 403);
         $data = $this->validate([
             'sessionId' => 'required|integer|exists:academic_sessions,id',
-            'classId' => 'required|integer|exists:section_classes,id',
+            'sectionId' => 'nullable|required_without:classId|integer|exists:sections,id',
+            'classId' => 'nullable|required_without:sectionId|integer|exists:section_classes,id',
             'selected' => 'required|array|min:1',
             'selected.*' => 'required|integer|distinct',
         ], [
             'sessionId.required' => 'Filter by a specific academic session before deleting enrolments.',
-            'classId.required' => 'Filter by a specific class before deleting enrolments.',
+            'sectionId.required_without' => 'Choose a section or class before deleting enrolments.',
+            'classId.required_without' => 'Choose a section or class before deleting enrolments.',
         ]);
 
         DB::transaction(function () use ($data) {
             $enrolments = SectionClassStudent::whereIn('id', $data['selected'])
-                ->where('academic_session_id', $data['sessionId'])->where('section_class_id', $data['classId'])
+                ->where('academic_session_id', $data['sessionId'])
+                ->when($data['sectionId'], fn($q) => $q->whereHas('sectionClass', fn($class) => $class->where('section_id', $data['sectionId'])))
+                ->when($data['classId'], fn($q) => $q->where('section_class_id', $data['classId']))
                 ->orderBy('id')->lockForUpdate()->get();
             if ($enrolments->count() !== count($data['selected']) || $enrolments->pluck('id')->diff($this->records()->pluck('id'))->isNotEmpty()) {
-                throw ValidationException::withMessages(['selected' => 'The selection no longer matches this class, session and displayed list. Select the enrolments again.']);
+                throw ValidationException::withMessages(['selected' => 'The selection no longer matches the section/class, session and displayed list. Select the enrolments again.']);
             }
             $ids = $enrolments->pluck('id');
             $termIds = DB::table('section_class_student_terms')->whereIn('section_class_student_id', $ids)
@@ -81,7 +85,7 @@ class Students extends Component
             'selected' => 'required|array|min:1',
             'selected.*' => 'required|integer|distinct',
             'targetSessionId' => 'nullable|integer|exists:academic_sessions,id',
-            'targetStatus' => ['nullable', Rule::in($this->statuses()->all())],
+            'targetStatus' => ['nullable', Rule::in($this->updateableStatuses()->all())],
         ]);
         if (!$this->targetSessionId && !$this->targetStatus) {
             $this->addError('targetStatus', 'Choose a session or status to update.');
@@ -125,6 +129,28 @@ class Students extends Component
         if ($this->targetStatus) $this->status = $this->targetStatus;
         $this->reset(['targetSessionId', 'targetStatus']);
         $this->clearSelection();
+    }
+
+    public function withdraw($enrolmentId)
+    {
+        abort_unless(Auth::check() && Auth::user()->hasPermission('manage-admissions'), 403);
+
+        DB::transaction(function () use ($enrolmentId) {
+            $enrolment = SectionClassStudent::whereHas('student')->lockForUpdate()->findOrFail($enrolmentId);
+            if (!$this->records()->contains('id', $enrolment->id)) {
+                throw ValidationException::withMessages(['selected' => 'This student is no longer in the displayed list. Refresh the list and try again.']);
+            }
+            if ($enrolment->status === 'Withdrawn') {
+                throw ValidationException::withMessages(['selected' => 'This student is already withdrawn.']);
+            }
+
+            $enrolment->update(['status' => 'Withdrawn']);
+            $enrolment->sectionClassStudentTerms()->update(['status' => 'Not Active']);
+        });
+
+        $this->status = 'Withdrawn';
+        $this->clearSelection();
+        session()->flash('success', 'Student withdrawn successfully.');
     }
 
     public function boot()
@@ -179,6 +205,7 @@ class Students extends Component
     public function render()
     {
         $records = $this->records();
+        $statuses = $this->statuses();
         $statistics = [
             'total' => $records->count(),
             'male' => $records->filter(fn ($record) => strtolower(trim(optional($record->student->gender)->name ?? '')) === 'male')->count(),
@@ -190,12 +217,19 @@ class Students extends Component
             'sections' => Section::orderBy('name')->get(),
             'classes' => SectionClass::when($this->sectionId, fn ($q) => $q->where('section_id', $this->sectionId))->orderBy('name')->get(),
             'sessions' => AcademicSession::orderByDesc('id')->get(),
-            'statuses' => $this->statuses(),
+            'statuses' => $statuses,
+            'updateableStatuses' => $statuses->reject(fn ($status) => $status === 'Withdrawn')->values(),
         ]);
     }
 
     private function statuses()
     {
-        return collect(['Active', 'Not Active'])->merge(SectionClassStudent::distinct()->pluck('status'))->filter()->unique()->values();
+        return collect(['Active', 'Not Active', 'Transfer', 'Late', 'Leave', 'Withdrawn'])
+            ->merge(SectionClassStudent::distinct()->pluck('status'))->filter()->unique()->values();
+    }
+
+    private function updateableStatuses()
+    {
+        return $this->statuses()->reject(fn ($status) => $status === 'Withdrawn')->values();
     }
 }
