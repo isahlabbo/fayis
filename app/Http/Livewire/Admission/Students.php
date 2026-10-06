@@ -21,7 +21,7 @@ class Students extends Component
 
     public function deleteSelectedEnrolments()
     {
-        abort_unless(Auth::check() && Auth::user()->hasPermission('manage-admissions'), 403);
+        abort_unless(Auth::check() && Auth::user()->hasPermission('manage-students'), 403);
         $data = $this->validate([
             'sessionId' => 'required|integer|exists:academic_sessions,id',
             'sectionId' => 'nullable|required_without:classId|integer|exists:sections,id',
@@ -81,6 +81,7 @@ class Students extends Component
 
     public function updateSelected()
     {
+        abort_unless(Auth::check() && Auth::user()->hasPermission('manage-students'), 403);
         $data = $this->validate([
             'selected' => 'required|array|min:1',
             'selected.*' => 'required|integer|distinct',
@@ -133,7 +134,7 @@ class Students extends Component
 
     public function withdraw($enrolmentId)
     {
-        abort_unless(Auth::check() && Auth::user()->hasPermission('manage-admissions'), 403);
+        abort_unless(Auth::check() && Auth::user()->hasPermission('manage-students'), 403);
 
         DB::transaction(function () use ($enrolmentId) {
             $enrolment = SectionClassStudent::whereHas('student')->lockForUpdate()->findOrFail($enrolmentId);
@@ -155,7 +156,7 @@ class Students extends Component
 
     public function boot()
     {
-        abort_unless(Auth::check() && Auth::user()->hasPermission('manage-admissions'), 403);
+        abort_unless(Auth::check() && Auth::user()->hasAnyPermission('manage-admissions', 'manage-students'), 403);
     }
 
     public function mount()
@@ -205,6 +206,7 @@ class Students extends Component
     public function render()
     {
         $records = $this->records();
+        $canManageStudents = Auth::user()->hasPermission('manage-students');
         $statuses = $this->statuses();
         $statistics = [
             'total' => $records->count(),
@@ -213,7 +215,7 @@ class Students extends Component
         ];
         $statistics['unspecified'] = $statistics['total'] - $statistics['male'] - $statistics['female'];
 
-        return view('livewire.admission.students', compact('records', 'statistics') + [
+        return view('livewire.admission.students', compact('records', 'statistics', 'canManageStudents') + [
             'sections' => Section::orderBy('name')->get(),
             'classes' => SectionClass::when($this->sectionId, fn ($q) => $q->where('section_id', $this->sectionId))->orderBy('name')->get(),
             'sessions' => AcademicSession::orderByDesc('id')->get(),

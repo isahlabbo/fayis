@@ -8,6 +8,8 @@
     <nav>
         <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
         <a class="{{ request()->routeIs('configuration.users.*') ? 'active' : '' }}" href="{{ route('configuration.users.index') }}"><i class="fas fa-user-cog"></i><span>User Management</span></a>
+        <a class="{{ request()->routeIs('admission.students') ? 'active' : '' }}" href="{{ route('admission.students') }}"><i class="fas fa-user-graduate"></i><span>Student Management</span></a>
+        <a class="{{ request()->routeIs('admission.students') ? 'active' : '' }}" href="{{ route('admission.students') }}"><i class="fas fa-user-graduate"></i><span>Student Management</span></a>
         <div class="sa-nav-title">Access control</div>
         <details>
             <summary><span><i class="fas fa-shield-alt"></i> Access Control</span><i class="fas fa-chevron-down sa-chevron"></i></summary>

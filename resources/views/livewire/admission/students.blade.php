@@ -18,6 +18,7 @@
             <div class="col-md-4 form-group"><label for="student-section">Section</label><select id="student-section" wire:model="sectionId" class="form-control"><option value="">All sections</option>@foreach($sections as $section)<option value="{{ $section->id }}">{{ $section->name }}</option>@endforeach</select></div>
             <div class="col-md-4 form-group"><label for="student-class">Class</label><select id="student-class" wire:model="classId" class="form-control"><option value="">All classes</option>@foreach($classes as $class)<option value="{{ $class->id }}">{{ $class->name }}</option>@endforeach</select></div>
         </div>
+        @if($canManageStudents)
         <div class="d-flex align-items-center justify-content-between mb-3">
             <span aria-live="polite">{{ count($selected) }} of {{ $statistics['total'] }} students selected</span>
             @if(count($selected))<button type="button" wire:click="clearSelection" class="btn btn-sm btn-outline-secondary">Clear selection</button>@endif
@@ -53,12 +54,13 @@
             </div>
         </form>
         @endif
+        @endif
         <div class="table-responsive"><table class="table table-hover">
-            <thead><tr><th><label class="mb-0 text-nowrap"><input type="checkbox" wire:model="selectAll" aria-label="Select all displayed students" @if($records->isEmpty()) disabled @endif> Select all</label></th><th>Admission no.</th><th>Student</th><th>Gender</th><th>Academic session</th><th>Status</th><th>Guardian</th><th>Actions</th></tr></thead>
+            <thead><tr>@if($canManageStudents)<th><label class="mb-0 text-nowrap"><input type="checkbox" wire:model="selectAll" aria-label="Select all displayed students" @if($records->isEmpty()) disabled @endif> Select all</label></th>@endif<th>Admission no.</th><th>Student</th><th>Gender</th><th>Academic session</th><th>Status</th><th>Guardian</th><th>Actions</th></tr></thead>
             <tbody>
                 @forelse($records as $record)
                     <tr wire:key="student-enrolment-{{ $record->id }}">
-                        <td><input type="checkbox" wire:model="selected" value="{{ $record->id }}" aria-label="Select {{ $record->student->name }}"></td>
+                        @if($canManageStudents)<td><input type="checkbox" wire:model="selected" value="{{ $record->id }}" aria-label="Select {{ $record->student->name }}"></td>@endif
                         <td>{{ $record->student->admission_no ?: '-' }}</td><td>{{ $record->student->name }}</td>
                         <td>{{ optional($record->student->gender)->name ?: 'Unspecified' }}</td>
 
@@ -66,7 +68,7 @@
                         <td>{{ optional($record->student->guardian)->name }}<br><small>{{ optional($record->student->guardian)->phone }}</small></td>
                         <td class="text-nowrap">
                             <a href="{{ route('admission.student.edit', $record->student_id) }}" class="btn btn-sm btn-outline-primary" aria-label="Edit {{ $record->student->name }}"><i class="fas fa-edit mr-1" aria-hidden="true"></i>Edit</a>
-                            @if($record->status !== 'Withdrawn')
+                            @if($canManageStudents && $record->status !== 'Withdrawn')
                                 <button type="button" wire:click="withdraw({{ $record->id }})" class="btn btn-sm btn-outline-danger" wire:loading.attr="disabled"
                                     onclick="if (!confirm('Withdraw this student? They will no longer appear in active class lists.')) event.stopImmediatePropagation();">
                                     <i class="fas fa-user-minus mr-1" aria-hidden="true"></i>Withdraw
@@ -75,7 +77,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="8" class="text-center text-muted">No students match the selected filters.</td></tr>
+                    <tr><td colspan="{{ $canManageStudents ? 8 : 7 }}" class="text-center text-muted">No students match the selected filters.</td></tr>
                 @endforelse
             </tbody>
         </table></div>

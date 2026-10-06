@@ -61,7 +61,7 @@
                                                 <input type="text" class="form-control" name="name" value="{{$student->name}}" placeholder="Enter Teacher's Name">
                                             </div>
                                         </div>
-                                        
+                                        @if(Auth::user()->hasPermission('manage-students'))
                                         <div class="form-group row">
                                             <div class="col-md-3"><label for="">Class</label></div>
                                             <div class="col-md-9">
@@ -115,6 +115,7 @@
                                                 <input type="file" class="form-control" name="picture" value="{{old('picture')}}" placeholder="Teacher's Date of birth">
                                             </div>
                                         </div>
+                                        @endif
                                         <div class="form-group row">
                                             <div class="col-md-2"></div>
                                             <div class="col-md-9">

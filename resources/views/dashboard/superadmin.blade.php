@@ -44,6 +44,8 @@
                 <a class="btn btn-outline-success" href="{{ route('configuration.permission.index') }}">Manage permissions</a>
                 <a class="btn btn-outline-success" href="{{ route('configuration.role.permissions') }}">Assign permissions</a>
                 <a class="btn btn-outline-success" href="{{ route('configuration.permission.users') }}">Manage user roles</a>
+                <a class="btn btn-outline-success" href="{{ route('admission.students') }}">Student management</a>
+                <a class="btn btn-outline-success" href="{{ route('admission.students') }}">Student management</a>
             </div>
         </div>
     </div>

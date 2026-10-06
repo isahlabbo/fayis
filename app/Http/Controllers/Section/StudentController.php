@@ -10,6 +10,7 @@ use App\Models\Guardian;
 use App\Models\SectionClass;
 use App\Models\SectionClassStudent;
 use App\Services\Upload\FileUpload;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
@@ -146,14 +147,24 @@ class StudentController extends Controller
 
     public function update(Request $request, $studentId)
     {
-
-        $request->validate([
+        $canManageStudents = Auth::user()->hasPermission('manage-students');
+        $rules = [
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'max:255'],
-            'date_of_birth' => ['required'],
-            'class' => ['required'],
-            'status' => ['required', Rule::in($this->enrolmentStatuses()->all())],
-        ]);
+            'guardian_name' => ['required', 'string', 'max:255'],
+            'email' => ['nullable', 'email', 'max:255'],
+            'address' => ['nullable', 'string', 'max:2000'],
+        ];
+        if ($canManageStudents) {
+            $rules += [
+                'date_of_birth' => ['required'],
+                'class' => ['required'],
+                'status' => ['required', Rule::in($this->enrolmentStatuses()->all())],
+                'admission_no' => ['required', 'string', 'max:255'],
+                'gender' => ['required', 'integer', 'exists:genders,id'],
+            ];
+        }
+        $request->validate($rules);
         $student = Student::find($studentId);
         
         
@@ -166,15 +177,22 @@ class StudentController extends Controller
        
         
 
-        $student->update([
-            'name'=>strtoupper($request->name),
-            'date_of_birth'=>$request->date_of_birth,
-            'admission_no'=>$request->admission_no,
-            'gender_id'=>$request->gender
-        ]);
+        $studentData = ['name' => strtoupper($request->name)];
+        if ($canManageStudents) {
+            $studentData += [
+                'date_of_birth' => $request->date_of_birth,
+                'admission_no' => $request->admission_no,
+                'gender_id' => $request->gender,
+            ];
+        }
+        $student->update($studentData);
 
-        if($request->picture){
+        if($canManageStudents && $request->picture){
             $this->storeFile($student,'picture',$request->picture,'/Student/Pictures/');
+        }
+
+        if (!$canManageStudents) {
+            return redirect()->route('admission.students')->withSuccess('Student and guardian information updated successfully.');
         }
 
         $currentSession = $student->currentSession();

@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Http\Livewire\Admission\Students;
 use App\Http\Controllers\Section\StudentController;
 use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +55,9 @@ class AdmissionStudentsTest extends TestCase
         $user = new User(['role' => 'admission_officer', 'status' => 'Active']);
         $user->id = 1;
         $user->setRelation('accessRoles', collect());
-        $user->setRelation('directPermissions', collect([new Permission(['slug' => 'manage-admissions'])]));
+        $user->setRelation('directPermissions', collect([
+            new Permission(['slug' => 'manage-admissions']), new Permission(['slug' => 'manage-students']),
+        ]));
         $this->actingAs($user);
         DB::table('genders')->insert([['id' => 7, 'name' => 'Male'], ['id' => 8, 'name' => 'Female']]);
         DB::table('academic_sessions')->insert([
@@ -129,6 +132,52 @@ class AdmissionStudentsTest extends TestCase
         $this->assertDatabaseHas('section_class_students', ['id' => 1, 'status' => 'Leave']);
         $this->assertDatabaseHas('section_class_student_terms', ['id' => 1, 'status' => 'Not Active']);
         $this->assertDatabaseHas('students', ['id' => 1, 'name' => 'STUDENT 1 UPDATED']);
+    }
+
+    public function test_admission_only_users_can_edit_names_and_guardian_details_but_not_enrolment_data()
+    {
+        DB::table('guardians')->insert(['id' => 1, 'name' => 'Guardian', 'phone' => '08000000000']);
+        DB::table('students')->where('id', 1)->update(['guardian_id' => 1, 'date_of_birth' => '2015-01-01']);
+        $user = new User(['role' => 'admission_officer', 'status' => 'Active']);
+        $user->id = 2;
+        $user->setRelation('accessRoles', collect());
+        $user->setRelation('directPermissions', collect([new Permission(['slug' => 'manage-admissions'])]));
+        $this->actingAs($user);
+
+        $request = Request::create('/admission/student/student/1/update', 'POST', [
+            'name' => 'Updated Name', 'phone' => '08000000001', 'guardian_name' => 'Updated Guardian',
+            'email' => 'guardian@example.com', 'address' => 'Updated address', 'class' => 99,
+            'status' => 'Withdrawn', 'admission_no' => 'CHANGED', 'gender' => 8, 'date_of_birth' => '2010-01-01',
+        ]);
+        app(StudentController::class)->update($request, 1);
+
+        $this->assertDatabaseHas('students', [
+            'id' => 1, 'name' => 'UPDATED NAME', 'admission_no' => 'ADM-1', 'gender_id' => 7, 'date_of_birth' => '2015-01-01',
+        ]);
+        $this->assertDatabaseHas('guardians', ['id' => 1, 'name' => 'UPDATED GUARDIAN', 'phone' => '08000000001']);
+        $this->assertDatabaseHas('section_class_students', ['id' => 1, 'status' => 'Active', 'section_class_id' => 1]);
+
+        Livewire::test(Students::class)
+            ->assertViewHas('canManageStudents', false)
+            ->assertDontSee('Select all displayed students')
+            ->assertDontSee('Update selected students')
+            ->call('withdraw', 1)->assertForbidden();
+        Livewire::test(Students::class)->call('updateSelected')->assertForbidden();
+        Livewire::test(Students::class)->call('deleteSelectedEnrolments')->assertForbidden();
+    }
+
+    public function test_superadmin_gets_full_student_management_controls()
+    {
+        $user = new User(['role' => 'staff', 'status' => 'Active']);
+        $user->id = 3;
+        $user->setRelation('accessRoles', collect([new Role(['slug' => 'superadmin'])]));
+        $user->setRelation('directPermissions', collect());
+        $this->actingAs($user);
+
+        Livewire::test(Students::class)->set('selectAll', true)
+            ->assertViewHas('canManageStudents', true)
+            ->assertSee('Select all displayed students')
+            ->assertSee('Update selected students');
     }
 
     public function test_selection_and_search_are_scoped_to_matching_students()
