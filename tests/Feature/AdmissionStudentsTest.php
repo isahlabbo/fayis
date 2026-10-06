@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Http\Livewire\Admission\Students;
 use App\Http\Controllers\Section\StudentController;
+use App\Http\Livewire\Patron\Statistics\Students as PatronStudents;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
@@ -111,6 +112,21 @@ class AdmissionStudentsTest extends TestCase
             $this->assertDatabaseHas('section_class_students', ['id' => 1, 'status' => $status]);
             DB::table('section_class_students')->where('status', $status)->update(['status' => 'Active']);
         }
+    }
+
+    public function test_patron_student_statistics_can_filter_by_enrolment_status()
+    {
+        DB::table('section_class_students')->where('id', 1)->update(['status' => 'Withdrawn']);
+
+        Livewire::test(PatronStudents::class)
+            ->assertSet('selectedStatus', 'Active')
+            ->assertViewHas('students', fn ($students) => $students->count() === 1 && $students->every(fn ($student) => $student->status === 'Active'))
+            ->set('selectedStatus', 'Withdrawn')
+            ->assertViewHas('students', fn ($students) => $students->count() === 1 && $students->first()->status === 'Withdrawn')
+            ->assertViewHas('summary', fn ($summary) => $summary['total'] === 1)
+            ->set('selectedStatus', '')
+            ->assertViewHas('students', fn ($students) => $students->count() === 4)
+            ->assertViewHas('summary', fn ($summary) => $summary['total'] === 4);
     }
 
     public function test_student_edit_updates_current_enrolment_status_and_term_statuses()

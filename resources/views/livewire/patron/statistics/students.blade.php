@@ -32,6 +32,15 @@
                         <option value="2">Female</option>
                     </select>
                 </div>
+                <div class="col-md-3">
+                    <label class="form-label">Enrolment Status</label>
+                    <select wire:model="selectedStatus" class="form-control">
+                        <option value="">All Statuses</option>
+                        @foreach($statuses as $status)
+                            <option value="{{ $status }}">{{ $status }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
     </div>
@@ -73,6 +82,7 @@
                             <th>Admission No</th>
                             <th>Class</th>
                             <th>Gender</th>
+                            <th>Status</th>
                             <th>Guardian</th>
                             <th>Contact</th>
                         </tr>
@@ -93,12 +103,13 @@
                                 <td>{{ $record->student->admission_no ?? '-' }}</td>
                                 <td>{{ $record->sectionClass->name ?? '-' }}</td>
                                 <td>{{ $record->student->gender->name ?? '-' }}</td>
+                                <td>{{ $record->status }}</td>
                                 <td>{{ $record->student->guardian->name ?? '-' }}</td>
                                 <td>{{ $record->student->guardian->phone ?? '-' }}</td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center text-muted">No active students found.</td>
+                                <td colspan="7" class="text-center text-muted">No students found.</td>
                             </tr>
                         @endforelse
                     </tbody>

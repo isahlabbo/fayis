@@ -13,6 +13,7 @@ class Students extends Component
     public $selectedSection = '';
     public $selectedClass = '';
     public $selectedGender = '';
+    public $selectedStatus = 'Active';
     public $sections;
     public $classes;
 
@@ -39,8 +40,10 @@ class Students extends Component
     public function render()
     {
         $students = SectionClassStudent::query()
-            ->where('status', 'Active')
             ->with(['student.guardian', 'sectionClass.section'])
+            ->when($this->selectedStatus !== '', function ($query) {
+                $query->where('status', $this->selectedStatus);
+            })
             ->when($this->selectedSection, function ($query) {
                 $query->whereHas('sectionClass.section', function ($sectionQuery) {
                     $sectionQuery->where('id', $this->selectedSection);
@@ -73,7 +76,10 @@ class Students extends Component
             'male' => $students->filter(fn ($student) => data_get($student, 'student.gender_id') == 1)->count(),
             'female' => $students->filter(fn ($student) => data_get($student, 'student.gender_id') == 2)->count(),
         ];
+        $statuses = collect(['Active', 'Not Active', 'Transfer', 'Late', 'Leave', 'Withdrawn'])
+            ->merge(SectionClassStudent::query()->distinct()->pluck('status'))
+            ->filter()->unique()->values();
 
-        return view('livewire.patron.statistics.students', compact('students', 'summary'));
+        return view('livewire.patron.statistics.students', compact('students', 'summary', 'statuses'));
     }
 }
