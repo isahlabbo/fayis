@@ -193,14 +193,21 @@ class Students extends Component
 
     private function records()
     {
-        return SectionClassStudent::with(['student.guardian', 'student.gender', 'academicSession'])
+        return SectionClassStudent::with(['student.guardian', 'student.gender', 'academicSession', 'sectionClass'])
             ->whereHas('student')
             ->when($this->sessionId, fn ($q) => $q->where('academic_session_id', $this->sessionId))
             ->when($this->status, fn ($q) => $q->where('status', $this->status))
             ->when($this->sectionId, fn ($q) => $q->whereHas('sectionClass', fn ($q) => $q->where('section_id', $this->sectionId)))
             ->when($this->classId, fn ($q) => $q->where('section_class_id', $this->classId))
             ->when($this->search, fn ($q) => $q->whereHas('student', fn ($q) => $q->where('name', 'like', '%'.$this->search.'%')->orWhere('admission_no', 'like', '%'.$this->search.'%')))
-            ->orderByDesc('academic_session_id')->orderByDesc('id')->get()->unique('student_id')->values();
+            ->orderByDesc('academic_session_id')->orderByDesc('id')->get()->unique('student_id')->values()->map(function ($record) {
+                $record->present_class_name = optional($record->sectionClass)->name ?: '-';
+                $record->previous_class_name = SectionClassStudent::with('sectionClass')
+                    ->where('student_id', $record->student_id)
+                    ->where('id', '!=', $record->id)
+                    ->orderByDesc('academic_session_id')->orderByDesc('id')->first()?->sectionClass?->name ?: '-';
+                return $record;
+            });
     }
 
     public function render()

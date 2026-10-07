@@ -114,6 +114,18 @@ class AdmissionStudentsTest extends TestCase
         }
     }
 
+    public function test_student_management_lists_present_and_previous_class()
+    {
+        DB::table('section_classes')->insert(['id' => 2, 'name' => 'Primary Two', 'section_id' => 1]);
+        DB::table('section_class_students')->insert(['id' => 5, 'student_id' => 1, 'academic_session_id' => 1, 'section_class_id' => 2, 'status' => 'Not Active']);
+
+        Livewire::test(Students::class)
+            ->assertSee('Present class')
+            ->assertSee('Previous class')
+            ->assertSee('Primary One')
+            ->assertSee('Primary Two');
+    }
+
     public function test_patron_student_statistics_can_filter_by_enrolment_status()
     {
         DB::table('section_class_students')->where('id', 1)->update(['status' => 'Withdrawn']);

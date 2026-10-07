@@ -56,15 +56,17 @@
         @endif
         @endif
         <div class="table-responsive"><table class="table table-hover">
-            <thead><tr>@if($canManageStudents)<th><label class="mb-0 text-nowrap"><input type="checkbox" wire:model="selectAll" aria-label="Select all displayed students" @if($records->isEmpty()) disabled @endif> Select all</label></th>@endif<th>Admission no.</th><th>Student</th><th>Gender</th><th>Academic session</th><th>Status</th><th>Guardian</th><th>Actions</th></tr></thead>
+            <thead><tr>@if($canManageStudents)<th><label class="mb-0 text-nowrap"><input type="checkbox" wire:model="selectAll" aria-label="Select all displayed students" @if($records->isEmpty()) disabled @endif> Select all</label></th>@endif<th>Admission no.</th><th>Student</th><th>Gender</th><th>Academic session</th><th>Present class</th><th>Previous class</th><th>Status</th><th>Guardian</th><th>Actions</th></tr></thead>
             <tbody>
                 @forelse($records as $record)
                     <tr wire:key="student-enrolment-{{ $record->id }}">
                         @if($canManageStudents)<td><input type="checkbox" wire:model="selected" value="{{ $record->id }}" aria-label="Select {{ $record->student->name }}"></td>@endif
                         <td>{{ $record->student->admission_no ?: '-' }}</td><td>{{ $record->student->name }}</td>
                         <td>{{ optional($record->student->gender)->name ?: 'Unspecified' }}</td>
-
-                        <td>{{ optional($record->academicSession)->name ?? '-' }}</td><td>{{ $record->status }}</td>
+                        <td>{{ optional($record->academicSession)->name ?? '-' }}</td>
+                        <td>{{ $record->present_class_name }}</td>
+                        <td>{{ $record->previous_class_name }}</td>
+                        <td>{{ $record->status }}</td>
                         <td>{{ optional($record->student->guardian)->name }}<br><small>{{ optional($record->student->guardian)->phone }}</small></td>
                         <td class="text-nowrap">
                             <a href="{{ route('admission.student.edit', $record->student_id) }}" class="btn btn-sm btn-outline-primary" aria-label="Edit {{ $record->student->name }}"><i class="fas fa-edit mr-1" aria-hidden="true"></i>Edit</a>
@@ -77,7 +79,7 @@
                         </td>
                     </tr>
                 @empty
-                    <tr><td colspan="{{ $canManageStudents ? 8 : 7 }}" class="text-center text-muted">No students match the selected filters.</td></tr>
+                    <tr><td colspan="{{ $canManageStudents ? 10 : 9 }}" class="text-center text-muted">No students match the selected filters.</td></tr>
                 @endforelse
             </tbody>
         </table></div>
